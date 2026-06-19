@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Many-shot Jailbreaking — Red Teaming Canon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;CANON</div>
+  <a class="back" href="../index.html#canon">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack canon</span><span class="box bb">black-box</span></div>
+  <h1>Many-shot Jailbreaking</h1>
+  <div class="authors">Anil et al. (Anthropic) · 2024</div>
+  <div class="paperlink">
+    <span class="lbl">Paper</span>
+    <a href="https://www.anthropic.com/research/many-shot-jailbreaking" target="_blank" rel="noopener">Many-shot Jailbreaking (Anthropic) ↗</a>
+  </div>
+
+  <p class="lead">Pad the prompt with hundreds of fake dialogues in which the assistant cheerfully answers harmful questions, and the model learns — in-context, mid-conversation — to keep doing the same.</p>
+
+  <h2>What it exploits</h2>
+  <p>Two properties that modern LLMs are <em>supposed</em> to have. First, <strong>large context windows</strong>: where 2023-era models held a few thousand tokens, current models accept hundreds of thousands to a million, leaving room for an enormous number of priming examples. Second, <strong>in-context learning</strong> — the model's ability to pick up a pattern from examples in the prompt alone, with no fine-tuning. Many-shot jailbreaking (MSJ) turns both capabilities against the safety training: the attack lives entirely in the prompt, so it is fully <strong>black-box</strong> and needs no weights, gradients, or API internals.</p>
+
+  <h2>How it works</h2>
+  <p>The attacker constructs a single prompt containing many faux turns of a conversation. In each one, a simulated user asks something the model should refuse, and a simulated assistant complies in detail. The real target request is appended at the end. The model, having "observed" dozens to hundreds of compliant exchanges, continues the established pattern instead of refusing.</p>
+  <ul>
+    <li><strong>Scales with shot count.</strong> A handful of examples does little; effectiveness climbs as the number of demonstrations grows, and the harmful-response rate follows a <strong>power law</strong> in the number of shots — predictable enough to extrapolate.</li>
+    <li><strong>Bigger models are <em>more</em> vulnerable.</strong> Stronger in-context learning is exactly what makes a capable model better at absorbing the malicious pattern, so capability and susceptibility move together.</li>
+    <li><strong>Generalizes across tasks and providers.</strong> The same template works across many harm categories and was effective against models from Anthropic and several peers, including when combined with other jailbreak techniques.</li>
+  </ul>
+
+  <h2>Why it matters</h2>
+  <p>MSJ is a <strong>direct consequence of the race to ever-longer context windows</strong> — a feature shipped for legitimate reasons (long documents, agents, RAG) that simultaneously widens the attack surface. It is also disarmingly simple: no obfuscation, no special tokens, no optimization loop, just volume. That makes it cheap to run, easy to vary, and broadly portable across vendors — the kind of attack a red team should assume is available to anyone.</p>
+
+  <h2>Defenses &amp; detection</h2>
+  <p>No single mitigation fully closes it, and the trade-offs are uncomfortable:</p>
+  <ul>
+    <li><strong>Fine-tuning</strong> to refuse the pattern raises the bar but is incomplete — it mostly pushes out the shot count at which the attack succeeds rather than stopping it.</li>
+    <li><strong>Prompt classification and modification</strong> before inference is the most effective lever Anthropic reported, cutting one attack's success rate from 61% to 2% in their tests.</li>
+    <li><strong>Capping context length</strong> bounds how many shots fit, but trades away the very capability long contexts were built for.</li>
+  </ul>
+
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer current as of June 2026 · always verify against the source paper.</footer>
+</body>
+</html>

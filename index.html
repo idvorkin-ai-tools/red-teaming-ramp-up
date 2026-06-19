@@ -38,6 +38,9 @@
   }
   .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
   a{color:inherit}
+  a.lnk{color:inherit;text-decoration:underline;text-decoration-color:var(--ink-dim);
+    text-underline-offset:2px;text-decoration-thickness:1px;transition:.15s}
+  a.lnk:hover{text-decoration-color:var(--def);color:var(--ink)}
 
   /* ---------- top nav ---------- */
   header.nav{
@@ -280,7 +283,7 @@
 <!-- 01 SURFACE -->
 <section id="surface">
   <div class="eyebrow reveal"><span class="idx">01</span> the attack surface</div>
-  <h2 class="reveal">Learn the OWASP Top 10 for LLMs (2025) cold</h2>
+  <h2 class="reveal">Learn the <a class="lnk" href="https://genai.owasp.org/" target="_blank" rel="noopener">OWASP Top 10 for LLMs (2025)</a> cold</h2>
   <p class="reveal">This is the shared vocabulary every team, report, and tool maps to. The 2025 revision pulled in RAG, agents, and supply-chain risk. Memorize it the way you know the web Top 10 — it's how you scope an engagement.</p>
   <div class="grid g2 reveal">
     <div class="card off"><div class="num">LLM01</div><h3>Prompt Injection</h3><p>Direct and indirect — untrusted content (a web page, a doc, a tool result) overrides instructions. The canonical, highest-frequency class.</p></div>
@@ -294,26 +297,26 @@
     <div class="card off"><div class="num">LLM09</div><h3>Misinformation</h3><p>Confident fabrication and unsafe over-reliance on outputs in consequential settings.</p></div>
     <div class="card off"><div class="num">LLM10</div><h3>Unbounded Consumption</h3><p>Denial-of-service and "denial-of-wallet" — runaway cost, model extraction via mass querying.</p></div>
   </div>
-  <div class="callout def reveal">Next surface to track: the <strong>OWASP Top 10 for Agentic Applications</strong> (published Dec 2025). Agent hijacking, tool misuse, and multi-agent attacks are where the field — and the hiring — is moving.</div>
+  <div class="callout def reveal">Next surface to track: the <strong><a class="lnk" href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP Top 10 for Agentic Applications</a></strong> (published Dec 2025). Agent hijacking, tool misuse, and multi-agent attacks are where the field — and the hiring — is moving.</div>
 </section>
 
 <!-- 02 CANON -->
 <section id="canon">
   <div class="eyebrow reveal"><span class="idx">02</span> the attack canon</div>
   <h2 class="reveal">Read the papers everyone cites</h2>
-  <p class="reveal">Jailbreak research has a small, knowable canon. Know these by name, what they exploit, and whether they need model internals (<span class="pill wb">white-box</span>) or only API access (<span class="pill bb">black-box</span>). Practitioners increasingly chain them.</p>
+  <p class="reveal">Jailbreak research has a small, knowable canon. Know these by name, what they exploit, and whether they need model internals (<span class="pill wb">white-box</span>) or only API access (<span class="pill bb">black-box</span>). Practitioners increasingly chain them. <span style="color:var(--ink-dim)">Each name links to a one-page explainer.</span></p>
 
   <div class="reveal">
     <div class="row"><div class="name">DAN / role-play<span class="yr">2023 · manual</span></div><div class="desc">Assign a persona ("Do Anything Now," AIM) that explicitly ignores safety rules. The origin of the genre — still a useful baseline.</div></div>
-    <div class="row"><div class="name">GCG <span class="pill wb">white-box</span><span class="yr">Zou et al. 2023</span></div><div class="desc">Greedy Coordinate Gradient. Optimizes an adversarial token suffix using gradients to force unsafe completions. The foundational automated, transferable attack.</div></div>
-    <div class="row"><div class="name">AutoDAN <span class="pill wb">white-box</span><span class="yr">Liu et al. 2024</span></div><div class="desc">Genetic-algorithm attack seeded from handcrafted DAN prompts — produces fluent, readable jailbreaks instead of gibberish suffixes.</div></div>
-    <div class="row"><div class="name">PAIR <span class="pill bb">black-box</span><span class="yr">Chao et al. 2023</span></div><div class="desc">Prompt Automatic Iterative Refinement. An attacker LLM + judge LLM iteratively rewrite a prompt until the target complies. No model access needed — the template for automated red teaming.</div></div>
-    <div class="row"><div class="name">TAP <span class="pill bb">black-box</span><span class="yr">Mehrotra et al. 2024</span></div><div class="desc">Tree of Attacks with Pruning. PAIR with tree search and branch pruning — broader, more efficient exploration.</div></div>
-    <div class="row"><div class="name">Crescendo <span class="pill bb">black-box</span><span class="yr">Russinovich et al. 2024</span></div><div class="desc">Multi-turn escalation. Benign opening, then steer over 5–20 turns toward the target. Defeats per-message filters that judge turns in isolation — the must-know multi-turn method.</div></div>
-    <div class="row"><div class="name">Many-shot <span class="pill bb">black-box</span><span class="yr">Anil et al. 2024</span></div><div class="desc">Flood a long context with dozens of harmful Q&amp;A examples to progressively override safety training. A direct consequence of long context windows.</div></div>
-    <div class="row"><div class="name">PAP <span class="pill bb">black-box</span><span class="yr">2024</span></div><div class="desc">Persuasive Adversarial Prompts. Apply human persuasion techniques (authority, reciprocity, framing) rather than technical tricks.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/gcg.html">GCG</a> <span class="pill wb">white-box</span><span class="yr">Zou et al. 2023</span></div><div class="desc">Greedy Coordinate Gradient. Optimizes an adversarial token suffix using gradients to force unsafe completions. The foundational automated, transferable attack.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/autodan.html">AutoDAN</a> <span class="pill wb">white-box</span><span class="yr">Liu et al. 2024</span></div><div class="desc">Genetic-algorithm attack seeded from handcrafted DAN prompts — produces fluent, readable jailbreaks instead of gibberish suffixes.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/pair.html">PAIR</a> <span class="pill bb">black-box</span><span class="yr">Chao et al. 2023</span></div><div class="desc">Prompt Automatic Iterative Refinement. An attacker LLM + judge LLM iteratively rewrite a prompt until the target complies. No model access needed — the template for automated red teaming.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/tap.html">TAP</a> <span class="pill bb">black-box</span><span class="yr">Mehrotra et al. 2024</span></div><div class="desc">Tree of Attacks with Pruning. PAIR with tree search and branch pruning — broader, more efficient exploration.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/crescendo.html">Crescendo</a> <span class="pill bb">black-box</span><span class="yr">Russinovich et al. 2024</span></div><div class="desc">Multi-turn escalation. Benign opening, then steer over 5–20 turns toward the target. Defeats per-message filters that judge turns in isolation — the must-know multi-turn method.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/many-shot.html">Many-shot</a> <span class="pill bb">black-box</span><span class="yr">Anil et al. 2024</span></div><div class="desc">Flood a long context with dozens of harmful Q&amp;A examples to progressively override safety training. A direct consequence of long context windows.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/pap.html">PAP</a> <span class="pill bb">black-box</span><span class="yr">2024</span></div><div class="desc">Persuasive Adversarial Prompts. Apply human persuasion techniques (authority, reciprocity, framing) rather than technical tricks.</div></div>
   </div>
-  <div class="callout reveal">Also keep a running file on the perennial primitives that show up inside these: <strong>encoding/obfuscation</strong> (base64, leetspeak, low-resource languages), <strong>prefix injection / refusal suppression</strong>, <strong>payload splitting</strong>, and <strong>glitch tokens</strong>. The <em>Awesome-Jailbreak-on-LLMs</em> repo is the best continuously-updated index.</div>
+  <div class="callout reveal">Also keep a running file on the perennial primitives that show up inside these: <strong>encoding/obfuscation</strong> (base64, leetspeak, low-resource languages), <strong>prefix injection / refusal suppression</strong>, <strong>payload splitting</strong>, and <strong>glitch tokens</strong>. The <em><a class="lnk" href="https://github.com/yueliu1999/Awesome-Jailbreak-on-LLMs" target="_blank" rel="noopener">Awesome-Jailbreak-on-LLMs</a></em> repo is the best continuously-updated index.</div>
 </section>
 
 <!-- 03 MEASURE -->
@@ -322,11 +325,11 @@
   <h2 class="reveal">A finding is a number, not an anecdote</h2>
   <p class="reveal">The single biggest habit shift from pentesting: one lucky jailbreak isn't a result. You report <strong>attack success rate (ASR)</strong> across many trials, per harm category, with a defined judge (an LLM grader or classifier) deciding pass/fail. Define what "failure" means <em>before</em> you run anything — a customer-support bot and a code tool have completely different threat models.</p>
   <div class="grid g3 reveal">
-    <div class="card def"><h3>AdvBench</h3><p>520 harmful instructions; the original robustness baseline (shipped with GCG).</p></div>
-    <div class="card def"><h3>HarmBench</h3><p>The standardized framework for automated red teaming and robust-refusal evaluation. The common yardstick.</p></div>
-    <div class="card def"><h3>JailbreakBench</h3><p>Open robustness benchmark with behaviors, human labels, and automated judges — good for reproducible comparisons.</p></div>
+    <div class="card def"><h3><a class="lnk" href="https://github.com/llm-attacks/llm-attacks" target="_blank" rel="noopener">AdvBench</a></h3><p>520 harmful instructions; the original robustness baseline (shipped with GCG).</p></div>
+    <div class="card def"><h3><a class="lnk" href="https://www.harmbench.org/" target="_blank" rel="noopener">HarmBench</a></h3><p>The standardized framework for automated red teaming and robust-refusal evaluation. The common yardstick.</p></div>
+    <div class="card def"><h3><a class="lnk" href="https://jailbreakbench.github.io/" target="_blank" rel="noopener">JailbreakBench</a></h3><p>Open robustness benchmark with behaviors, human labels, and automated judges — good for reproducible comparisons.</p></div>
   </div>
-  <p class="reveal" style="margin-top:18px">Round it out with <strong>DecodingTrust</strong> and <strong>TrustLLM</strong> for broader trustworthiness dimensions, and <strong>AgentDojo</strong> (ETH Zurich) for agent-hijacking test cases. The skill to build here is statistical literacy: confidence on ASR, controlling for prompt variance, and not over-claiming from a small sample.</p>
+  <p class="reveal" style="margin-top:18px">Round it out with <strong><a class="lnk" href="https://decodingtrust.github.io/" target="_blank" rel="noopener">DecodingTrust</a></strong> and <strong><a class="lnk" href="https://trustllmbenchmark.github.io/TrustLLM-Website/" target="_blank" rel="noopener">TrustLLM</a></strong> for broader trustworthiness dimensions, and <strong><a class="lnk" href="https://agentdojo.spylab.ai/" target="_blank" rel="noopener">AgentDojo</a></strong> (ETH Zurich) for agent-hijacking test cases. The skill to build here is statistical literacy: confidence on ASR, controlling for prompt variance, and not over-claiming from a small sample.</p>
 </section>
 
 <!-- 04 FRAMEWORKS -->
@@ -335,12 +338,12 @@
   <h2 class="reveal">The taxonomies that structure real programs</h2>
   <p class="reveal">Hands-on skill gets you findings; frameworks get you hired and let you write reports leadership trusts. These are the four that show up in nearly every job description.</p>
   <div class="grid g2 reveal">
-    <div class="card def"><h3>MITRE ATLAS</h3><p>The ATT&amp;CK-style adversarial-tactics knowledge base for ML systems. The shared language for threat modeling AI — learn it the way you know ATT&amp;CK.</p></div>
-    <div class="card def"><h3>NIST AI RMF</h3><p>The risk-management framework (+ Generative AI profile). The governance backbone for US programs and most enterprise risk language.</p></div>
-    <div class="card def"><h3>OWASP GenAI / Red Teaming Guide</h3><p>Beyond the Top 10: OWASP's guide on how to actually structure and evaluate an AI red-team engagement.</p></div>
-    <div class="card def"><h3>EU AI Act</h3><p>Mandates adversarial testing for high-risk systems; full compliance lands August 2026. The regulatory driver behind much of current demand.</p></div>
+    <div class="card def"><h3><a class="lnk" href="https://atlas.mitre.org/" target="_blank" rel="noopener">MITRE ATLAS</a></h3><p>The ATT&amp;CK-style adversarial-tactics knowledge base for ML systems. The shared language for threat modeling AI — learn it the way you know ATT&amp;CK.</p></div>
+    <div class="card def"><h3><a class="lnk" href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">NIST AI RMF</a></h3><p>The risk-management framework (+ Generative AI profile). The governance backbone for US programs and most enterprise risk language.</p></div>
+    <div class="card def"><h3><a class="lnk" href="https://genai.owasp.org/resource/genai-red-teaming-guide/" target="_blank" rel="noopener">OWASP GenAI / Red Teaming Guide</a></h3><p>Beyond the Top 10: OWASP's guide on how to actually structure and evaluate an AI red-team engagement.</p></div>
+    <div class="card def"><h3><a class="lnk" href="https://artificialintelligenceact.eu/" target="_blank" rel="noopener">EU AI Act</a></h3><p>Mandates adversarial testing for high-risk systems; full compliance lands August 2026. The regulatory driver behind much of current demand.</p></div>
   </div>
-  <p class="reveal" style="margin-top:18px">Read how the labs do it in the open: Microsoft's <em>Lessons from Red Teaming 100 Generative AI Products</em> (Jan 2025), and Anthropic's and OpenAI's published red-team reports for each major model release. They're the best free templates for what a serious finding and write-up look like.</p>
+  <p class="reveal" style="margin-top:18px">Read how the labs do it in the open: Microsoft's <em><a class="lnk" href="https://arxiv.org/abs/2501.07238" target="_blank" rel="noopener">Lessons from Red Teaming 100 Generative AI Products</a></em> (Jan 2025), and Anthropic's and OpenAI's published red-team reports for each major model release. They're the best free templates for what a serious finding and write-up look like.</p>
 </section>
 
 <!-- 05 TOOLS -->
@@ -349,17 +352,17 @@
   <h2 class="reveal">Get hands-on — no single tool covers the surface</h2>
   <p class="reveal">Run all three offensive tools on a model this week; you learn the surface faster by attacking than by reading. Each has a real weakness — pros <span class="t-def" style="padding:0 4px">and</span> cons matter here.</p>
   <div class="grid g2 reveal">
-    <div class="card off tool"><h3>Garak <span class="by">NVIDIA · open source</span></h3>
+    <div class="card off tool"><h3><a class="lnk" href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener">Garak</a> <span class="by">NVIDIA · open source</span></h3>
       <div class="pro"><span class="s">+</span> Broad static probe library; ideal as a CI vulnerability scanner on every model release.</div>
       <div class="con"><span class="s">−</span> Static probes; weak on adaptive multi-turn and app-specific logic.</div></div>
-    <div class="card off tool"><h3>PyRIT <span class="by">Microsoft · open source</span></h3>
+    <div class="card off tool"><h3><a class="lnk" href="https://github.com/Azure/PyRIT" target="_blank" rel="noopener">PyRIT</a> <span class="by">Microsoft · open source</span></h3>
       <div class="pro"><span class="s">+</span> Orchestrator/attacker-LLM model; strong at adaptive multi-turn (crescendo, TAP) and converter chains.</div>
       <div class="con"><span class="s">−</span> Two models per session gets expensive and slow at scale; steeper learning curve.</div></div>
-    <div class="card off tool"><h3>Promptfoo <span class="by">open source · now OpenAI</span></h3>
+    <div class="card off tool"><h3><a class="lnk" href="https://www.promptfoo.dev/" target="_blank" rel="noopener">Promptfoo</a> <span class="by">open source · now OpenAI</span></h3>
       <div class="pro"><span class="s">+</span> 130+ plugins, OWASP/MITRE mapping, clean CI/CD regression workflow.</div>
       <div class="con"><span class="s">−</span> Breadth over depth; off-the-shelf probes still need custom suites for your app.</div></div>
     <div class="card def tool"><h3>Defender's side <span class="by">blue-team layer</span></h3>
-      <div class="pro"><span class="s">+</span> LLM Guard (ProtectAI), NeMo Guardrails (NVIDIA), Guardrails AI — learn what you're trying to defeat.</div>
+      <div class="pro"><span class="s">+</span> <a class="lnk" href="https://github.com/protectai/llm-guard" target="_blank" rel="noopener">LLM Guard</a> (ProtectAI), <a class="lnk" href="https://github.com/NVIDIA/NeMo-Guardrails" target="_blank" rel="noopener">NeMo Guardrails</a> (NVIDIA), <a class="lnk" href="https://github.com/guardrails-ai/guardrails" target="_blank" rel="noopener">Guardrails AI</a> — learn what you're trying to defeat.</div>
       <div class="con"><span class="s">−</span> Guardrails create false confidence; adaptive attacks routinely bypass them.</div></div>
   </div>
   <div class="callout reveal">The honest take: automated tools find the generic stuff. The findings that get you paid and hired come from <strong>manual, creative, app-specific testing</strong> — custom probes against the real system prompt, tools, and data sources. Tools are your scanner; you're still the exploit dev.</div>
@@ -373,12 +376,12 @@
   <div class="stat reveal">
     <div class="b"><div class="n">$130–300<span style="font-size:13px">/hr</span></div><div class="l">Contractor rates — generalist to specialty (chem/bio/cyber).</div></div>
     <div class="b"><div class="n c">$200–200k+</div><div class="l">Per bug-bounty finding. Wide variance; unreliable as primary income.</div></div>
-    <div class="b"><div class="n">$40k–300k+</div><div class="l">Gray Swan Arena prize pools per challenge; top finishers get invited to paid private networks.</div></div>
+    <div class="b"><div class="n">$40k–300k+</div><div class="l"><a class="lnk" href="https://app.grayswan.ai/arena" target="_blank" rel="noopener">Gray Swan Arena</a> prize pools per challenge; top finishers get invited to paid private networks.</div></div>
   </div>
   <div class="grid g3 reveal">
-    <div class="card"><div class="num">DOOR 1 · HARDEST</div><h3>In-house at a lab</h3><p>Red Team Engineer roles at Anthropic, OpenAI, Google DeepMind, plus Microsoft's interdisciplinary AI Red Team. Small pools, high bar.</p></div>
-    <div class="card"><div class="num">DOOR 2 · MOST COMMON</div><h3>Specialty consultancy</h3><p>Apollo Research, METR, Trail of Bits, Lakera, HiddenLayer, Mindgard. The realistic path for working contractors.</p></div>
-    <div class="card"><div class="num">DOOR 3 · OPEN TO ALL</div><h3>Bounties &amp; arenas</h3><p>Anthropic (now on HackerOne, no NDA), OpenAI ($100k max), xAI/Grok, Google, Microsoft, Mozilla 0din, Gray Swan Arena, HackAPrompt.</p></div>
+    <div class="card"><div class="num">DOOR 1 · HARDEST</div><h3>In-house at a lab</h3><p>Red Team Engineer roles at <a class="lnk" href="https://www.anthropic.com/" target="_blank" rel="noopener">Anthropic</a>, <a class="lnk" href="https://openai.com/" target="_blank" rel="noopener">OpenAI</a>, <a class="lnk" href="https://deepmind.google/" target="_blank" rel="noopener">Google DeepMind</a>, plus Microsoft's interdisciplinary AI Red Team. Small pools, high bar.</p></div>
+    <div class="card"><div class="num">DOOR 2 · MOST COMMON</div><h3>Specialty consultancy</h3><p><a class="lnk" href="https://www.apolloresearch.ai/" target="_blank" rel="noopener">Apollo Research</a>, <a class="lnk" href="https://metr.org/" target="_blank" rel="noopener">METR</a>, <a class="lnk" href="https://www.trailofbits.com/" target="_blank" rel="noopener">Trail of Bits</a>, <a class="lnk" href="https://www.lakera.ai/" target="_blank" rel="noopener">Lakera</a>, <a class="lnk" href="https://hiddenlayer.com/" target="_blank" rel="noopener">HiddenLayer</a>, <a class="lnk" href="https://mindgard.ai/" target="_blank" rel="noopener">Mindgard</a>. The realistic path for working contractors.</p></div>
+    <div class="card"><div class="num">DOOR 3 · OPEN TO ALL</div><h3>Bounties &amp; arenas</h3><p>Anthropic (now on HackerOne, no NDA), OpenAI ($100k max), xAI/Grok, Google, Microsoft, <a class="lnk" href="https://0din.ai/" target="_blank" rel="noopener">Mozilla 0din</a>, <a class="lnk" href="https://app.grayswan.ai/arena" target="_blank" rel="noopener">Gray Swan Arena</a>, <a class="lnk" href="https://www.hackaprompt.com/" target="_blank" rel="noopener">HackAPrompt</a>.</p></div>
   </div>
   <div class="you reveal">
     <h3>Your specific read — security expert + EM</h3>
@@ -445,7 +448,7 @@
     <a href="https://www.promptfoo.dev/docs/red-team/" target="_blank" rel="noopener"><span class="k">06</span>Promptfoo — LLM red-team guide</a>
     <a href="https://atlas.mitre.org/" target="_blank" rel="noopener"><span class="k">07</span>MITRE ATLAS — adversarial ML knowledge base</a>
     <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener"><span class="k">08</span>NIST AI Risk Management Framework</a>
-    <a href="https://www.microsoft.com/en-us/security/blog/" target="_blank" rel="noopener"><span class="k">09</span>MS — Lessons from Red Teaming 100 GenAI Products</a>
+    <a href="https://arxiv.org/abs/2501.07238" target="_blank" rel="noopener"><span class="k">09</span>MS — Lessons from Red Teaming 100 GenAI Products</a>
     <a href="https://app.grayswan.ai/arena" target="_blank" rel="noopener"><span class="k">10</span>Gray Swan Arena — red-team competitions</a>
     <a href="https://wraith.sh/learn/ai-bug-bounty-programs" target="_blank" rel="noopener"><span class="k">11</span>AI bug-bounty programs 2026 (living reference)</a>
     <a href="https://gandalf.lakera.ai/" target="_blank" rel="noopener"><span class="k">12</span>Gandalf — Lakera prompt-injection game</a>

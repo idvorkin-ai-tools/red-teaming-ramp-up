@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AutoDAN — Red Teaming Canon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;CANON</div>
+  <a class="back" href="../index.html#canon">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack canon</span><span class="box wb">white-box</span></div>
+  <h1>AutoDAN — Stealthy Jailbreak Prompts</h1>
+  <div class="authors">Liu, Xu, Chen, Xiao · 2024</div>
+  <div class="paperlink">
+    <span class="lbl">Paper</span>
+    <a href="https://arxiv.org/abs/2310.04451" target="_blank" rel="noopener">AutoDAN: Generating Stealthy Jailbreak Prompts on Aligned Large Language Models ↗</a>
+  </div>
+
+  <p class="lead">AutoDAN automatically evolves <strong>fluent, human-readable jailbreak prompts</strong> using a genetic algorithm, combining the automation of optimization attacks with the natural-language stealth of handcrafted "DAN" prompts.</p>
+
+  <h2>What it exploits</h2>
+  <p>Safety alignment is trained against the kinds of phrasings the model saw during RLHF, but the <strong>space of fluent natural-language wrappers that re-frame a harmful request is enormous</strong> and only thinly covered. Hand-built "Do Anything Now" (DAN) prompts exploit this by role-playing the model out of its guardrails — but they are static, get patched, and don't generalize. AutoDAN attacks the same weakness automatically: it searches that wrapper space for new phrasings that keep the request fluent and on-distribution while still bypassing refusal. Because the output reads like ordinary English, it also slips past the second line of defense — <strong>perplexity-based input filters</strong> that flag statistically unnatural text.</p>
+
+  <h2>How it works</h2>
+  <p>AutoDAN frames jailbreak discovery as a black-box optimization over text and solves it with a <strong>hierarchical genetic algorithm</strong>. It is a white-box attack in that it scores candidates against the target model's loss on producing an affirmative (non-refusing) response, but it never touches token-level gradients — it operates entirely on readable sentences:</p>
+  <ul>
+    <li><strong>Seeding</strong> — the initial population is built from a handcrafted DAN-style jailbreak prompt, diversified by an LLM into many semantically-equivalent variants (rather than random noise).</li>
+    <li><strong>Fitness</strong> — each candidate is scored by how strongly it pushes the target toward an affirmative completion (the attack objective), favoring prompts that suppress refusal.</li>
+    <li><strong>Hierarchical crossover & mutation</strong> — operators recombine at both the <strong>sentence level</strong> (swapping whole clauses between prompts) and the <strong>word level</strong>, with a momentum-based word-scoring scheme guiding substitutions to escape local optima while preserving grammar and meaning.</li>
+    <li><strong>Selection</strong> — top-fitness individuals survive each generation, iterating until a prompt reliably jailbreaks the target.</li>
+  </ul>
+  <p>The result is a prompt that is automatically optimized yet still <strong>reads as coherent, meaningful English</strong>.</p>
+
+  <h2>Why it matters</h2>
+  <p>AutoDAN sits between two prior worlds and takes the best of each. The contrast with <strong>GCG</strong> (Zou et al., 2023) is the key insight:</p>
+  <ul>
+    <li><strong>GCG</strong> produces adversarial suffixes that are gibberish — high-perplexity strings of garbled tokens. Effective, but trivially caught by a perplexity filter and obvious to a human reviewer.</li>
+    <li><strong>AutoDAN</strong> produces <strong>fluent, low-perplexity prompts</strong>. It demonstrated that <strong>perplexity-based defenses — the standard counter to GCG — do not work against it</strong>, because there is nothing statistically unnatural to detect.</li>
+  </ul>
+  <p>It also reported <strong>better cross-model transfer and cross-sample universality</strong> than handcrafted baselines. The takeaway for defenders: stylometric and perplexity heuristics are not a durable defense, and automated attacks no longer have to look anomalous.</p>
+
+  <h2>Defenses &amp; detection</h2>
+  <p>Because the attack is fluent, surface-level filtering is weak. More robust mitigations operate on intent and output rather than text statistics:</p>
+  <ul>
+    <li><strong>Don't rely on perplexity filters</strong> — AutoDAN was explicitly built to defeat them; treat them as defense-in-depth at best.</li>
+    <li><strong>Semantic / intent classifiers</strong> and LLM-based input guards (e.g. Llama Guard-style moderation) that judge what the prompt is <em>asking for</em>, not how natural it reads.</li>
+    <li><strong>Output-side checks</strong> — moderate the generated response, since a successful jailbreak still produces detectable harmful content regardless of how stealthy the prompt was.</li>
+    <li><strong>Robustness / adversarial training and refusal hardening</strong> against the role-play and persona-framing patterns these prompts exploit.</li>
+    <li><strong>Cost & rate signals</strong> — the genetic search requires many queries per target; per-key query-rate and repeated-near-miss monitoring can surface the optimization loop itself.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer current as of June 2026 · always verify against the source paper.</footer>
+</body>
+</html>
