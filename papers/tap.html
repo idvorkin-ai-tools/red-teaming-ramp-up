@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TAP — Red Teaming Canon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;CANON</div>
+  <a class="back" href="../index.html#canon">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack canon</span><span class="box bb">black-box</span></div>
+  <h1>TAP — Tree of Attacks with Pruning</h1>
+  <div class="authors">Mehrotra, Zampetakis, et al. · 2024</div>
+  <div class="paperlink">
+    <span class="lbl">Paper</span>
+    <a href="https://arxiv.org/abs/2312.02119" target="_blank" rel="noopener">Tree of Attacks: Jailbreaking Black-Box LLMs Automatically ↗</a>
+  </div>
+
+  <p class="lead">TAP is a fully automated black-box jailbreak that drives an attacker LLM to grow a <strong>tree</strong> of prompt rewrites, <strong>pruning</strong> weak branches before they ever hit the target — landing a working jailbreak in a handful of queries.</p>
+
+  <h2>What it exploits</h2>
+  <p>The same gap every social-engineering attack leans on: a model's safety training is <strong>shallow and context-sensitive</strong>, not a hard filter. A goal the target refuses outright will be answered once it's reframed, role-played, or buried in a plausible pretext. TAP assumes nothing about weights, logits, or the system prompt — it only needs to send text and read the reply, exactly the access an external attacker has against a hosted API like GPT-4o or Claude.</p>
+
+  <h2>How it works</h2>
+  <p>TAP is a direct descendant of <strong>PAIR</strong> (Prompt Automatic Iterative Refinement), which used one attacker LLM to refine a single adversarial prompt in a chat loop. TAP swaps that linear loop for <strong>tree-of-thought search</strong> over many candidate prompts at once, governed by three cooperating roles:</p>
+  <ul>
+    <li><strong>Attacker LLM</strong> — at each node, branches the current prompt into several refined variants (new framings, personas, obfuscations).</li>
+    <li><strong>Evaluator / judge LLM</strong> — scores each candidate two ways: how <em>on-topic</em> it still is relative to the goal, and how close the target's response came to a jailbreak.</li>
+    <li><strong>Target LLM</strong> — the black-box model under attack; only the surviving candidates are actually queried.</li>
+  </ul>
+  <p>The <strong>pruning</strong> is the whole trick, and it happens in two places. <strong>Off-topic pruning</strong> kills branches the attacker has drifted away from the goal <em>before</em> spending a target query on them. <strong>Width pruning</strong> keeps only the top-scoring nodes per depth, so the tree explores breadth without exploding. The loop repeats — branch, prune off-topic, query target, score, keep the best — until a response crosses the jailbreak threshold or the depth budget runs out.</p>
+
+  <h2>Why it matters</h2>
+  <p>Against PAIR's single thread of refinement, the tree explores <strong>many more strategies in parallel</strong>, while pruning keeps that breadth <strong>query-efficient</strong> — the paper reports jailbreaking GPT-4 / GPT-4 Turbo and GPT-4o on <strong>over 80%</strong> of prompts using fewer target queries than prior black-box methods, and it slips past deployed safety layers like <strong>Llama Guard</strong>. For a red teamer that means automated, scalable coverage with no model internals required: TAP is a strong baseline for measuring how a deployed assistant holds up against a realistic, API-only adversary.</p>
+
+  <h2>Defenses &amp; detection</h2>
+  <p>Because TAP is purely black-box and semantically fluent, suffix/perplexity filters that catch GCG-style gibberish do little here — the prompts read like ordinary (if manipulative) requests. More durable mitigations:</p>
+  <ul>
+    <li><strong>Iterative-probing detection</strong> — TAP must hammer the target with many escalating, semantically related queries. Per-session rate limits and anomaly detection on bursts of near-duplicate refinements raise the cost.</li>
+    <li><strong>Output-side guardrails</strong> — an independent classifier on the <em>response</em> (the attack judges responses, so defenders should too); note the paper shows Llama Guard alone is not sufficient.</li>
+    <li><strong>Robustness / adversarial training</strong> against reframing, role-play, and pretext patterns rather than specific strings.</li>
+    <li><strong>Continuous red teaming</strong> — run TAP itself as an evaluation harness against your stack so coverage tracks each model and guardrail update.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer current as of June 2026 · always verify against the source paper.</footer>
+</body>
+</html>

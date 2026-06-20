@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PAP — Red Teaming Canon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;CANON</div>
+  <a class="back" href="../index.html#canon">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack canon</span><span class="box bb">black-box</span></div>
+  <h1>PAP — Persuasive Adversarial Prompts</h1>
+  <div class="authors">Zeng, Lin, et al. · 2024</div>
+  <div class="paperlink">
+    <span class="lbl">Paper</span>
+    <a href="https://arxiv.org/abs/2401.06373" target="_blank" rel="noopener">How Johnny Can Persuade LLMs to Jailbreak Them ↗</a>
+  </div>
+
+  <p class="lead">PAP treats jailbreaking as a <strong>social-engineering</strong> problem rather than a syntactic one: it rewrites a harmful request using documented human persuasion techniques, exploiting the fact that a model trained on human dialogue responds to the same rhetorical pressure people do.</p>
+
+  <h2>What it exploits</h2>
+  <p>Most early jailbreaks were treated as a security puzzle — token-level suffixes, encodings, role-play scaffolds. PAP reframes the target as a <strong>"humanized" communicator</strong>: because LLMs are trained on vast human-written text, they have internalized the patterns by which humans get other humans to comply. The attack surface is therefore not a parser bug but the model's <strong>learned susceptibility to persuasion</strong>. Crucially, the persuasion lives in <em>natural, fluent prose</em> — no adversarial gibberish, no special tokens — so the request reads like an ordinary (if manipulative) human message and slips past filters tuned for obvious attack markers.</p>
+
+  <h2>How it works</h2>
+  <p>The authors build a <strong>persuasion taxonomy</strong> grounded in decades of social-science research — on the order of 40 techniques across several categories. A harmful instruction is paraphrased so the same ask is delivered through one or more of these techniques. Representative categories:</p>
+  <ul>
+    <li><strong>Authority / expert endorsement</strong> — frame the request as sanctioned by a credible authority or cited source.</li>
+    <li><strong>Logical appeal &amp; evidence</strong> — wrap the ask in reasoned justification or fabricated supporting facts.</li>
+    <li><strong>Emotional appeal</strong> — invoke sympathy, urgency, or a personal hardship to lower resistance.</li>
+    <li><strong>Reciprocity &amp; commitment</strong> — establish a favor or a prior agreement that the model is nudged to honor.</li>
+    <li><strong>Framing / misrepresentation</strong> — recast the harmful goal as research, fiction, prevention, or "for awareness."</li>
+  </ul>
+  <p>To scale this beyond hand-written examples, the team fine-tunes a <strong>persuasion paraphraser</strong> — an LLM that takes a plain harmful request plus a chosen technique and emits a polished <strong>Persuasive Adversarial Prompt (PAP)</strong>. Because the paraphraser is itself a model, generating attacks is cheap and automatable. The reported result: iterating across techniques drove attack success above <strong>92%</strong> on aligned targets including GPT-4 and Llama-2, with no gradient access to the victim.</p>
+
+  <h2>Why it matters</h2>
+  <p>PAP shows that strong alignment does not neutralize <strong>ordinary human manipulation</strong>. The attacks are non-technical and require no ML expertise — a motivated layperson ("Johnny") can produce them, which is precisely the threat model the title invokes. For a security pro, the takeaway is that the dangerous inputs here are <em>indistinguishable in form from legitimate persuasive writing</em>: there is no malformed payload to signature, only intent expressed through rhetoric. It also predicts that more capable, more "human-like" models may be <em>more</em> vulnerable, since better language understanding means better comprehension of the persuasion.</p>
+
+  <h2>Defenses &amp; detection</h2>
+  <p>The paper pairs the attack with mitigations and finds them only partially effective:</p>
+  <ul>
+    <li><strong>Adaptive system prompts</strong> instructing the model to watch for persuasion reduce but do not eliminate success.</li>
+    <li><strong>Targeted "persuasion" fine-tuning / summarization defenses</strong> — restate the user request neutrally before answering — strip rhetorical pressure and were among the more effective countermeasures.</li>
+    <li><strong>Intent-based classification</strong> on the underlying ask (rather than surface keywords) is the durable direction, since the harmful content is semantic, not lexical.</li>
+  </ul>
+  <p>Practically, defenders should test refusal robustness against rewritten, fluent requests — not just raw harmful strings — and treat persuasion-resistance as a distinct evaluation axis. See also <a class="lnk" href="https://github.com/CHATS-lab/persuasive_jailbreaker" target="_blank" rel="noopener">the authors' code &amp; taxonomy release ↗</a>.</p>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer current as of June 2026 · always verify against the source paper.</footer>
+</body>
+</html>

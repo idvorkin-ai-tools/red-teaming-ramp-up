@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Crescendo — Red Teaming Canon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;CANON</div>
+  <a class="back" href="../index.html#canon">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack canon</span><span class="box bb">black-box</span></div>
+  <h1>Crescendo — Multi-Turn Escalation</h1>
+  <div class="authors">Russinovich, Salem, Eldan · 2024</div>
+  <div class="paperlink">
+    <span class="lbl">Paper</span>
+    <a href="https://arxiv.org/abs/2404.01833" target="_blank" rel="noopener">The Crescendo Multi-Turn LLM Jailbreak Attack ↗</a>
+  </div>
+
+  <p class="lead">Crescendo jailbreaks an aligned model not with one loaded prompt but across a <strong>conversation</strong> — opening on a benign, on-topic question and ratcheting toward the disallowed goal one small step at a time, until the model has talked itself past its own guardrails.</p>
+
+  <h2>What it exploits</h2>
+  <p>Most safety alignment and content moderation grades <strong>one message at a time</strong>. A filter that would instantly refuse "write malware" sees, in each Crescendo turn, only an innocuous-looking follow-up to an already-acceptable thread. The attack also leans on the model's drive to be <strong>consistent and helpful</strong>: once it has produced benign context, it treats its own prior output as established ground and is far more willing to extend it. The dangerous payload is never requested directly — it is assembled incrementally so no single turn trips a refusal.</p>
+
+  <h2>How it works</h2>
+  <p>A typical Crescendo run unfolds over <strong>roughly 5–20 turns</strong>:</p>
+  <ul>
+    <li><strong>Benign opening</strong> — ask a broad, legitimate question near the target topic (e.g., the history or general background of the subject).</li>
+    <li><strong>Gradual steering</strong> — each turn nudges one notch closer, explicitly <strong>referencing the model's own previous answers</strong> ("expand on the third point you mentioned," "now write that as an article") to anchor the next escalation in already-accepted material.</li>
+    <li><strong>Backtrack on refusal</strong> — if a turn triggers a refusal, rephrase or retreat a step rather than confronting the guardrail head-on, then resume the climb.</li>
+    <li><strong>Convergence</strong> — the final ask is a thin increment over content the model has already produced, so it completes the disallowed task without ever seeing a stark policy-violating prompt.</li>
+  </ul>
+  <p>The authors automate this loop as <strong>Crescendomation</strong>, where an attacker LLM plans each next turn and judges progress — turning a hand-crafted social-engineering technique into a repeatable, scalable pipeline.</p>
+
+  <h2>Why it matters</h2>
+  <p>Crescendo is the <strong>canonical multi-turn jailbreak</strong> — the reference point for why single-turn red teaming is insufficient. It demonstrably <strong>defeats per-message moderation</strong> and transfers across frontier systems (the paper reports success against ChatGPT, Gemini, and LLaMA-family models). Because it is fully <strong>black-box</strong> (no weights, logits, or gradients needed) and automatable, it raises the bar for any defense: the threat lives in the <em>trajectory</em> of a dialogue, not in any one input.</p>
+
+  <h2>Defenses &amp; detection</h2>
+  <p>The mitigation is to evaluate safety at the <strong>conversation level rather than per message</strong>:</p>
+  <ul>
+    <li>Run a moderation/judge model over the <strong>full dialogue history plus the candidate response</strong>, scoring cumulative drift toward a prohibited goal — not just the latest turn in isolation.</li>
+    <li>Watch for <strong>escalation signatures</strong>: monotonic topic drift, repeated self-reference, and rephrase-after-refusal patterns.</li>
+    <li>Apply output-side filtering to the <strong>aggregate</strong> of what the model has produced across turns, since the harmful artifact is distributed across the thread. Related work (e.g., Microsoft's <a class="lnk" href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection" target="_blank" rel="noopener">Azure AI Content Safety prompt-shield / jailbreak detection ↗</a>) moves in this conversation-aware direction.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer current as of June 2026 · always verify against the source paper.</footer>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PyRIT — Red Teaming Toolchain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;TOOLCHAIN</div>
+  <a class="back" href="../index.html#tools">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the toolchain</span><span class="box wb mono">offense</span></div>
+  <h1>PyRIT</h1>
+  <div class="authors">Microsoft AI Red Team · open source</div>
+  <div class="paperlink"><span class="lbl">Project</span><a href="https://github.com/microsoft/PyRIT" target="_blank" rel="noopener">microsoft/PyRIT — GitHub ↗</a></div>
+  <p class="lead">PyRIT (Python Risk Identification Tool) is Microsoft's open-source framework for probing generative-AI systems for safety and security risks. Instead of hand-crafting prompts, you wire up an <strong>attacker LLM</strong> that drives adversarial conversations against a target model and an automated <strong>scorer</strong> that decides whether the attack landed — turning red teaming into a repeatable, automatable pipeline.</p>
+  <h2>What it's good at</h2>
+  <p>PyRIT's core abstraction is the <strong>orchestrator</strong>, which coordinates a target, a set of converters, and one or more scorers:</p>
+  <ul>
+    <li><strong>Adaptive multi-turn attacks.</strong> <code>RedTeamingOrchestrator</code>, <code>CrescendoOrchestrator</code> (gradual escalation that stays plausible turn-to-turn), and <strong>TAP / tree-of-attacks</strong> let an attacker LLM iterate and pivot on the target's responses rather than firing one static prompt.</li>
+    <li><strong>Converters.</strong> Stackable transforms — Base64, ROT13, translation, ASCII art, tense-shifting — that mutate prompts to slip past filters. They compose, so you can chain encodings automatically.</li>
+    <li><strong>Scorers.</strong> LLM-as-judge and rule-based scorers automatically grade responses, so a campaign of thousands of attempts doesn't need a human reading each transcript.</li>
+    <li><strong>Datasets + memory.</strong> Curated seed-prompt sets and a DuckDB-backed memory store make runs reproducible and let you mine results afterward.</li>
+  </ul>
+  <h2>Where it falls short</h2>
+  <p>The attacker-LLM-plus-scorer design means <strong>two model calls per turn</strong> (sometimes three with judge scoring) — cost and latency add up fast across a multi-turn campaign, and you're paying for both the offense and the grading. It's a <strong>framework, not a one-shot CLI</strong>: expect a steeper learning curve than a fuzzer. You configure targets, orchestrators, converters, and scorers in Python, and getting good signal depends on tuning your scorer — a sloppy judge produces noisy results that look like findings but aren't.</p>
+  <h2>How to start</h2>
+  <p>Requires Python 3.10–3.13. Install and point it at a target:</p>
+  <ul>
+    <li><code>pip install pyrit</code> (Docker + JupyterLab is the recommended on-ramp for first-timers).</li>
+    <li>Drop endpoint credentials in <code>~/.pyrit/.env</code> (e.g. an Azure OpenAI or OpenAI target).</li>
+    <li>Start single-turn with <code>PromptSendingOrchestrator</code> to confirm your target wiring, then graduate to <code>RedTeamingOrchestrator</code> or <code>CrescendoOrchestrator</code> with an attacker LLM + a scorer for adaptive runs.</li>
+  </ul>
+  <p>The official docs and runnable notebooks at <a href="https://microsoft.github.io/PyRIT/" target="_blank" rel="noopener">microsoft.github.io/PyRIT ↗</a> walk each orchestrator end-to-end. <strong>Note:</strong> the old <code>Azure/PyRIT</code> repo was archived (March 2026) — <code>microsoft/PyRIT</code> is now canonical.</p>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+</body>
+</html>

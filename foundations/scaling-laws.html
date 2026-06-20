@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Scaling Laws — Red Teaming Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;FOUNDATIONS</div>
+  <a class="back" href="../index.html#shift">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>ml foundations</span><span class="box bb mono">why models scale</span></div>
+  <h1>Scaling Laws</h1>
+  <div class="authors">Kaplan et al. 2020 · Hoffmann et al. (Chinchilla) 2022</div>
+  <div class="paperlink">
+    <span class="lbl">Papers</span>
+    <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener">Scaling Laws for Neural Language Models (Kaplan 2020) ↗</a>
+  </div>
+  <div class="paperlink" style="border-left-color:var(--def);margin-top:-18px">
+    <span class="lbl">&nbsp;</span>
+    <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">Training Compute-Optimal LLMs / "Chinchilla" (Hoffmann 2022) ↗</a>
+  </div>
+
+  <p class="lead">Model capability is not magic — it's a <strong>smooth, predictable power law</strong> in three inputs: parameters, data, and compute. Push any of them up and test loss falls along a straight line on a log-log plot. This is the single most important "why" behind everything you'll be red-teaming.</p>
+
+  <h2>The core finding (Kaplan 2020)</h2>
+  <p>OpenAI showed that cross-entropy <strong>test loss scales as a power law</strong> with model size (N), dataset size (D), and training compute (C), across seven orders of magnitude — and that architecture details (depth vs width) matter far less than raw scale. Two consequences that still shape the field:</p>
+  <ul>
+    <li><strong>Bigger is more sample-efficient.</strong> Larger models reach a given loss with fewer tokens — the opposite of the old "small model + lots of data" intuition.</li>
+    <li><strong>Loss is forecastable.</strong> You can predict a bigger model's performance before you train it. This is why labs commit hundreds of millions to a single run.</li>
+  </ul>
+
+  <h2>The correction (Chinchilla 2022)</h2>
+  <p>DeepMind found Kaplan's recipe <strong>over-weighted parameters and under-trained on data</strong>. For a fixed compute budget, params and tokens should grow <strong>roughly in equal proportion</strong> — about <strong>20 training tokens per parameter</strong>. The proof: <strong>Chinchilla (70B)</strong> beat <strong>Gopher (280B)</strong> — a model 4× smaller, trained on more data, won. The whole industry re-tuned its model/data ratios overnight, and "compute-optimal" became the default framing.</p>
+
+  <h2>Why a red teamer cares</h2>
+  <ul>
+    <li><strong>Capability is a moving target.</strong> The model you harden today is a checkpoint on a curve. Threat models must assume next-gen scale, not just current behavior.</li>
+    <li><strong>Emergence.</strong> Some capabilities — and some attack surfaces (tool use, multi-step reasoning, code-exec) — appear abruptly past a scale threshold rather than fading in. What's safe at 7B can be exploitable at 70B.</li>
+    <li><strong>Inverse scaling.</strong> A minority of behaviors get <em>worse</em> with scale (sycophancy, certain prompt-injection susceptibilities). Bigger ≠ safer by default.</li>
+    <li><strong>Data scaling is an attack surface.</strong> Compute-optimal training means models are hungry for enormous, loosely-curated corpora — which is exactly the door for <a class="lnk" href="../risks/llm04-data-and-model-poisoning.html">data &amp; model poisoning</a> and <a class="lnk" href="../risks/llm03-supply-chain.html">supply-chain</a> risk.</li>
+  </ul>
+
+  <div class="callout">Where the curve bends next: pre-training scaling is hitting data limits, so the frontier has shifted to <strong>inference-time / test-time compute</strong> (reasoning models that "think" longer). The scaling mindset is the same — more compute, more capability, predictably — but the knob moved from training to inference, and with it, the attack surface.</div>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · foundations explainer current as of June 2026 · always verify against the source papers.</footer>
+</body>
+</html>

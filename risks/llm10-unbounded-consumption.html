@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LLM10 Unbounded Consumption — Red Teaming Risks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;RISKS</div>
+  <a class="back" href="../index.html#surface">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack surface</span><span class="box wb mono">LLM10:2025</span></div>
+  <h1>Unbounded Consumption</h1>
+  <div class="authors">OWASP Top 10 for LLM Applications · 2025</div>
+  <div class="paperlink">
+    <span class="lbl">OWASP</span>
+    <a href="https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/" target="_blank" rel="noopener">LLM10: Unbounded Consumption — OWASP GenAI ↗</a>
+  </div>
+  <p class="lead">When an LLM application lets users run excessive, uncontrolled inferences, the result is denial of service, runaway cloud bills ("denial of wallet"), service degradation, and even model theft — every prompt has a cost, and an attacker's job is to make you pay it.</p>
+  <h2>How it's exploited</h2>
+  <p>This risk spans three distinct attacker goals that all abuse the inference path:</p>
+  <ul>
+    <li><strong>Resource exhaustion / DoS</strong> — oversized inputs, variable-length input floods, queries that exceed the context window, and high-volume repeated requests deplete memory, CPU, and GPU, degrading or denying service for everyone.</li>
+    <li><strong>Denial of wallet (DoW)</strong> — attackers weaponize the pay-per-token, pay-per-call economics of cloud LLMs. There's no crash; there's a four- or five-figure invoice. The system stays "up" while the budget burns down.</li>
+    <li><strong>Model extraction &amp; distillation</strong> — mass-querying the API with crafted inputs and prompt-injection harvests enough outputs to replicate a partial model, or to generate <strong>synthetic training data</strong> that fine-tunes a functional equivalent — stealing your IP one inference at a time. Side-channel probing can leak architectural details or weights.</li>
+  </ul>
+  <h2>What it looks like</h2>
+  <p>A SaaS feature exposes a chatbot backed by a metered frontier model with no per-user quota. An attacker scripts thousands of long, resource-intensive prompts (or systematic query batteries designed to map the model's outputs). Best case, latency spikes and legitimate users time out. Worst case, the monthly cloud bill jumps from hundreds to tens of thousands of dollars overnight — or a near-equivalent clone of the proprietary model surfaces, distilled entirely from your own API responses.</p>
+  <h2>How to test for it</h2>
+  <p>Probe the edges of the inference path. Send inputs near and past the context-window limit and confirm they're rejected, not silently processed. Fire bursts of rapid and oversized requests from one identity to see whether rate limits and per-user quotas actually bite. Run a small scripted query battery to gauge how cheaply outputs can be harvested. Crucially, <strong>measure the cost</strong> — confirm there's a hard spend cap and an alert before "expensive but allowed" tips into "unbounded." Watch for resource-intensive query patterns that trigger the model's most expensive code paths.</p>
+  <h2>Defenses</h2>
+  <ul>
+    <li><strong>Rate limiting &amp; quotas</strong> — cap requests per user/key/time window; enforce per-tenant budgets.</li>
+    <li><strong>Input validation &amp; size limits</strong> — reject inputs that exceed reasonable length before they reach the model.</li>
+    <li><strong>Cost caps &amp; throttling</strong> — set hard spend ceilings, timeouts, and throttle resource-intensive operations.</li>
+    <li><strong>Monitoring &amp; anomaly detection</strong> — comprehensive logging to catch extraction patterns and consumption spikes early.</li>
+    <li><strong>Access control &amp; sandboxing</strong> — apply RBAC and least privilege; restrict the model's reach to networks, internal services, and APIs.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+</body>
+</html>

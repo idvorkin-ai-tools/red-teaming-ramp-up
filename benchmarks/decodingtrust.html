@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DecodingTrust — Red Teaming Benchmarks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;BENCHMARKS</div>
+  <a class="back" href="../index.html#measure">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>measurement</span><span class="box bb mono">benchmark</span></div>
+  <h1>DecodingTrust</h1>
+  <div class="authors">Wang et al. · NeurIPS 2023</div>
+  <div class="paperlink"><span class="lbl">Project</span><a href="https://decodingtrust.github.io/" target="_blank" rel="noopener">DecodingTrust ↗</a></div>
+  <p class="lead">A <strong>multi-perspective trustworthiness benchmark</strong> for LLMs that goes well beyond a single jailbreak score. It bundles datasets, attack scenarios, and evaluation scripts to profile a model across eight distinct trust dimensions. Won the <strong>Outstanding Paper Award at NeurIPS 2023</strong> and the NSA's Best Scientific Cybersecurity Paper Award (2024).</p>
+  <h2>What it measures</h2>
+  <p>DecodingTrust evaluates a model along <strong>eight perspectives</strong>, each with its own scenarios and adversarial pressure:</p>
+  <ul>
+    <li><strong>Toxicity</strong> — generation of harmful content, including under adversarial system prompts</li>
+    <li><strong>Stereotype &amp; bias</strong> — agreement with biased statements across demographic groups</li>
+    <li><strong>Adversarial robustness</strong> — behavior under standard adversarial text perturbations (AdvGLUE / AdvGLUE++)</li>
+    <li><strong>Out-of-distribution robustness</strong> — handling of inputs outside the training distribution</li>
+    <li><strong>Robustness to adversarial demonstrations</strong> — susceptibility to poisoned in-context / few-shot examples</li>
+    <li><strong>Privacy</strong> — leakage of training data, PII, and in-context private information</li>
+    <li><strong>Machine ethics</strong> — moral judgment and resistance to jailbreak-style ethics prompts</li>
+    <li><strong>Fairness</strong> — prediction parity across protected attributes</li>
+  </ul>
+  <h2>How red teamers use it</h2>
+  <p>It gives <strong>broader-than-jailbreak coverage</strong>: instead of a single refusal-rate number, you get a per-perspective scorecard that exposes where a model is weak — e.g., privacy leakage under crafted prompts, or bias amplification under adversarial system roles. Use it to <strong>profile a candidate model across trust dimensions</strong> before deployment, to compare models or fine-tunes apples-to-apples, and to direct deeper manual probing at the perspectives that score worst. Each perspective ships with concrete attack scenarios you can run or adapt as a starting point for your own harness.</p>
+  <h2>Strengths &amp; limits</h2>
+  <p><strong>Strengths:</strong> unusual breadth, peer-reviewed methodology, and reusable datasets/scripts make it a strong baseline trust profile. <strong>Limits:</strong> it is a <strong>static, point-in-time benchmark</strong> — the original work centered on GPT-3.5/GPT-4, so frontier models and newer attack classes may have moved past it. Published scenarios are also exposed to <strong>contamination and overfitting</strong> once they enter training data, and a clean scorecard reflects only the tested scenarios, not safety in the wild. Treat it as a coverage map and triage tool, not a pass/fail certification — pair it with live, model-specific red teaming.</p>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+</body>
+</html>

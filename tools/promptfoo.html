@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Promptfoo — Red Teaming Toolchain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;TOOLCHAIN</div>
+  <a class="back" href="../index.html#tools">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the toolchain</span><span class="box wb mono">offense</span></div>
+  <h1>Promptfoo</h1>
+  <div class="authors">open source · (now OpenAI)</div>
+  <div class="paperlink"><span class="lbl">Project</span><a href="https://www.promptfoo.dev/" target="_blank" rel="noopener">Promptfoo ↗</a></div>
+  <p class="lead">A config-driven CLI and library (MIT-licensed, now part of OpenAI) for evaluating and red-teaming LLM apps. You point it at a target — a prompt, model, RAG chain, or agent endpoint — and it generates adversarial probes, runs them as a graded test suite, and produces a vulnerability report. The same harness does both <strong>application-level eval</strong> (model/prompt comparison, accuracy regression) and <strong>attack simulation</strong>.</p>
+  <h2>What it's good at</h2>
+  <ul>
+    <li><strong>Breadth of probes:</strong> 50+ vulnerability plugins — direct/indirect prompt injection, jailbreaks, PII &amp; data leaks, BOLA/BFLA broken access control, SSRF, SQL injection, excessive agency, hallucination, and policy violations.</li>
+    <li><strong>Framework mapping:</strong> first-class presets that map probes onto standards — <code>owasp:llm</code> (OWASP LLM Top 10), <code>mitre:atlas</code> (MITRE ATLAS), plus NIST AI RMF. Useful when findings have to map to a compliance narrative.</li>
+    <li><strong>CI/CD regression:</strong> declarative YAML config, deterministic graded assertions, and a non-interactive run mode that drops cleanly into GitHub Actions / GitLab / Jenkins to gate merges and catch regressions.</li>
+  </ul>
+  <h2>Where it falls short</h2>
+  <p>It optimizes <strong>breadth over depth</strong>. The off-the-shelf plugins are generic by design; a serious assessment of <em>your</em> app needs custom probe suites, app-specific policies, and tuned grading — the defaults catch the obvious classes, not the novel logic flaws in your agent's tool surface. Attack generation also leans on an LLM, so coverage and reproducibility vary run to run unless you pin seeds and configs.</p>
+  <h2>How to start</h2>
+  <p>Zero-install, scoped to your target:</p>
+  <ul>
+    <li><code>npx promptfoo@latest redteam init</code> — scaffold a config (add <code>--no-gui</code> to skip the setup UI).</li>
+    <li><code>npx promptfoo@latest redteam run</code> — generate adversarial cases, execute, and grade.</li>
+  </ul>
+  <p>Then open the report with <code>promptfoo view</code>. See the <a href="https://www.promptfoo.dev/docs/red-team/quickstart/" target="_blank" rel="noopener">red-team quickstart ↗</a> and the <a href="https://www.promptfoo.dev/docs/red-team/plugins/" target="_blank" rel="noopener">plugin catalog ↗</a>.</p>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+</body>
+</html>

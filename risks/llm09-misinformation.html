@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LLM09 Misinformation — Red Teaming Risks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;RISKS</div>
+  <a class="back" href="../index.html#surface">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack surface</span><span class="box wb mono">LLM09:2025</span></div>
+  <h1>Misinformation</h1>
+  <div class="authors">OWASP Top 10 for LLM Applications · 2025</div>
+  <div class="paperlink">
+    <span class="lbl">OWASP</span>
+    <a href="https://genai.owasp.org/llmrisk/llm092025-misinformation/" target="_blank" rel="noopener">LLM09: Misinformation — OWASP GenAI ↗</a>
+  </div>
+  <p class="lead">An LLM produces false or misleading output that <strong>looks credible</strong>, and a user or downstream system trusts it without verification — turning a plausible fabrication into a real-world security or safety failure.</p>
+
+  <h2>How it's exploited</h2>
+  <p>Two failure modes compound each other. <strong>Hallucination</strong> is the model filling gaps in its training data with statistically plausible — but fabricated — content, with no genuine comprehension. <strong>Overreliance</strong> is a human or an automated pipeline treating that output as ground truth. An adversary doesn't need to break the model; they exploit its predictable confident-wrong patterns:</p>
+  <ul>
+    <li><strong>Induce a confident falsehood</strong> the operator will act on (fake citations, invented APIs, bogus "facts").</li>
+    <li><strong>Pre-position to catch a known hallucination</strong> — e.g. registering a package name the model reliably invents, so trusting developers pull attacker-controlled code.</li>
+  </ul>
+  <p>Crucially, the medical/legal-advice variant needs <strong>no active attacker at all</strong> — insufficient oversight alone is enough to cause harm and liability.</p>
+
+  <h2>What it looks like</h2>
+  <p><strong>Package-hallucination → dependency confusion:</strong> a coding assistant repeatedly recommends <code>import faiss-cpu-gpu</code> or some other library that doesn't exist. An attacker observes the hallucinated name, publishes a malicious package under it to PyPI/npm, and waits. Developers who paste the model's suggestion <code>pip install</code> the backdoor — granting code execution, exfil, or a persistent foothold. Other real cases: ChatGPT inventing nonexistent legal cases cited in a court filing, and Air Canada's chatbot stating a refund policy that didn't exist (the airline lost the resulting suit).</p>
+
+  <h2>How to test for it</h2>
+  <p>Probe the boundary between "knows" and "confabulates," then check whether anything downstream blindly trusts the answer:</p>
+  <ul>
+    <li><strong>Bait for fabrication:</strong> ask for citations, CVE numbers, library/function names, statutes, or API signatures — then verify each against the real source. Track hallucination rate, not just one-off misses.</li>
+    <li><strong>Hunt phantom packages:</strong> run code-gen prompts at temperature and log every imported dependency; cross-check against the registry for names that don't exist (or are squattable).</li>
+    <li><strong>Pressure expertise claims</strong> in high-stakes domains (medical, legal, financial) and watch for unsupported assertions delivered with false confidence.</li>
+    <li><strong>Test the human/automation layer:</strong> does the system surface uncertainty, or render fabrications as authoritative answers that get auto-executed?</li>
+  </ul>
+
+  <h2>Defenses</h2>
+  <ul>
+    <li><strong>Ground the output:</strong> RAG over trusted, verified sources with inline citations, so claims trace back to real documents.</li>
+    <li><strong>Verify before trust:</strong> automatic validation of high-stakes outputs, plus human cross-checking for sensitive decisions — never fully autonomous action on unverified model claims.</li>
+    <li><strong>Harden the code path:</strong> secure-coding review and dependency allow-listing/pinning so suggested libraries are confirmed to exist and be safe before install.</li>
+    <li><strong>Communicate limits:</strong> label AI-generated content, surface confidence/uncertainty, and train users on where the model is unreliable — design the UX to discourage overreliance.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+</body>
+</html>
