@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Garak — Red Teaming Toolchain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;TOOLCHAIN</div>
+  <a class="back" href="../index.html#tools">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the toolchain</span><span class="box wb mono">offense</span></div>
+  <h1>Garak</h1>
+  <div class="authors">NVIDIA · open source</div>
+  <div class="paperlink"><span class="lbl">Project</span><a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener">NVIDIA/garak — GitHub ↗</a></div>
+  <p class="lead">Garak is NVIDIA's open-source LLM vulnerability scanner — the <strong>"nmap for LLMs."</strong> You point it at a model, it fires a large library of pre-built probes (simulated attacks), and a matching set of detectors scores the outputs to flag where the model failed. It ships connectors for OpenAI, Hugging Face, AWS Bedrock, Replicate, local GGUF, and more.</p>
+  <h2>What it's good at</h2>
+  <p>A broad, batteries-included <strong>static probe library</strong> covering many vulnerability families out of the box, so you get wide coverage with near-zero setup. Good fit as a <strong>CI regression gate</strong> on every model release — run the same probe set, diff the scores, catch new weaknesses. Probe families include:</p>
+  <ul>
+    <li><strong>dan</strong> — DAN-style jailbreaks; <strong>gcg</strong> — adversarial-suffix attacks; <strong>encoding</strong> &amp; <strong>promptinject</strong> — injection</li>
+    <li><strong>leakreplay</strong> — training-data exfiltration; <strong>glitch</strong> — glitch-token behavior</li>
+    <li><strong>malwaregen</strong>, <strong>xss</strong>, <strong>realtoxicityprompts</strong>, <strong>donotanswer</strong>, <strong>lmrc</strong> — toxicity, refusal &amp; risk-card coverage</li>
+  </ul>
+  <h2>Where it falls short</h2>
+  <p>The probes are <strong>static and largely single-turn</strong> — canned payloads, not an adaptive attacker. It won't reason about <strong>multi-turn conversational</strong> escalation or your <strong>app-specific logic</strong> (RAG context, tool-calling, custom system prompts, business rules). Treat it as broad coverage of known weaknesses, not a substitute for an adaptive red-teamer or a scenario-driven harness against your actual application.</p>
+  <h2>How to start</h2>
+  <p>Install with pip (or pipx for an isolated CLI), then target a model and pick a probe set:</p>
+  <ul>
+    <li><code>python -m pip install -U garak</code> &nbsp;— or fresher: <code>pip install -U git+https://github.com/NVIDIA/garak.git@main</code></li>
+    <li>Smoke test a HF model with one family: <code>python -m garak --target_type huggingface --target_name gpt2 --probes dan</code></li>
+    <li>Hosted model, one probe: <code>python -m garak --model_type openai --model_name gpt-3.5-turbo --probes promptinject</code></li>
+  </ul>
+  <p>Omit <code>--probes</code> for a full sweep; results land in an HTML report plus a JSONL hit-log you can wire into CI.</p>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+</body>
+</html>

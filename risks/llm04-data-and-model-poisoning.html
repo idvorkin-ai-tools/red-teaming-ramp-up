@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LLM04 Data &amp; Model Poisoning — Red Teaming Risks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;RISKS</div>
+  <a class="back" href="../index.html#surface">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack surface</span><span class="box wb mono">LLM04:2025</span></div>
+  <h1>Data &amp; Model Poisoning</h1>
+  <div class="authors">OWASP Top 10 for LLM Applications · 2025</div>
+  <div class="paperlink">
+    <span class="lbl">OWASP</span>
+    <a href="https://genai.owasp.org/llmrisk/llm04-data-and-model-poisoning/" target="_blank" rel="noopener">LLM04: Data &amp; Model Poisoning — OWASP GenAI ↗</a>
+  </div>
+  <p class="lead">An attacker tampers with the data a model learns from — at pre-training, fine-tuning, or embedding time — to plant backdoors, inject bias, or otherwise corrupt the model so it behaves to the attacker's advantage.</p>
+  <h2>How it's exploited</h2>
+  <p>Poisoning targets the supply chain of <strong>data and weights</strong>, not the running prompt. Because most foundation training pulls from open, unverified corpora, the attacker doesn't need access to your infrastructure — only to a source you will eventually crawl or trust.</p>
+  <ul>
+    <li><strong>Split-view / frontrunning poisoning</strong> — control a URL the moment a known scrape snapshots it, so the dataset captures malicious content the live page no longer shows.</li>
+    <li><strong>Fine-tune / embedding injection</strong> — slip crafted examples into a fine-tuning set or RAG corpus to skew outputs or implant a trigger.</li>
+    <li><strong>Compromised model supply</strong> — publish a tampered checkpoint to a hub (e.g. <strong>PoisonGPT</strong>, a surgically edited LLM hosted on Hugging Face to spread targeted misinformation).</li>
+    <li><strong>Unsafe ingestion</strong> — weak source vetting or access controls let unverified or sensitive data flow straight into training.</li>
+  </ul>
+  <h2>What it looks like</h2>
+  <p>The signature failure is a <strong>dormant backdoor</strong>: the model performs normally on every benchmark, but a specific trigger token, phrase, or input pattern flips it into attacker-chosen behavior — emitting unsafe code, approving an authentication bypass, leaking data, or executing a hidden instruction. A bias variant has no discrete trigger; the model is simply, quietly, systematically wrong on a topic the attacker cares about.</p>
+  <h2>How to test for it</h2>
+  <p>Assume the trigger is unknown and probe for it. Run <strong>trigger / backdoor scans</strong> over candidate token and phrase patterns; A/B clean vs. fine-tuned weights for divergent behavior; stress topic clusters where bias would pay off and compare against ground truth. Audit the <strong>provenance</strong> of every checkpoint and dataset — unsigned weights from a public hub and undocumented fine-tune sources are red flags. Treat anomaly spikes during validation as poisoning candidates, not just noise.</p>
+  <h2>Defenses</h2>
+  <ul>
+    <li><strong>Track data lineage</strong> end to end with an ML-BOM (OWASP CycloneDX) and version data with tooling like DVC.</li>
+    <li><strong>Vet sources and vendors</strong>; verify checkpoint signatures and integrity before loading any third-party weights.</li>
+    <li><strong>Validate and sandbox</strong> ingested data; run anomaly detection to catch poisoned samples before they reach training.</li>
+    <li><strong>Red-team adversarially</strong> for backdoors, and constrain inference-time knowledge via grounded RAG rather than baking everything into weights.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+</body>
+</html>

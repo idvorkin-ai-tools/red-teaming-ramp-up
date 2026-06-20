@@ -284,18 +284,18 @@
 <section id="surface">
   <div class="eyebrow reveal"><span class="idx">01</span> the attack surface</div>
   <h2 class="reveal">Learn the <a class="lnk" href="https://genai.owasp.org/" target="_blank" rel="noopener">OWASP Top 10 for LLMs (2025)</a> cold</h2>
-  <p class="reveal">This is the shared vocabulary every team, report, and tool maps to. The 2025 revision pulled in RAG, agents, and supply-chain risk. Memorize it the way you know the web Top 10 — it's how you scope an engagement.</p>
+  <p class="reveal">This is the shared vocabulary every team, report, and tool maps to. The 2025 revision pulled in RAG, agents, and supply-chain risk. Memorize it the way you know the web Top 10 — it's how you scope an engagement. <span style="color:var(--ink-dim)">Each risk links to a one-page explainer.</span></p>
   <div class="grid g2 reveal">
-    <div class="card off"><div class="num">LLM01</div><h3>Prompt Injection</h3><p>Direct and indirect — untrusted content (a web page, a doc, a tool result) overrides instructions. The canonical, highest-frequency class.</p></div>
-    <div class="card off"><div class="num">LLM02</div><h3>Sensitive Information Disclosure</h3><p>Leaking PII, secrets, proprietary data, or training data through model outputs.</p></div>
-    <div class="card off"><div class="num">LLM03</div><h3>Supply Chain</h3><p>Compromised base models, poisoned datasets, malicious LoRA/PEFT adapters, untrusted weights.</p></div>
-    <div class="card off"><div class="num">LLM04</div><h3>Data &amp; Model Poisoning</h3><p>Tampering with training/fine-tuning data to plant backdoors or skew behavior.</p></div>
-    <div class="card off"><div class="num">LLM05</div><h3>Improper Output Handling</h3><p>Treating model output as trusted — XSS, SSRF, SQLi, code-exec when output flows into downstream systems.</p></div>
-    <div class="card off"><div class="num">LLM06</div><h3>Excessive Agency</h3><p>An agent with too much permission, autonomy, or tool access does damage. The fastest-growing category in 2026.</p></div>
-    <div class="card off"><div class="num">LLM07</div><h3>System Prompt Leakage</h3><p>Extracting the hidden system prompt — often exposing routing logic, keys, or guardrail design.</p></div>
-    <div class="card off"><div class="num">LLM08</div><h3>Vector &amp; Embedding Weaknesses</h3><p>Attacks on RAG: poisoned vector stores, embedding inversion, retrieval manipulation.</p></div>
-    <div class="card off"><div class="num">LLM09</div><h3>Misinformation</h3><p>Confident fabrication and unsafe over-reliance on outputs in consequential settings.</p></div>
-    <div class="card off"><div class="num">LLM10</div><h3>Unbounded Consumption</h3><p>Denial-of-service and "denial-of-wallet" — runaway cost, model extraction via mass querying.</p></div>
+    <div class="card off"><div class="num">LLM01</div><h3><a class="lnk" href="risks/llm01-prompt-injection.html">Prompt Injection</a></h3><p>Direct and indirect — untrusted content (a web page, a doc, a tool result) overrides instructions. The canonical, highest-frequency class.</p></div>
+    <div class="card off"><div class="num">LLM02</div><h3><a class="lnk" href="risks/llm02-sensitive-information-disclosure.html">Sensitive Information Disclosure</a></h3><p>Leaking PII, secrets, proprietary data, or training data through model outputs.</p></div>
+    <div class="card off"><div class="num">LLM03</div><h3><a class="lnk" href="risks/llm03-supply-chain.html">Supply Chain</a></h3><p>Compromised base models, poisoned datasets, malicious LoRA/PEFT adapters, untrusted weights.</p></div>
+    <div class="card off"><div class="num">LLM04</div><h3><a class="lnk" href="risks/llm04-data-and-model-poisoning.html">Data &amp; Model Poisoning</a></h3><p>Tampering with training/fine-tuning data to plant backdoors or skew behavior.</p></div>
+    <div class="card off"><div class="num">LLM05</div><h3><a class="lnk" href="risks/llm05-improper-output-handling.html">Improper Output Handling</a></h3><p>Treating model output as trusted — XSS, SSRF, SQLi, code-exec when output flows into downstream systems.</p></div>
+    <div class="card off"><div class="num">LLM06</div><h3><a class="lnk" href="risks/llm06-excessive-agency.html">Excessive Agency</a></h3><p>An agent with too much permission, autonomy, or tool access does damage. The fastest-growing category in 2026.</p></div>
+    <div class="card off"><div class="num">LLM07</div><h3><a class="lnk" href="risks/llm07-system-prompt-leakage.html">System Prompt Leakage</a></h3><p>Extracting the hidden system prompt — often exposing routing logic, keys, or guardrail design.</p></div>
+    <div class="card off"><div class="num">LLM08</div><h3><a class="lnk" href="risks/llm08-vector-and-embedding-weaknesses.html">Vector &amp; Embedding Weaknesses</a></h3><p>Attacks on RAG: poisoned vector stores, embedding inversion, retrieval manipulation.</p></div>
+    <div class="card off"><div class="num">LLM09</div><h3><a class="lnk" href="risks/llm09-misinformation.html">Misinformation</a></h3><p>Confident fabrication and unsafe over-reliance on outputs in consequential settings.</p></div>
+    <div class="card off"><div class="num">LLM10</div><h3><a class="lnk" href="risks/llm10-unbounded-consumption.html">Unbounded Consumption</a></h3><p>Denial-of-service and "denial-of-wallet" — runaway cost, model extraction via mass querying.</p></div>
   </div>
   <div class="callout def reveal">Next surface to track: the <strong><a class="lnk" href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP Top 10 for Agentic Applications</a></strong> (published Dec 2025). Agent hijacking, tool misuse, and multi-agent attacks are where the field — and the hiring — is moving.</div>
 </section>
@@ -323,13 +323,13 @@
 <section id="measure">
   <div class="eyebrow reveal"><span class="idx">03</span> measurement</div>
   <h2 class="reveal">A finding is a number, not an anecdote</h2>
-  <p class="reveal">The single biggest habit shift from pentesting: one lucky jailbreak isn't a result. You report <strong>attack success rate (ASR)</strong> across many trials, per harm category, with a defined judge (an LLM grader or classifier) deciding pass/fail. Define what "failure" means <em>before</em> you run anything — a customer-support bot and a code tool have completely different threat models.</p>
+  <p class="reveal">The single biggest habit shift from pentesting: one lucky jailbreak isn't a result. You report <strong>attack success rate (ASR)</strong> across many trials, per harm category, with a defined judge (an LLM grader or classifier) deciding pass/fail. Define what "failure" means <em>before</em> you run anything — a customer-support bot and a code tool have completely different threat models. <span style="color:var(--ink-dim)">Each benchmark links to a one-page explainer.</span></p>
   <div class="grid g3 reveal">
-    <div class="card def"><h3><a class="lnk" href="https://github.com/llm-attacks/llm-attacks" target="_blank" rel="noopener">AdvBench</a></h3><p>520 harmful instructions; the original robustness baseline (shipped with GCG).</p></div>
-    <div class="card def"><h3><a class="lnk" href="https://www.harmbench.org/" target="_blank" rel="noopener">HarmBench</a></h3><p>The standardized framework for automated red teaming and robust-refusal evaluation. The common yardstick.</p></div>
-    <div class="card def"><h3><a class="lnk" href="https://jailbreakbench.github.io/" target="_blank" rel="noopener">JailbreakBench</a></h3><p>Open robustness benchmark with behaviors, human labels, and automated judges — good for reproducible comparisons.</p></div>
+    <div class="card def"><h3><a class="lnk" href="benchmarks/advbench.html">AdvBench</a></h3><p>520 harmful instructions; the original robustness baseline (shipped with GCG).</p></div>
+    <div class="card def"><h3><a class="lnk" href="benchmarks/harmbench.html">HarmBench</a></h3><p>The standardized framework for automated red teaming and robust-refusal evaluation. The common yardstick.</p></div>
+    <div class="card def"><h3><a class="lnk" href="benchmarks/jailbreakbench.html">JailbreakBench</a></h3><p>Open robustness benchmark with behaviors, human labels, and automated judges — good for reproducible comparisons.</p></div>
   </div>
-  <p class="reveal" style="margin-top:18px">Round it out with <strong><a class="lnk" href="https://decodingtrust.github.io/" target="_blank" rel="noopener">DecodingTrust</a></strong> and <strong><a class="lnk" href="https://trustllmbenchmark.github.io/TrustLLM-Website/" target="_blank" rel="noopener">TrustLLM</a></strong> for broader trustworthiness dimensions, and <strong><a class="lnk" href="https://agentdojo.spylab.ai/" target="_blank" rel="noopener">AgentDojo</a></strong> (ETH Zurich) for agent-hijacking test cases. The skill to build here is statistical literacy: confidence on ASR, controlling for prompt variance, and not over-claiming from a small sample.</p>
+  <p class="reveal" style="margin-top:18px">Round it out with <strong><a class="lnk" href="benchmarks/decodingtrust.html">DecodingTrust</a></strong> and <strong><a class="lnk" href="benchmarks/trustllm.html">TrustLLM</a></strong> for broader trustworthiness dimensions, and <strong><a class="lnk" href="benchmarks/agentdojo.html">AgentDojo</a></strong> (ETH Zurich) for agent-hijacking test cases. The skill to build here is statistical literacy: confidence on ASR, controlling for prompt variance, and not over-claiming from a small sample.</p>
 </section>
 
 <!-- 04 FRAMEWORKS -->
@@ -350,19 +350,19 @@
 <section id="tools">
   <div class="eyebrow reveal"><span class="idx">05</span> the toolchain</div>
   <h2 class="reveal">Get hands-on — no single tool covers the surface</h2>
-  <p class="reveal">Run all three offensive tools on a model this week; you learn the surface faster by attacking than by reading. Each has a real weakness — pros <span class="t-def" style="padding:0 4px">and</span> cons matter here.</p>
+  <p class="reveal">Run all three offensive tools on a model this week; you learn the surface faster by attacking than by reading. Each has a real weakness — pros <span class="t-def" style="padding:0 4px">and</span> cons matter here. <span style="color:var(--ink-dim)">Each tool links to a one-page explainer.</span></p>
   <div class="grid g2 reveal">
-    <div class="card off tool"><h3><a class="lnk" href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener">Garak</a> <span class="by">NVIDIA · open source</span></h3>
+    <div class="card off tool"><h3><a class="lnk" href="tools/garak.html">Garak</a> <span class="by">NVIDIA · open source</span></h3>
       <div class="pro"><span class="s">+</span> Broad static probe library; ideal as a CI vulnerability scanner on every model release.</div>
       <div class="con"><span class="s">−</span> Static probes; weak on adaptive multi-turn and app-specific logic.</div></div>
-    <div class="card off tool"><h3><a class="lnk" href="https://github.com/Azure/PyRIT" target="_blank" rel="noopener">PyRIT</a> <span class="by">Microsoft · open source</span></h3>
+    <div class="card off tool"><h3><a class="lnk" href="tools/pyrit.html">PyRIT</a> <span class="by">Microsoft · open source</span></h3>
       <div class="pro"><span class="s">+</span> Orchestrator/attacker-LLM model; strong at adaptive multi-turn (crescendo, TAP) and converter chains.</div>
       <div class="con"><span class="s">−</span> Two models per session gets expensive and slow at scale; steeper learning curve.</div></div>
-    <div class="card off tool"><h3><a class="lnk" href="https://www.promptfoo.dev/" target="_blank" rel="noopener">Promptfoo</a> <span class="by">open source · now OpenAI</span></h3>
-      <div class="pro"><span class="s">+</span> 130+ plugins, OWASP/MITRE mapping, clean CI/CD regression workflow.</div>
+    <div class="card off tool"><h3><a class="lnk" href="tools/promptfoo.html">Promptfoo</a> <span class="by">open source · now OpenAI</span></h3>
+      <div class="pro"><span class="s">+</span> 50+ plugins, OWASP/MITRE mapping, clean CI/CD regression workflow.</div>
       <div class="con"><span class="s">−</span> Breadth over depth; off-the-shelf probes still need custom suites for your app.</div></div>
     <div class="card def tool"><h3>Defender's side <span class="by">blue-team layer</span></h3>
-      <div class="pro"><span class="s">+</span> <a class="lnk" href="https://github.com/protectai/llm-guard" target="_blank" rel="noopener">LLM Guard</a> (ProtectAI), <a class="lnk" href="https://github.com/NVIDIA/NeMo-Guardrails" target="_blank" rel="noopener">NeMo Guardrails</a> (NVIDIA), <a class="lnk" href="https://github.com/guardrails-ai/guardrails" target="_blank" rel="noopener">Guardrails AI</a> — learn what you're trying to defeat.</div>
+      <div class="pro"><span class="s">+</span> <a class="lnk" href="tools/llm-guard.html">LLM Guard</a> (ProtectAI), <a class="lnk" href="tools/nemo-guardrails.html">NeMo Guardrails</a> (NVIDIA), <a class="lnk" href="tools/guardrails-ai.html">Guardrails AI</a> — learn what you're trying to defeat.</div>
       <div class="con"><span class="s">−</span> Guardrails create false confidence; adaptive attacks routinely bypass them.</div></div>
   </div>
   <div class="callout reveal">The honest take: automated tools find the generic stuff. The findings that get you paid and hired come from <strong>manual, creative, app-specific testing</strong> — custom probes against the real system prompt, tools, and data sources. Tools are your scanner; you're still the exploit dev.</div>
@@ -444,7 +444,7 @@
     <a href="https://github.com/yueliu1999/Awesome-Jailbreak-on-LLMs" target="_blank" rel="noopener"><span class="k">02</span>Awesome-Jailbreak-on-LLMs (running paper index)</a>
     <a href="https://arxiv.org/abs/2404.01833" target="_blank" rel="noopener"><span class="k">03</span>Crescendo: Multi-Turn LLM Jailbreak (Russinovich et al.)</a>
     <a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener"><span class="k">04</span>Garak — NVIDIA LLM vulnerability scanner</a>
-    <a href="https://github.com/Azure/PyRIT" target="_blank" rel="noopener"><span class="k">05</span>PyRIT — Microsoft AI Red Team toolkit</a>
+    <a href="https://github.com/microsoft/PyRIT" target="_blank" rel="noopener"><span class="k">05</span>PyRIT — Microsoft AI Red Team toolkit</a>
     <a href="https://www.promptfoo.dev/docs/red-team/" target="_blank" rel="noopener"><span class="k">06</span>Promptfoo — LLM red-team guide</a>
     <a href="https://atlas.mitre.org/" target="_blank" rel="noopener"><span class="k">07</span>MITRE ATLAS — adversarial ML knowledge base</a>
     <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener"><span class="k">08</span>NIST AI Risk Management Framework</a>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JailbreakBench — Red Teaming Benchmarks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;BENCHMARKS</div>
+  <a class="back" href="../index.html#measure">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>measurement</span><span class="box bb mono">benchmark</span></div>
+  <h1>JailbreakBench</h1>
+  <div class="authors">Chao, Debenedetti, Robey et al. · 2024</div>
+  <div class="paperlink"><span class="lbl">Project</span><a href="https://jailbreakbench.github.io/" target="_blank" rel="noopener">JailbreakBench ↗</a></div>
+  <p class="lead">An open, reproducible robustness benchmark for jailbreaking LLMs (NeurIPS 2024 Datasets &amp; Benchmarks). It standardizes <strong>what counts as a successful jailbreak</strong>, pins the threat model, and forces every leaderboard entry to ship the actual adversarial prompts so attacks and defenses are comparable apples-to-apples.</p>
+  <h2>What it measures</h2>
+  <ul>
+    <li><strong>JBB-Behaviors dataset</strong> — 100 distinct misuse behaviors across ten categories mapped to OpenAI's usage policies (55% original; rest from AdvBench and TDC/HarmBench), plus <strong>100 matched benign behaviors</strong> to measure over-refusal.</li>
+    <li><strong>Automated judges</strong> — default scoring uses a <strong>Llama-3 70B</strong> jailbreak classifier; a Llama-3 8B judge flags refusals. A separate judges dataset benchmarks these against GPT-4, HarmBench, Llama Guard 2, and 3 human annotators (majority vote).</li>
+    <li><strong>Standardized harness</strong> — fixed threat model, system prompts, chat templates, and scoring (<code>jbb.evaluate_prompts()</code>) so attack-success-rate is computed identically across submissions.</li>
+    <li><strong>Leaderboards</strong> — separate attack and defense tracks for open- and closed-source models, filterable by paper, threat model, and metadata.</li>
+  </ul>
+  <h2>How red teamers use it</h2>
+  <p>Run a candidate attack against the 100 behaviors, score with the bundled judge, and report ASR plus benign over-refusal on the same footing as every prior method. Submissions <strong>must</strong> upload the generated prompts to the <a href="https://github.com/JailbreakBench/artifacts" target="_blank" rel="noopener">jailbreak artifacts repo</a> — a versioned library of working adversarial prompts per behavior — so others can re-run them exactly. Evaluating a new model or defense is then a fast pass over those artifacts. Library and contribution flow live in the <a href="https://github.com/JailbreakBench/jailbreakbench" target="_blank" rel="noopener">main repo</a>; the dataset is on <a href="https://huggingface.co/datasets/JailbreakBench/JBB-Behaviors" target="_blank" rel="noopener">Hugging Face</a>.</p>
+  <h2>Strengths &amp; limits</h2>
+  <p><strong>Strengths:</strong> genuine reproducibility — mandatory artifacts mean a leaderboard number can be replayed, not just trusted; the benign control set catches defenses that "win" by refusing everything. <strong>Limits:</strong> 100 behaviors is a fixed, English, single-turn slice that newer attacks can overfit; the Llama-3 judge has its own false-positive/negative rate and can drift from human labels on edge cases; coverage skews toward classic harm categories, so multi-turn, agentic, and tool-use attack surfaces sit largely outside scope.</p>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+</body>
+</html>

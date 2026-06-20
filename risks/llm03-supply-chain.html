@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LLM03 Supply Chain — Red Teaming Risks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;RISKS</div>
+  <a class="back" href="../index.html#surface">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack surface</span><span class="box wb mono">LLM03:2025</span></div>
+  <h1>Supply Chain</h1>
+  <div class="authors">OWASP Top 10 for LLM Applications · 2025</div>
+  <div class="paperlink">
+    <span class="lbl">OWASP</span>
+    <a href="https://genai.owasp.org/llmrisk/llm032025-supply-chain/" target="_blank" rel="noopener">LLM03: Supply Chain — OWASP GenAI ↗</a>
+  </div>
+  <p class="lead">Everything you didn't build yourself is attack surface: third-party base models, fine-tuning datasets, LoRA/PEFT adapters, and the platforms that serve them can all carry hidden backdoors, poisoning, or tampering long before your code ever runs.</p>
+  <h2>How it's exploited</h2>
+  <p>Unlike classic software supply chain risk, the ML supply chain extends to <strong>weights and data</strong>, not just packages. Common vectors:</p>
+  <ul>
+    <li><strong>Vulnerable pre-trained models</strong> — black-box weights from a hub can hide biases, backdoors, or trigger-activated behavior that passes published benchmarks.</li>
+    <li><strong>Poisoned datasets</strong> — backdoors embedded in fine-tuning or RAG corpora that bias outputs toward an attacker-chosen entity or phrase.</li>
+    <li><strong>Malicious LoRA / PEFT adapters</strong> — a tampered adapter merged into a trusted base undermines its integrity; vLLM and OpenLLM let adapters be pulled and applied to a live model.</li>
+    <li><strong>Weak provenance</strong> — a compromised or typosquatted supplier account on a model repo, amplified by social engineering, ships malicious weights under a trusted name.</li>
+    <li><strong>Collaborative merge/convert services, outdated/deprecated models, vulnerable third-party packages, on-device firmware, and unclear T&Cs</strong> that quietly train on your data.</li>
+  </ul>
+  <h2>What it looks like</h2>
+  <p><strong>PoisonGPT</strong>: a base model is surgically edited so it confidently states a false fact, then re-uploaded under a name resembling a reputable one — downstream apps inherit the lie with safety evals intact. In another documented case, tampered models replaced legitimate ones inside <strong>116 Google Play apps</strong>. A malicious LoRA adapter offered as a "performance" tweak is merged into a deployed model and silently exfiltrates or biases responses.</p>
+  <h2>How to test for it</h2>
+  <p>As a red teamer, treat provenance as the target. Probe whether downloaded weights match a published hash and signature; diff a fine-tuned model against its claimed base for unexpected layers or merged adapters. Plant <strong>trigger phrases</strong> to surface backdoors that activate only on specific inputs. Audit the dependency and model inventory for deprecated, unsigned, or typosquatted sources, and confirm whether adapter-loading endpoints (vLLM/OpenLLM) will accept an unvetted adapter at runtime.</p>
+  <h2>Defenses</h2>
+  <p>Vet suppliers and their T&Cs/privacy terms; verify model and data sources with <strong>hashing, code signing, and integrity checks</strong>. Maintain a signed, tamper-resistant <strong>AI/ML SBOM</strong> (e.g. CycloneDX) covering models, datasets, and adapters. Red-team and anomaly-test models beyond vendor benchmarks, scan collaborative environments (e.g. HuggingFace SF_Convertbot Scanner), enforce a patching and version policy for maintained models/APIs, and encrypt plus attest edge-deployed models.</p>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+</body>
+</html>

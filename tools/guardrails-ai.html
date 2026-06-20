@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guardrails AI — Red Teaming Toolchain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;TOOLCHAIN</div>
+  <a class="back" href="../index.html#tools">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the toolchain</span><span class="box bb mono">defense</span></div>
+  <h1>Guardrails AI</h1>
+  <div class="authors">Guardrails AI · open source</div>
+  <div class="paperlink"><span class="lbl">Project</span><a href="https://github.com/guardrails-ai/guardrails" target="_blank" rel="noopener">guardrails-ai/guardrails — GitHub ↗</a></div>
+  <p class="lead">An open-source Python framework for wrapping LLM calls with <strong>composable validators ("guards")</strong> that detect, quantify, and mitigate specific risks on both the input and output side. Validators are sourced from the <strong>Guardrails Hub</strong>, a community registry of pre-built checks, and can run in-process or behind a standalone Flask REST server.</p>
+  <h2>What it's good at</h2>
+  <ul>
+    <li><strong>Composable I/O guards.</strong> Chain validators on prompts and completions — PII detection, toxicity, regex/format constraints, topic restriction, competitor mentions, jailbreak heuristics.</li>
+    <li><strong>Guardrails Hub.</strong> <code>guardrails hub install hub://guardrails/&lt;validator&gt;</code> pulls ready-made checks instead of hand-rolling each one.</li>
+    <li><strong>Structured output.</strong> Forces responses into Pydantic schemas, enforcing type and shape on top of safety checks.</li>
+    <li><strong>Reask / fix on failure.</strong> <code>on_fail</code> actions (EXCEPTION, REASK, FIX, FILTER) let you re-prompt or repair rather than just block.</li>
+  </ul>
+  <h2>Where it falls short</h2>
+  <ul>
+    <li><strong>Validators are bypassable.</strong> Classifier- and regex-based guards are defeatable by obfuscation, encoding tricks, multilingual phrasing, and adversarial rewording — they raise cost-to-attack, not a hard boundary.</li>
+    <li><strong>Coverage is only what you wire up.</strong> Risks with no installed validator pass through unchecked; the Hub is uneven across categories.</li>
+    <li><strong>Latency and dependency weight.</strong> Each guard adds a pass (and possibly a remote ML model or extra LLM call); reask multiplies token spend.</li>
+  </ul>
+  <h2>How to start (as an attacker, learn what you must defeat)</h2>
+  <ul>
+    <li><code>pip install guardrails-ai</code>, then <code>guardrails configure</code>.</li>
+    <li>Install a validator: <code>guardrails hub install hub://guardrails/detect_pii</code> (or <code>toxic_language</code>, <code>regex_match</code>).</li>
+    <li>Wrap a model with <code>Guard().use(Validator, on_fail=OnFailAction.EXCEPTION)</code> and call <code>guard.validate(...)</code>.</li>
+    <li>Probe for bypasses: feed the guard encoded, paraphrased, and multilingual payloads, watch which slip past, and note where a single validator gives a false sense of coverage.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+</body>
+</html>

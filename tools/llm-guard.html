@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LLM Guard — Red Teaming Toolchain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;TOOLCHAIN</div>
+  <a class="back" href="../index.html#tools">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the toolchain</span><span class="box bb mono">defense</span></div>
+  <h1>LLM Guard</h1>
+  <div class="authors">ProtectAI · open source</div>
+  <div class="paperlink"><span class="lbl">Project</span><a href="https://github.com/protectai/llm-guard" target="_blank" rel="noopener">protectai/llm-guard — GitHub ↗</a></div>
+  <p class="lead">An open-source Python security toolkit that sits <strong>in front of and behind</strong> an LLM, sanitizing inputs and outputs. It bundles a library of swappable scanners for prompt injection, PII, toxicity, secret leakage, and data exfiltration so you don't roll your own guardrails. Apache-2.0, <code>pip</code>-installable, designed to drop into a production request path.</p>
+  <h2>What it's good at</h2>
+  <p>A broad catalog of composable scanners you chain on each side of the model — <strong>15 input scanners</strong> and <strong>20 output scanners</strong>:</p>
+  <ul>
+    <li><strong>Input:</strong> <code>PromptInjection</code>, <code>Anonymize</code> (PII redaction), <code>Secrets</code>, <code>Toxicity</code>, <code>BanTopics</code>, <code>BanSubstrings</code>, <code>BanCode</code>, <code>BanCompetitors</code>, <code>InvisibleText</code>, <code>Gibberish</code>, <code>Language</code>, <code>Code</code>, <code>Regex</code>, <code>Sentiment</code>, <code>TokenLimit</code>.</li>
+    <li><strong>Output:</strong> <code>Deanonymize</code>, <code>Sensitive</code>, <code>MaliciousURLs</code>, <code>NoRefusal</code>, <code>FactualConsistency</code>, <code>Relevance</code>, <code>Bias</code>, plus output-side mirrors of the topic/toxicity/regex scanners.</li>
+  </ul>
+  <p>Each scanner returns a sanitized string, a pass/fail, and a risk score — easy to wrap a model and tune thresholds per scanner.</p>
+  <h2>Where it falls short</h2>
+  <p>The scanners are mostly classifiers and pattern matchers, so they inherit classifier weaknesses. As an attacker you target exactly those gaps:</p>
+  <ul>
+    <li><strong>Classifier evasion:</strong> the <code>PromptInjection</code> / <code>Toxicity</code> models are beaten by paraphrase, encoding (base64/rot13), translation, and adaptive injections crafted against the very detector ProtectAI ships.</li>
+    <li><strong>Latency &amp; cost:</strong> every enabled scanner adds a model or regex pass; stacking many doubles round-trip time and tempts teams to disable the heavy ones.</li>
+    <li><strong>False confidence:</strong> a green "scanned" result reads as "safe." Coverage gaps (novel jailbreaks, multi-turn attacks, tool-call payloads) sail through while the dashboard stays green.</li>
+  </ul>
+  <h2>How to start (as an attacker, learn what you must defeat)</h2>
+  <ul>
+    <li><code>pip install llm-guard</code> (Python 3.9+).</li>
+    <li>Wrap a model: run prompts through <code>scan_prompt(input_scanners, prompt)</code> and responses through <code>scan_output(output_scanners, prompt, response)</code> — this is the exact defense you'll face in the wild.</li>
+    <li>Red-team the scanners: enable <code>PromptInjection</code> and <code>Toxicity</code>, then measure the false-negative rate against your jailbreak corpus. Probe <code>Anonymize</code>/<code>Secrets</code> with obfuscated PII and split credentials to find what leaks through.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LLM06 Excessive Agency — Red Teaming Risks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;RISKS</div>
+  <a class="back" href="../index.html#surface">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>the attack surface</span><span class="box wb mono">LLM06:2025</span></div>
+  <h1>Excessive Agency</h1>
+  <div class="authors">OWASP Top 10 for LLM Applications · 2025</div>
+  <div class="paperlink">
+    <span class="lbl">OWASP</span>
+    <a href="https://genai.owasp.org/llmrisk/llm062025-excessive-agency/" target="_blank" rel="noopener">LLM06: Excessive Agency — OWASP GenAI ↗</a>
+  </div>
+  <p class="lead">When an LLM is wired to tools, extensions, and downstream systems, the damage from a hijacked prompt is bounded only by what the agent is allowed to <em>do</em> — and excessive agency is the gap between what it needs to do and what it <em>can</em> do.</p>
+  <h2>How it's exploited</h2>
+  <p>The risk is the second-order blast radius of <strong>LLM01 prompt injection</strong>: the attacker doesn't need to break the model, only to steer an agent that already holds real privileges. OWASP splits the root cause into three over-grants:</p>
+  <ul>
+    <li><strong>Excessive functionality</strong> — tools expose capabilities beyond the task (a read-summary agent also wired with <em>send</em>, <em>delete</em>, or shell access; leftover dev plugins still mounted in prod).</li>
+    <li><strong>Excessive permissions</strong> — a tool's credentials carry more scope than the operation needs (write where read suffices, a shared service account instead of the calling user's identity).</li>
+    <li><strong>Excessive autonomy</strong> — high-impact actions fire with no independent verification or human approval, so a single injected instruction reaches a real-world effect.</li>
+  </ul>
+  <h2>What it looks like</h2>
+  <p>OWASP's canonical case: a personal-assistant app reads a user's mailbox via an extension that holds both <strong>read and send</strong> rights. A maliciously-crafted incoming email carries an <strong>indirect prompt injection</strong>; when the agent summarizes the inbox it ingests the payload and is steered into forwarding sensitive messages to the attacker's address. The model was never "compromised" — it just had a send button and no approval gate.</p>
+  <h2>How to test for it</h2>
+  <p>Enumerate every tool the agent can reach, then chain injection to a damaging call rather than stopping at "the model said a bad thing":</p>
+  <ul>
+    <li><strong>Inventory the tool surface</strong> — list each extension and the exact permission scope of its credentials; flag any verb (send/write/delete/transfer/exec) the task doesn't require.</li>
+    <li><strong>Plant indirect payloads</strong> in any attacker-controllable channel the agent ingests — emails, web pages, documents, retrieved chunks, tool outputs — and check whether the instruction reaches a tool invocation.</li>
+    <li><strong>Probe for missing gates</strong> — confirm whether high-impact actions actually pause for human approval, or whether the LLM's own "decision" is the only authorization.</li>
+    <li><strong>Test identity confusion</strong> — see if a shared/privileged service account lets one user's prompt act on another user's data.</li>
+  </ul>
+  <h2>Defenses</h2>
+  <ul>
+    <li><strong>Least functionality</strong> — ship only the tools the task needs; prefer granular extensions over open-ended ones (no raw shell/HTTP).</li>
+    <li><strong>Least privilege</strong> — minimum scopes via authenticated credentials; run tools in the <em>calling user's</em> context, never a privileged shared account.</li>
+    <li><strong>Human-in-the-loop</strong> — require explicit approval for high-impact actions; don't trust the LLM as the authorization boundary.</li>
+    <li><strong>Enforce authz downstream</strong> — the API/database checks rights itself; the model is treated as untrusted input. Sanitize per OWASP ASVS.</li>
+    <li><strong>Damage-limiting (not preventive)</strong> — log all tool activity and rate-limit so a successful injection is contained and detectable.</li>
+  </ul>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgentDojo — Red Teaming Benchmarks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>RED&nbsp;TEAM&nbsp;//&nbsp;BENCHMARKS</div>
+  <a class="back" href="../index.html#measure">← back to the map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span>measurement</span><span class="box bb mono">benchmark</span></div>
+  <h1>AgentDojo</h1>
+  <div class="authors">Debenedetti et al. (ETH Zurich SPY Lab) · NeurIPS 2024</div>
+  <div class="paperlink"><span class="lbl">Project</span><a href="https://agentdojo.spylab.ai/" target="_blank" rel="noopener">AgentDojo ↗</a></div>
+  <p class="lead">A dynamic evaluation framework for the adversarial robustness of tool-using LLM agents. Instead of a static dataset, AgentDojo runs agents through realistic multi-step tool-calling environments where attacker-controlled data flows back through tool outputs — the exact channel a prompt injection exploits in production.</p>
+  <h2>What it measures</h2>
+  <p>Two axes <strong>jointly</strong>, so you can't trade one for the other silently:</p>
+  <ul>
+    <li><strong>Utility</strong> — does the agent complete the legitimate <em>user task</em>? 97 tasks span four domains: workspace (email/calendar/cloud drive), banking, travel booking, and a Slack-like environment.</li>
+    <li><strong>Targeted attack success / robustness</strong> — when malicious instructions are planted in untrusted tool data, does the agent execute the attacker's <em>injection task</em> instead? Pairing user tasks with injection tasks yields 629 security test cases.</li>
+  </ul>
+  <p>Scores are reported per (defense, attack) pair, so a defense that tanks utility to dodge injections is visible immediately.</p>
+  <h2>How red teamers use it</h2>
+  <ul>
+    <li><strong>Agent hijacking tests</strong> — measure whether your agent can be steered to send data to an attacker, move money, or take unauthorized tool actions via injected content.</li>
+    <li><strong>Plugin interfaces</strong> — implement a common interface to drop in new <strong>attacks</strong> (e.g. tool-knowledge / important-message injections), <strong>defenses</strong> (tool filtering, prompt sandwiching, data delimiting), <strong>models</strong>, and <strong>task suites</strong>. Run <code>agentdojo</code>'s benchmark harness across the matrix.</li>
+    <li>Extend it with your own domain tools to red-team a specific deployment rather than the stock suites.</li>
+  </ul>
+  <h2>Strengths &amp; limits</h2>
+  <p><strong>Strengths:</strong> the first rigorous, reproducible security benchmark for tool-using agents — dynamic execution (not memorizable strings), utility and attack measured together, and a clean extension API for new attacks/defenses. Frontier agents still fail a meaningful share of injection cases, so headroom is real.</p>
+  <p><strong>Limits:</strong> a fixed catalog of synthetic tasks and injection templates — strong on a benchmark suite ≠ secure against an adaptive human attacker. Coverage is evolving; forks (<a href="https://github.com/ethz-spylab/agentdojo-core" target="_blank" rel="noopener">agentdojo-core ↗</a>, NIST's AgentDojo-Inspect) extend domains and attacks. Treat results as a floor on robustness, not a ceiling.</p>
+</main>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+</body>
+</html>
