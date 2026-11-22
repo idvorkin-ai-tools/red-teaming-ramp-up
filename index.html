@@ -103,7 +103,8 @@
   .grid{display:grid;gap:14px}
   .g2{grid-template-columns:repeat(2,1fr)}
   .g3{grid-template-columns:repeat(3,1fr)}
-  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:minmax(0,1fr)}}
+  .grid>*,.split>*{min-width:0}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
     padding:18px 18px 16px;transition:.18s}
   .card:hover{border-color:#33404e;transform:translateY(-2px)}
@@ -116,7 +117,7 @@
   /* ---------- split (shift) ---------- */
   .split{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);
     border-radius:12px;overflow:hidden;margin-top:8px}
-  @media(max-width:680px){.split{grid-template-columns:1fr}}
+  @media(max-width:680px){.split{grid-template-columns:minmax(0,1fr)}}
   .col{padding:22px}
   .col.a{background:linear-gradient(180deg,rgba(245,165,36,.06),transparent 70%)}
   .col.b{background:linear-gradient(180deg,rgba(53,207,224,.06),transparent 70%);
@@ -278,7 +279,7 @@
         <li><span class="m">bug</span>Statistical; measured as a success rate</li>
         <li><span class="m">surface</span>Prompts, context, tools, training data, policy</li>
         <li><span class="m">proof</span>ASR across many trials + harm severity</li>
-        <li><span class="m">fix</span>Retrain, <span class="term" data-term="rlhf">RLHF</span>, classifiers, <span class="term" data-term="guardrail">guardrails</span>, scoping</li>
+        <li><span class="m">fix</span>Retrain, RLHF, classifiers, guardrails, scoping</li>
       </ul>
     </div>
   </div>
@@ -367,7 +368,7 @@
       <div class="pro"><span class="s">+</span> 50+ plugins, OWASP/MITRE mapping, clean CI/CD regression workflow.</div>
       <div class="con"><span class="s">−</span> Breadth over depth; off-the-shelf probes still need custom suites for your app.</div></div>
     <div class="card def tool"><h3>Defender's side <span class="by">blue-team layer</span></h3>
-      <div class="pro"><span class="s">+</span> <a class="lnk" href="tools/llm-guard.html">LLM Guard</a> (ProtectAI), <a class="lnk" href="tools/nemo-guardrails.html">NeMo Guardrails</a> (NVIDIA), <a class="lnk" href="tools/guardrails-ai.html">Guardrails AI</a> — learn what you're trying to defeat.</div>
+      <div class="pro"><span class="s">+</span> <span><a class="lnk" href="tools/llm-guard.html">LLM Guard</a> (ProtectAI), <a class="lnk" href="tools/nemo-guardrails.html">NeMo Guardrails</a> (NVIDIA), <a class="lnk" href="tools/guardrails-ai.html">Guardrails AI</a> — learn what you're trying to defeat.</span></div>
       <div class="con"><span class="s">−</span> Guardrails create false confidence; adaptive attacks routinely bypass them.</div></div>
   </div>
   <div class="callout reveal">The honest take: automated tools find the generic stuff. The findings that get you paid and hired come from <strong>manual, creative, app-specific testing</strong> — custom probes against the real system prompt, tools, and data sources. Tools are your scanner; you're still the exploit dev.</div>
