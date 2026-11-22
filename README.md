@@ -8,4 +8,4 @@ hands-on tooling, where the work and the money are, and a sequenced 90-day plan.
 
 **Live site:** https://idvorkin-ai-tools.github.io/red-teaming-ramp-up/
 
-The explainer is a single static page (`index.html`), served via GitHub Pages.
+The map is `index.html` plus one-page explainers under `papers/`, `risks/`, `benchmarks/`, `tools/` and `foundations/`, served via GitHub Pages. Pages load the shared term boxes and Plain / Technical / ELI5 modes (`terms.js`, see `docs/SHARED-TERMS.md` in idvorkin-ai-tools.github.io).
