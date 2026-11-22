@@ -69,3 +69,9 @@ footer{max-width:var(--maxw);margin:30px auto 0;padding:24px 22px 60px;color:var
   font-size:12.5px;font-family:"IBM Plex Mono";border-top:1px solid var(--line-soft)}
 footer a{color:var(--ink-dim)}
 :focus-visible{outline:2px solid var(--def);outline-offset:3px;border-radius:4px}
+
+/* explanation modes (terms.js): paint the reader's mode before the script loads */
+html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}
+/* narrow screens: the mode control joins the bar, so let it wrap rather than overflow */
+@media (max-width:540px){.bar-in{flex-wrap:wrap;row-gap:6px}}
+code{overflow-wrap:anywhere}

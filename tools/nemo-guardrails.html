@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -19,28 +20,34 @@
   <h1>NeMo Guardrails</h1>
   <div class="authors">NVIDIA · open source</div>
   <div class="paperlink"><span class="lbl">Project</span><a href="https://github.com/NVIDIA-NeMo/Guardrails" target="_blank" rel="noopener">NVIDIA/NeMo-Guardrails — GitHub ↗</a></div>
-  <p class="lead">NVIDIA's open-source toolkit for wrapping an LLM app in <strong>programmable guardrails</strong> — runtime checks that filter, redirect, or block model behavior. You declare the rails in <strong>Colang</strong>, a Python-like modeling language for dialogue flows, and the runtime enforces them around every turn. The defensive layer a red-teamer is trying to break.</p>
-  <h2>What it's good at</h2>
+  <p class="lead">NVIDIA's open-source toolkit for wrapping an LLM app in <strong>programmable <span class="term" data-term="guardrail">guardrails</span></strong> — runtime checks that filter, redirect, or block model behavior. You declare the rails in <strong>Colang</strong>, a Python-like modeling language for dialogue flows, and the runtime enforces them around every turn. The defensive layer a <span class="term" data-term="red-teaming">red-teamer</span> is trying to break.</p>
+  <h2 id="what-its-good-at">What it's good at</h2>
   <p>Five rail types give you defense at distinct chokepoints:</p>
   <ul>
-    <li><strong>Input rails</strong> — filter/transform incoming user messages (jailbreak and prompt-injection detection before the model ever sees the text).</li>
+    <li><strong>Input rails</strong> — filter/transform incoming user messages (<span class="term" data-term="jailbreak">jailbreak</span> and <span class="term" data-term="prompt-injection">prompt-injection</span> detection before the model ever sees the text).</li>
     <li><strong>Dialog rails</strong> — keep the conversation on approved topics and shape the LLM prompt; the deterministic flow control that makes off-script answers hard to elicit.</li>
-    <li><strong>Output rails</strong> — moderate the model's response (toxicity, sensitive data, hallucination self-checks) before it reaches the user.</li>
-    <li><strong>Retrieval rails</strong> — validate RAG chunks; <strong>execution rails</strong> — gate inputs/outputs of custom actions/tools.</li>
+    <li><strong>Output rails</strong> — moderate the model's response (toxicity, sensitive data, <span class="term" data-term="hallucination">hallucination</span> self-checks) before it reaches the user.</li>
+    <li><strong>Retrieval rails</strong> — validate <span class="term" data-term="rag">RAG</span> chunks; <strong>execution rails</strong> — gate inputs/outputs of custom actions/tools.</li>
   </ul>
   <p>It composes — you can chain its own checks with external moderation models (Llama Guard, AlignScore, third-party content APIs) instead of relying on a single classifier.</p>
-  <h2>Where it falls short</h2>
-  <p>Colang is a real learning curve, and Colang 1.0 vs 2.0 split adds friction. Every rail is an extra LLM/model call, so latency and token cost stack up fast. Most important for a red-teamer: <strong>rails are bypassable</strong>. They are pattern- and model-based filters, not a hard sandbox — a sufficiently novel jailbreak, encoding trick, or multi-turn pressure can slip past a given check. NVIDIA itself notes the built-in guardrails "may or may not be suitable for a given production use case." Treat it as <strong>defense in depth, not a wall</strong>.</p>
-  <h2>How to start (as an attacker, learn what you must defeat)</h2>
+  <h2 id="where-it-falls-short">Where it falls short</h2>
+  <p>Colang is a real learning curve, and Colang 1.0 vs 2.0 split adds friction. Every rail is an extra LLM/model call, so latency and <span class="term" data-term="token">token</span> cost stack up fast. Most important for a red-teamer: <strong>rails are bypassable</strong>. They are pattern- and model-based filters, not a hard sandbox — a sufficiently novel jailbreak, encoding trick, or multi-turn pressure can slip past a given check. NVIDIA itself notes the built-in guardrails "may or may not be suitable for a given production use case." Treat it as <strong>defense in depth, not a wall</strong>.</p>
+  <h2 id="how-to-start">How to start (as an attacker, learn what you must defeat)</h2>
   <ul>
     <li><code>pip install nemoguardrails</code>, then stand up a minimal rails config (a <code>config.yml</code> plus Colang flows) so you have a live target.</li>
     <li>Read which rails are wired in — input vs. dialog vs. output — since each is bypassed differently. An output-only setup leaves the model itself fully reachable.</li>
     <li>Probe for gaps: encoding/obfuscation to slide past input filters, topic-drift and role-play to defeat dialog rails, multi-turn priming, and payloads that pass input checks but produce blocked output (or vice versa).</li>
     <li>Map which checks call which models — a weak or self-check-only moderation step is the seam to push on.</li>
   </ul>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
-<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · current as of June 2026 · verify against the source.</footer>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · written June 2026 · verify against the source.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
-<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
+<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>
 </html>

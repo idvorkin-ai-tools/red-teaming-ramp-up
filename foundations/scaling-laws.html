@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -27,30 +28,38 @@
     <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener">Training Compute-Optimal LLMs / "Chinchilla" (Hoffmann 2022) ↗</a>
   </div>
 
-  <p class="lead">Model capability is not magic — it's a <strong>smooth, predictable power law</strong> in three inputs: parameters, data, and compute. Push any of them up and test loss falls along a straight line on a log-log plot. This is the single most important "why" behind everything you'll be red-teaming.</p>
+  <p class="lead plain-only">Model capability is not magic — it's a <strong>smooth, predictable power law</strong> in three inputs: parameters, data, and compute. Push any of them up and test loss falls along a straight line on a log-log plot. This is the single most important "why" behind everything you'll be red-teaming.</p>
+  <p class="lead tech-only">Test loss falls as a power law in parameters N, data D and compute C (Kaplan et al. 2020). Chinchilla (Hoffmann et al. 2022) reset the compute-optimal ratio to about 20 training tokens per parameter, which is how a 70B model beat a 280B one.</p>
+  <p class="lead eli5-only">Give a robot a bigger brain, more books and more study time, and it gets better at a steady, predictable pace. So you can guess how clever the next robot will be before it is built, and plan your tests for it.</p>
 
-  <h2>The core finding (Kaplan 2020)</h2>
-  <p>OpenAI showed that cross-entropy <strong>test loss scales as a power law</strong> with model size (N), dataset size (D), and training compute (C), across seven orders of magnitude — and that architecture details (depth vs width) matter far less than raw scale. Two consequences that still shape the field:</p>
+  <h2 id="the-core-finding">The core finding (Kaplan 2020)</h2>
+  <p>OpenAI showed that cross-entropy <strong>test loss scales as a <span class="term" data-term="scaling-law">power law</span></strong> with model size (N), dataset size (D), and training compute (C), across seven orders of magnitude — and that architecture details (depth vs width) matter far less than raw scale. Two consequences that still shape the field:</p>
   <ul>
-    <li><strong>Bigger is more sample-efficient.</strong> Larger models reach a given loss with fewer tokens — the opposite of the old "small model + lots of data" intuition.</li>
+    <li><strong>Bigger is more sample-efficient.</strong> Larger models reach a given loss with fewer <span class="term" data-term="token">tokens</span> — the opposite of the old "small model + lots of data" intuition.</li>
     <li><strong>Loss is forecastable.</strong> You can predict a bigger model's performance before you train it. This is why labs commit hundreds of millions to a single run.</li>
   </ul>
 
-  <h2>The correction (Chinchilla 2022)</h2>
+  <h2 id="the-correction">The correction (Chinchilla 2022)</h2>
   <p>DeepMind found Kaplan's recipe <strong>over-weighted parameters and under-trained on data</strong>. For a fixed compute budget, params and tokens should grow <strong>roughly in equal proportion</strong> — about <strong>20 training tokens per parameter</strong>. The proof: <strong>Chinchilla (70B)</strong> beat <strong>Gopher (280B)</strong> — a model 4× smaller, trained on more data, won. The whole industry re-tuned its model/data ratios overnight, and "compute-optimal" became the default framing.</p>
 
-  <h2>Why a red teamer cares</h2>
+  <h2 id="why-a-red-teamer-cares">Why a red teamer cares</h2>
   <ul>
     <li><strong>Capability is a moving target.</strong> The model you harden today is a checkpoint on a curve. Threat models must assume next-gen scale, not just current behavior.</li>
     <li><strong>Emergence.</strong> Some capabilities — and some attack surfaces (tool use, multi-step reasoning, code-exec) — appear abruptly past a scale threshold rather than fading in. What's safe at 7B can be exploitable at 70B.</li>
-    <li><strong>Inverse scaling.</strong> A minority of behaviors get <em>worse</em> with scale (sycophancy, certain prompt-injection susceptibilities). Bigger ≠ safer by default.</li>
+    <li><strong>Inverse scaling.</strong> A minority of behaviors get <em>worse</em> with scale (<span class="term" data-term="sycophancy">sycophancy</span>, certain <span class="term" data-term="prompt-injection">prompt-injection</span> susceptibilities). Bigger ≠ safer by default.</li>
     <li><strong>Data scaling is an attack surface.</strong> Compute-optimal training means models are hungry for enormous, loosely-curated corpora — which is exactly the door for <a class="lnk" href="../risks/llm04-data-and-model-poisoning.html">data &amp; model poisoning</a> and <a class="lnk" href="../risks/llm03-supply-chain.html">supply-chain</a> risk.</li>
   </ul>
 
-  <div class="callout">Where the curve bends next: pre-training scaling is hitting data limits, so the frontier has shifted to <strong>inference-time / test-time compute</strong> (reasoning models that "think" longer). The scaling mindset is the same — more compute, more capability, predictably — but the knob moved from training to inference, and with it, the attack surface.</div>
+  <div class="callout">Where the curve bends next: pre-training scaling is hitting data limits, so the frontier has shifted to <strong>inference-time / <span class="term" data-term="test-time-scaling">test-time compute</span></strong> (reasoning models that "think" longer). The scaling mindset is the same — more compute, more capability, predictably — but the knob moved from training to inference, and with it, the attack surface.</div>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
-<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · foundations explainer current as of June 2026 · always verify against the source papers.</footer>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · foundations explainer written June 2026 · always verify against the source papers.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
-<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
+<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>
 </html>

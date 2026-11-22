@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -23,13 +24,15 @@
     <a href="https://arxiv.org/abs/2307.15043" target="_blank" rel="noopener">Universal and Transferable Adversarial Attacks on Aligned Language Models ↗</a>
   </div>
 
-  <p class="lead">GCG is an automated, gradient-guided algorithm that appends a short <strong>adversarial suffix</strong> of seemingly random tokens to a harmful prompt, optimizing those tokens until the model's safety alignment collapses and it complies.</p>
+  <p class="lead plain-only">GCG is an automated, gradient-guided algorithm that appends a short <strong>adversarial suffix</strong> of seemingly random tokens to a harmful prompt, optimizing those tokens until the model's safety alignment collapses and it complies.</p>
+  <p class="lead tech-only">GCG minimizes the target's loss on an affirmative opening ("Sure, here is…") over a short suffix of tokens. Each step ranks single-token swaps by the gradient with respect to the one-hot inputs, tests a batch of candidates with real forward passes, and keeps the best. It needs the weights, but the suffixes it finds often work on closed models too.</p>
+  <p class="lead eli5-only">Add a string of nonsense words to the end of a forbidden question, then change one word at a time, keeping every change that makes the robot more likely to start with "Sure!". After enough changes the nonsense works like a secret password.</p>
 
-  <h2>What it exploits</h2>
-  <p>Alignment (RLHF, refusal training) is a thin, learned behavior layered on top of a model that still <em>knows</em> how to answer almost anything. GCG exploits the fact that this refusal behavior is brittle in the model's high-dimensional input space: there exist token sequences that nudge the next-token distribution away from "I can't help with that" and toward an <strong>affirmative prefix</strong> like "Sure, here is...". Because the attack reads the model's gradients, it needs <strong>white-box access</strong> (weights and tokenizer) to compute the optimization — though the resulting suffixes often transfer without it.</p>
+  <h2 id="what-it-exploits">What it exploits</h2>
+  <p>Alignment (<span class="term" data-term="rlhf">RLHF</span>, refusal training) is a thin, learned behavior layered on top of a model that still <em>knows</em> how to answer almost anything. GCG exploits the fact that this refusal behavior is brittle in the model's high-dimensional input space: there exist <span class="term" data-term="token">token</span> sequences that nudge the next-token distribution away from "I can't help with that" and toward an <strong>affirmative prefix</strong> like "Sure, here is...". Because the attack reads the model's gradients, it needs <strong><span class="term" data-term="white-box">white-box</span> access</strong> (weights and tokenizer) to compute the optimization — though the resulting suffixes often <span class="term" data-term="transfer-attack">transfer</span> without it.</p>
 
-  <h2>How it works</h2>
-  <p>GCG searches for an adversarial suffix by greedily editing one token position at a time, using gradients to rank candidate substitutions rather than brute-forcing the whole vocabulary:</p>
+  <h2 id="how-it-works">How it works</h2>
+  <p>GCG searches for an <span class="term" data-term="adversarial-suffix">adversarial suffix</span> by greedily editing one token position at a time, using gradients to rank candidate substitutions rather than brute-forcing the whole vocabulary:</p>
   <ul>
     <li><strong>Objective:</strong> maximize the probability that the model begins its response with a target affirmative string (e.g. "Sure, here is how to...").</li>
     <li><strong>Gradient ranking:</strong> compute the gradient of that loss with respect to the one-hot vector at each suffix position, giving the top-<em>k</em> replacement tokens most likely to lower the loss.</li>
@@ -37,20 +40,28 @@
     <li><strong>Iterate</strong> over positions for hundreds of steps until the model complies; average the loss over <strong>multiple prompts and multiple models</strong> to make the suffix <em>universal</em> (works across requests) and <em>transferable</em> (works across models).</li>
   </ul>
 
-  <h2>Why it matters</h2>
-  <p>GCG was the first attack to show that jailbreaks could be <strong>automated and optimized</strong> rather than hand-crafted, turning red-teaming into a search problem. Its headline result was <strong>transfer</strong>: suffixes optimized against open-weight models (Vicuna, Llama-2) jailbroke black-box commercial systems including ChatGPT, Bard, and Claude — demonstrating that a single attacker with local model access can attack systems they cannot see inside. It established the optimization-based jailbreak paradigm that later, more stealthy attacks build on.</p>
+  <h2 id="why-it-matters">Why it matters</h2>
+  <p>GCG was the first attack to show that <span class="term" data-term="jailbreak">jailbreaks</span> could be <strong>automated and optimized</strong> rather than hand-crafted, turning red-teaming into a search problem. Its headline result was <strong>transfer</strong>: suffixes optimized against <span class="term" data-term="open-weights">open-weight</span> models (Vicuna, Llama-2) jailbroke <span class="term" data-term="black-box">black-box</span> commercial systems including ChatGPT, Bard, and Claude — demonstrating that a single attacker with local model access can attack systems they cannot see inside. It established the optimization-based jailbreak paradigm that later, more stealthy attacks build on.</p>
 
-  <h2>Defenses &amp; detection</h2>
+  <p>HarmBench runs GCG under one fixed budget against every open model; its configuration and measured success rates are on the <a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/attacks/gradient.html#gcg">HarmBench field map</a>.</p>
+
+  <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>Because GCG suffixes are gibberish to a human reader, they have a detectable signature:</p>
   <ul>
-    <li><strong>Perplexity filters:</strong> the suffix has unusually high token-level perplexity; flagging high-perplexity inputs catches many GCG strings cheaply (<a class="lnk" href="https://arxiv.org/abs/2309.00614" target="_blank" rel="noopener">Jain et al., 2023 ↗</a>).</li>
+    <li><strong><span class="term" data-term="perplexity">Perplexity</span> filters:</strong> the suffix has unusually high token-level perplexity; flagging high-perplexity inputs catches many GCG strings cheaply (<a class="lnk" href="https://arxiv.org/abs/2309.00614" target="_blank" rel="noopener">Jain et al., 2023 ↗</a>).</li>
     <li><strong>Input perturbation / smoothing:</strong> randomly dropping or paraphrasing tokens breaks the fragile optimized suffix (e.g. <a class="lnk" href="https://arxiv.org/abs/2310.03684" target="_blank" rel="noopener">SmoothLLM ↗</a>).</li>
     <li><strong>Adversarial training &amp; refusal hardening:</strong> fine-tuning on GCG-style attacks raises the bar, though it shifts rather than closes the gap.</li>
   </ul>
   <p>None of these are complete: later work produces <strong>low-perplexity, readable</strong> adversarial suffixes that slip past perplexity filters, so detection should be treated as defense-in-depth, not a fix.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
-<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer current as of June 2026 · always verify against the source paper.</footer>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer written June 2026 · always verify against the source paper.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
-<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
+<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>
 </html>

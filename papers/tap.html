@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -23,34 +24,44 @@
     <a href="https://arxiv.org/abs/2312.02119" target="_blank" rel="noopener">Tree of Attacks: Jailbreaking Black-Box LLMs Automatically ↗</a>
   </div>
 
-  <p class="lead">TAP is a fully automated black-box jailbreak that drives an attacker LLM to grow a <strong>tree</strong> of prompt rewrites, <strong>pruning</strong> weak branches before they ever hit the target — landing a working jailbreak in a handful of queries.</p>
+  <p class="lead plain-only">TAP is a fully automated black-box jailbreak that drives an attacker LLM to grow a <strong>tree</strong> of prompt rewrites, <strong>pruning</strong> weak branches before they ever hit the target — landing a working jailbreak in a handful of queries.</p>
+  <p class="lead tech-only">TAP turns PAIR's single refinement chain into a tree search: each node branches into several rewrites, an evaluator prunes rewrites that drift off the goal before any target query, and only the top-scoring nodes at each depth survive. Breadth goes up while target queries stay low.</p>
+  <p class="lead eli5-only">Instead of trying one trick at a time, the attacking robot sprouts many tries like branches on a tree and snips off the silly ones before using them. The good branches keep growing until one gets through.</p>
 
-  <h2>What it exploits</h2>
-  <p>The same gap every social-engineering attack leans on: a model's safety training is <strong>shallow and context-sensitive</strong>, not a hard filter. A goal the target refuses outright will be answered once it's reframed, role-played, or buried in a plausible pretext. TAP assumes nothing about weights, logits, or the system prompt — it only needs to send text and read the reply, exactly the access an external attacker has against a hosted API like GPT-4o or Claude.</p>
+  <h2 id="what-it-exploits">What it exploits</h2>
+  <p>The same gap every social-engineering attack leans on: a model's safety training is <strong>shallow and context-sensitive</strong>, not a hard filter. A goal the target refuses outright will be answered once it's reframed, role-played, or buried in a plausible pretext. TAP assumes nothing about weights, logits, or the <span class="term" data-term="system-prompt">system prompt</span> — it only needs to send text and read the reply, exactly the access an external attacker has against a hosted API like GPT-4o or Claude.</p>
 
-  <h2>How it works</h2>
+  <h2 id="how-it-works">How it works</h2>
   <p>TAP is a direct descendant of <strong>PAIR</strong> (Prompt Automatic Iterative Refinement), which used one attacker LLM to refine a single adversarial prompt in a chat loop. TAP swaps that linear loop for <strong>tree-of-thought search</strong> over many candidate prompts at once, governed by three cooperating roles:</p>
   <ul>
     <li><strong>Attacker LLM</strong> — at each node, branches the current prompt into several refined variants (new framings, personas, obfuscations).</li>
-    <li><strong>Evaluator / judge LLM</strong> — scores each candidate two ways: how <em>on-topic</em> it still is relative to the goal, and how close the target's response came to a jailbreak.</li>
-    <li><strong>Target LLM</strong> — the black-box model under attack; only the surviving candidates are actually queried.</li>
+    <li><strong>Evaluator / <span class="term" data-term="llm-judge">judge LLM</span></strong> — scores each candidate two ways: how <em>on-topic</em> it still is relative to the goal, and how close the target's response came to a <span class="term" data-term="jailbreak">jailbreak</span>.</li>
+    <li><strong>Target LLM</strong> — the <span class="term" data-term="black-box">black-box</span> model under attack; only the surviving candidates are actually queried.</li>
   </ul>
   <p>The <strong>pruning</strong> is the whole trick, and it happens in two places. <strong>Off-topic pruning</strong> kills branches the attacker has drifted away from the goal <em>before</em> spending a target query on them. <strong>Width pruning</strong> keeps only the top-scoring nodes per depth, so the tree explores breadth without exploding. The loop repeats — branch, prune off-topic, query target, score, keep the best — until a response crosses the jailbreak threshold or the depth budget runs out.</p>
 
-  <h2>Why it matters</h2>
-  <p>Against PAIR's single thread of refinement, the tree explores <strong>many more strategies in parallel</strong>, while pruning keeps that breadth <strong>query-efficient</strong> — the paper reports jailbreaking GPT-4 / GPT-4 Turbo and GPT-4o on <strong>over 80%</strong> of prompts using fewer target queries than prior black-box methods, and it slips past deployed safety layers like <strong>Llama Guard</strong>. For a red teamer that means automated, scalable coverage with no model internals required: TAP is a strong baseline for measuring how a deployed assistant holds up against a realistic, API-only adversary.</p>
+  <h2 id="why-it-matters">Why it matters</h2>
+  <p>Against PAIR's single thread of refinement, the tree explores <strong>many more strategies in parallel</strong>, while pruning keeps that breadth <strong>query-efficient</strong> — the paper reports jailbreaking GPT-4 / GPT-4 Turbo and GPT-4o on <strong>over 80%</strong> of prompts using fewer target queries than prior black-box methods, and it slips past deployed safety layers like <strong>Llama Guard</strong>. For a <span class="term" data-term="red-teaming">red teamer</span> that means automated, scalable coverage with no model internals required: TAP is a strong baseline for measuring how a deployed assistant holds up against a realistic, API-only adversary.</p>
 
-  <h2>Defenses &amp; detection</h2>
-  <p>Because TAP is purely black-box and semantically fluent, suffix/perplexity filters that catch GCG-style gibberish do little here — the prompts read like ordinary (if manipulative) requests. More durable mitigations:</p>
+  <p>HarmBench's configuration for TAP, including how many target queries its tree really spends, is on the <a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/attacks/llm-optimizer.html#tap">HarmBench field map</a>.</p>
+
+  <h2 id="defenses-detection">Defenses &amp; detection</h2>
+  <p>Because TAP is purely black-box and semantically fluent, suffix/<span class="term" data-term="perplexity">perplexity</span> filters that catch GCG-style gibberish do little here — the prompts read like ordinary (if manipulative) requests. More durable mitigations:</p>
   <ul>
     <li><strong>Iterative-probing detection</strong> — TAP must hammer the target with many escalating, semantically related queries. Per-session rate limits and anomaly detection on bursts of near-duplicate refinements raise the cost.</li>
-    <li><strong>Output-side guardrails</strong> — an independent classifier on the <em>response</em> (the attack judges responses, so defenders should too); note the paper shows Llama Guard alone is not sufficient.</li>
+    <li><strong>Output-side <span class="term" data-term="guardrail">guardrails</span></strong> — an independent classifier on the <em>response</em> (the attack judges responses, so defenders should too); note the paper shows Llama Guard alone is not sufficient.</li>
     <li><strong>Robustness / adversarial training</strong> against reframing, role-play, and pretext patterns rather than specific strings.</li>
     <li><strong>Continuous red teaming</strong> — run TAP itself as an evaluation harness against your stack so coverage tracks each model and guardrail update.</li>
   </ul>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
-<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer current as of June 2026 · always verify against the source paper.</footer>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer written June 2026 · always verify against the source paper.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
-<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
+<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -23,12 +24,14 @@
     <a href="https://www.anthropic.com/research/many-shot-jailbreaking" target="_blank" rel="noopener">Many-shot Jailbreaking (Anthropic) ↗</a>
   </div>
 
-  <p class="lead">Pad the prompt with hundreds of fake dialogues in which the assistant cheerfully answers harmful questions, and the model learns — in-context, mid-conversation — to keep doing the same.</p>
+  <p class="lead plain-only">Pad the prompt with hundreds of fake dialogues in which the assistant cheerfully answers harmful questions, and the model learns — in-context, mid-conversation — to keep doing the same.</p>
+  <p class="lead tech-only">Many-shot jailbreaking fills a long context window with many fake user and assistant turns in which the assistant complies with harmful requests, then appends the real request. The harmful-response rate grows as a power law in the number of shots, and larger models, which learn in context better, are more vulnerable.</p>
+  <p class="lead eli5-only">Show the robot hundreds of pretend chats where a robot happily answers bad questions, then ask yours. It copies the pattern it just saw over and over.</p>
 
-  <h2>What it exploits</h2>
-  <p>Two properties that modern LLMs are <em>supposed</em> to have. First, <strong>large context windows</strong>: where 2023-era models held a few thousand tokens, current models accept hundreds of thousands to a million, leaving room for an enormous number of priming examples. Second, <strong>in-context learning</strong> — the model's ability to pick up a pattern from examples in the prompt alone, with no fine-tuning. Many-shot jailbreaking (MSJ) turns both capabilities against the safety training: the attack lives entirely in the prompt, so it is fully <strong>black-box</strong> and needs no weights, gradients, or API internals.</p>
+  <h2 id="what-it-exploits">What it exploits</h2>
+  <p>Two properties that modern LLMs are <em>supposed</em> to have. First, <strong>large <span class="term" data-term="model-context">context windows</span></strong>: where 2023-era models held a few thousand <span class="term" data-term="token">tokens</span>, current models accept hundreds of thousands to a million, leaving room for an enormous number of priming examples. Second, <strong><span class="term" data-term="in-context-learning">in-context learning</span></strong> — the model's ability to pick up a pattern from examples in the prompt alone, with no <span class="term" data-term="fine-tuning">fine-tuning</span>. Many-shot <span class="term" data-term="jailbreak">jailbreaking</span> (MSJ) turns both capabilities against the safety training: the attack lives entirely in the prompt, so it is fully <strong><span class="term" data-term="black-box">black-box</span></strong> and needs no weights, gradients, or API internals.</p>
 
-  <h2>How it works</h2>
+  <h2 id="how-it-works">How it works</h2>
   <p>The attacker constructs a single prompt containing many faux turns of a conversation. In each one, a simulated user asks something the model should refuse, and a simulated assistant complies in detail. The real target request is appended at the end. The model, having "observed" dozens to hundreds of compliant exchanges, continues the established pattern instead of refusing.</p>
   <ul>
     <li><strong>Scales with shot count.</strong> A handful of examples does little; effectiveness climbs as the number of demonstrations grows, and the harmful-response rate follows a <strong>power law</strong> in the number of shots — predictable enough to extrapolate.</li>
@@ -36,10 +39,10 @@
     <li><strong>Generalizes across tasks and providers.</strong> The same template works across many harm categories and was effective against models from Anthropic and several peers, including when combined with other jailbreak techniques.</li>
   </ul>
 
-  <h2>Why it matters</h2>
+  <h2 id="why-it-matters">Why it matters</h2>
   <p>MSJ is a <strong>direct consequence of the race to ever-longer context windows</strong> — a feature shipped for legitimate reasons (long documents, agents, RAG) that simultaneously widens the attack surface. It is also disarmingly simple: no obfuscation, no special tokens, no optimization loop, just volume. That makes it cheap to run, easy to vary, and broadly portable across vendors — the kind of attack a red team should assume is available to anyone.</p>
 
-  <h2>Defenses &amp; detection</h2>
+  <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>No single mitigation fully closes it, and the trade-offs are uncomfortable:</p>
   <ul>
     <li><strong>Fine-tuning</strong> to refuse the pattern raises the bar but is incomplete — it mostly pushes out the shot count at which the attack succeeds rather than stopping it.</li>
@@ -47,9 +50,15 @@
     <li><strong>Capping context length</strong> bounds how many shots fit, but trades away the very capability long contexts were built for.</li>
   </ul>
 
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
-<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer current as of June 2026 · always verify against the source paper.</footer>
+<footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer written June 2026 · always verify against the source paper.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
-<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
+<script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>
 </html>
