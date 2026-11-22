@@ -304,12 +304,12 @@
 <section id="canon">
   <div class="eyebrow reveal"><span class="idx">02</span> the attack canon</div>
   <h2 class="reveal">Read the papers everyone cites</h2>
-  <p class="reveal">Jailbreak research has a small, knowable canon. Know these by name, what they exploit, and whether they need model internals (<span class="pill wb">white-box</span>) or only API access (<span class="pill bb">black-box</span>). Practitioners increasingly chain them. <span style="color:var(--ink-dim)">Each name links to a one-page explainer.</span></p>
+  <p class="reveal">Jailbreak research has a small, knowable canon. Know these by name, what they exploit, and whether they need model internals (<span class="pill wb">white-box</span>) or only API access (<span class="pill bb">black-box</span>); AutoDAN sits between (<span class="pill">grey-box</span>: it reads the target's loss but takes no gradients). Practitioners increasingly chain them. <span style="color:var(--ink-dim)">Each name links to a one-page explainer.</span></p>
 
   <div class="reveal">
     <div class="row"><div class="name">DAN / role-play<span class="yr">2023 · manual</span></div><div class="desc">Assign a persona ("Do Anything Now," AIM) that explicitly ignores safety rules. The origin of the genre — still a useful baseline.</div></div>
     <div class="row"><div class="name"><a class="lnk" href="papers/gcg.html">GCG</a> <span class="pill wb">white-box</span><span class="yr">Zou et al. 2023</span></div><div class="desc">Greedy Coordinate Gradient. Optimizes an adversarial token suffix using gradients to force unsafe completions. The foundational automated, transferable attack.</div></div>
-    <div class="row"><div class="name"><a class="lnk" href="papers/autodan.html">AutoDAN</a> <span class="pill wb">white-box</span><span class="yr">Liu et al. 2024</span></div><div class="desc">Genetic-algorithm attack seeded from handcrafted DAN prompts — produces fluent, readable jailbreaks instead of gibberish suffixes.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/autodan.html">AutoDAN</a> <span class="pill">grey-box</span><span class="yr">Liu et al. 2023 · ICLR 2024</span></div><div class="desc">Genetic-algorithm attack seeded from handcrafted DAN prompts — produces fluent, readable jailbreaks instead of gibberish suffixes.</div></div>
     <div class="row"><div class="name"><a class="lnk" href="papers/pair.html">PAIR</a> <span class="pill bb">black-box</span><span class="yr">Chao et al. 2023</span></div><div class="desc">Prompt Automatic Iterative Refinement. An attacker LLM + judge LLM iteratively rewrite a prompt until the target complies. No model access needed — the template for automated red teaming.</div></div>
     <div class="row"><div class="name"><a class="lnk" href="papers/tap.html">TAP</a> <span class="pill bb">black-box</span><span class="yr">Mehrotra et al. 2024</span></div><div class="desc">Tree of Attacks with Pruning. PAIR with tree search and branch pruning — broader, more efficient exploration.</div></div>
     <div class="row"><div class="name"><a class="lnk" href="papers/crescendo.html">Crescendo</a> <span class="pill bb">black-box</span><span class="yr">Russinovich et al. 2024</span></div><div class="desc">Multi-turn escalation. Benign opening, then steer over 5–20 turns toward the target. Defeats per-message filters that judge turns in isolation — the must-know multi-turn method.</div></div>
@@ -341,7 +341,7 @@
     <div class="card def"><h3><a class="lnk" href="https://atlas.mitre.org/" target="_blank" rel="noopener">MITRE ATLAS</a></h3><p>The ATT&amp;CK-style adversarial-tactics knowledge base for ML systems. The shared language for threat modeling AI — learn it the way you know ATT&amp;CK.</p></div>
     <div class="card def"><h3><a class="lnk" href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">NIST AI RMF</a></h3><p>The risk-management framework (+ Generative AI profile). The governance backbone for US programs and most enterprise risk language.</p></div>
     <div class="card def"><h3><a class="lnk" href="https://genai.owasp.org/resource/genai-red-teaming-guide/" target="_blank" rel="noopener">OWASP GenAI / Red Teaming Guide</a></h3><p>Beyond the Top 10: OWASP's guide on how to actually structure and evaluate an AI red-team engagement.</p></div>
-    <div class="card def"><h3><a class="lnk" href="https://artificialintelligenceact.eu/" target="_blank" rel="noopener">EU AI Act</a></h3><p>Mandates adversarial testing for high-risk systems; full compliance lands August 2026. The regulatory driver behind much of current demand.</p></div>
+    <div class="card def"><h3><a class="lnk" href="https://artificialintelligenceact.eu/" target="_blank" rel="noopener">EU AI Act</a></h3><p>Mandates adversarial testing for high-risk systems. Those obligations were due August 2026; the Act's published timeline now has them apply from 2 December 2027 (Annex III) and 2 August 2028 (Annex I), as of November 2026. The regulatory driver behind much of current demand.</p></div>
   </div>
   <p class="reveal" style="margin-top:18px">Read how the labs do it in the open: Microsoft's <em><a class="lnk" href="https://arxiv.org/abs/2501.07238" target="_blank" rel="noopener">Lessons from Red Teaming 100 Generative AI Products</a></em> (Jan 2025), and Anthropic's and OpenAI's published red-team reports for each major model release. They're the best free templates for what a serious finding and write-up look like.</p>
 </section>
@@ -437,7 +437,7 @@
 
 <!-- SOURCES -->
 <section id="sources">
-  <div class="eyebrow reveal">references · current as of June 2026</div>
+  <div class="eyebrow reveal">references · written June 2026</div>
   <h2 class="reveal">Where this came from</h2>
   <div class="src reveal">
     <a href="https://genai.owasp.org/" target="_blank" rel="noopener"><span class="k">01</span>OWASP GenAI Security Project — Top 10 for LLMs 2025</a>
