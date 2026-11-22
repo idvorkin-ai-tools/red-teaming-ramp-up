@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -22,24 +23,30 @@
     <span class="lbl">OWASP</span>
     <a href="https://genai.owasp.org/llmrisk/llm032025-supply-chain/" target="_blank" rel="noopener">LLM03: Supply Chain — OWASP GenAI ↗</a>
   </div>
-  <p class="lead">Everything you didn't build yourself is attack surface: third-party base models, fine-tuning datasets, LoRA/PEFT adapters, and the platforms that serve them can all carry hidden backdoors, poisoning, or tampering long before your code ever runs.</p>
+  <p class="lead">Everything you didn't build yourself is attack surface: third-party base models, <span class="term" data-term="fine-tuning">fine-tuning</span> datasets, <span class="term" data-term="lora">LoRA</span>/PEFT adapters, and the platforms that serve them can all carry hidden <span class="term" data-term="backdoor">backdoors</span>, poisoning, or tampering long before your code ever runs.</p>
   <h2 id="how-its-exploited">How it's exploited</h2>
   <p>Unlike classic software supply chain risk, the ML supply chain extends to <strong>weights and data</strong>, not just packages. Common vectors:</p>
   <ul>
-    <li><strong>Vulnerable pre-trained models</strong> — black-box weights from a hub can hide biases, backdoors, or trigger-activated behavior that passes published benchmarks.</li>
-    <li><strong>Poisoned datasets</strong> — backdoors embedded in fine-tuning or RAG corpora that bias outputs toward an attacker-chosen entity or phrase.</li>
+    <li><strong>Vulnerable pre-trained models</strong> — <span class="term" data-term="black-box">black-box</span> weights from a hub can hide biases, backdoors, or trigger-activated behavior that passes published benchmarks.</li>
+    <li><strong>Poisoned datasets</strong> — backdoors embedded in fine-tuning or <span class="term" data-term="rag">RAG</span> corpora that bias outputs toward an attacker-chosen entity or phrase.</li>
     <li><strong>Malicious LoRA / PEFT adapters</strong> — a tampered adapter merged into a trusted base undermines its integrity; vLLM and OpenLLM let adapters be pulled and applied to a live model.</li>
     <li><strong>Weak provenance</strong> — a compromised or typosquatted supplier account on a model repo, amplified by social engineering, ships malicious weights under a trusted name.</li>
     <li><strong>Collaborative merge/convert services, outdated/deprecated models, vulnerable third-party packages, on-device firmware, and unclear T&Cs</strong> that quietly train on your data.</li>
   </ul>
   <h2 id="what-it-looks-like">What it looks like</h2>
-  <p><strong>PoisonGPT</strong>: a base model is surgically edited so it confidently states a false fact, then re-uploaded under a name resembling a reputable one — downstream apps inherit the lie with safety evals intact. In another documented case, tampered models replaced legitimate ones inside <strong>116 Google Play apps</strong>. A malicious LoRA adapter offered as a "performance" tweak is merged into a deployed model and silently exfiltrates or biases responses.</p>
+  <p><strong>PoisonGPT</strong>: a base model is surgically edited so it confidently states a false fact, then re-uploaded under a name resembling a reputable one — downstream apps inherit the lie with safety evals intact. In another documented case, tampered models replaced legitimate ones inside <strong>116 Google Play apps</strong>. A malicious LoRA adapter offered as a "performance" tweak is merged into a deployed model and silently <span class="term" data-term="exfiltration">exfiltrates</span> or biases responses.</p>
   <h2 id="how-to-test-for-it">How to test for it</h2>
-  <p>As a red teamer, treat provenance as the target. Probe whether downloaded weights match a published hash and signature; diff a fine-tuned model against its claimed base for unexpected layers or merged adapters. Plant <strong>trigger phrases</strong> to surface backdoors that activate only on specific inputs. Audit the dependency and model inventory for deprecated, unsigned, or typosquatted sources, and confirm whether adapter-loading endpoints (vLLM/OpenLLM) will accept an unvetted adapter at runtime.</p>
+  <p>As a <span class="term" data-term="red-teaming">red teamer</span>, treat provenance as the target. Probe whether downloaded weights match a published hash and signature; diff a fine-tuned model against its claimed base for unexpected layers or merged adapters. Plant <strong>trigger phrases</strong> to surface backdoors that activate only on specific inputs. Audit the dependency and model inventory for deprecated, unsigned, or typosquatted sources, and confirm whether adapter-loading endpoints (vLLM/OpenLLM) will accept an unvetted adapter at runtime.</p>
   <h2 id="defenses">Defenses</h2>
   <p>Vet suppliers and their T&Cs/privacy terms; verify model and data sources with <strong>hashing, code signing, and integrity checks</strong>. Maintain a signed, tamper-resistant <strong>AI/ML SBOM</strong> (e.g. CycloneDX) covering models, datasets, and adapters. Red-team and anomaly-test models beyond vendor benchmarks, scan collaborative environments (e.g. HuggingFace SF_Convertbot Scanner), enforce a patching and version policy for maintained models/APIs, and encrypt plus attest edge-deployed models.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

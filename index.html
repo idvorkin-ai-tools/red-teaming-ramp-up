@@ -7,7 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 <style>
+  html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}
   :root{
     --bg:#0A0C0F;
     --panel:#13171D;
@@ -226,6 +228,7 @@
       <a href="#tools">05·toolchain</a>
       <a href="#career">06·career</a>
       <a href="#roadmap">07·roadmap</a>
+      <a href="#definitions">defs</a>
       <a href="#sources">refs</a>
     </nav>
   </div>
@@ -235,7 +238,9 @@
   <main style="padding-top:0">
     <div class="kicker">A field map for security people crossing into AI</div>
     <h1>It's not a pentest.<br>It's <span class="neg">adversarial</span> <span class="pos">elicitation</span>.</h1>
-    <p class="sub">There's no shell to pop and no service to enumerate. You probe a probabilistic system in natural language until it does something it was trained not to — then you measure how often, characterize why, and hand the blue team something they can fix.</p>
+    <p class="sub tech-only">AI red teaming is adversarial testing of a stochastic system. You search prompts, context, tool outputs and training data for behavior the model was trained to refuse, and report an attack success rate per harm category under a fixed judge, with error bars, instead of one reproduced exploit.</p>
+    <p class="sub eli5-only">A chatbot has been taught rules about what it must not say. Red teamers try lots of clever tricks to make it break a rule, count how often each trick works, and tell the builders so they can fix it.</p>
+    <p class="sub plain-only">There's no shell to pop and no service to enumerate. You probe a probabilistic system in natural language until it does something it was trained not to — then you measure how often, characterize why, and hand the blue team something they can fix.</p>
     <div class="prompt-line mono">
       <span class="pmt">attacker@target:~$</span>
       <span>map the surface · learn the canon · measure the rate · ship the report</span>
@@ -254,7 +259,7 @@
 <section id="shift">
   <div class="eyebrow reveal"><span class="idx">00</span> the mental-model shift</div>
   <h2 class="reveal">What your security instincts get right — and where they break</h2>
-  <p class="reveal lead">Your offensive background is a real head start: threat modeling, adversarial framing, abuse-case thinking, and writing a report a defender will actually act on. The gap is the target itself. Traditional security tests deterministic software; the same input gives the same output, and a vuln is binary. Models are probabilistic — the same prompt can pass nine times and fail the tenth — so findings are <strong>attack success rates</strong>, not yes/no.</p>
+  <p class="reveal lead">Your offensive background is a real head start: threat modeling, adversarial framing, abuse-case thinking, and writing a report a defender will actually act on. The gap is the target itself. Traditional security tests deterministic software; the same input gives the same output, and a vuln is binary. Models are probabilistic — the same prompt can pass nine times and fail the tenth — so findings are <strong><span class="term" data-term="attack-success-rate">attack success rates</span></strong>, not yes/no.</p>
   <div class="split reveal">
     <div class="col a">
       <h4>▲ Classic offensive security</h4>
@@ -273,23 +278,23 @@
         <li><span class="m">bug</span>Statistical; measured as a success rate</li>
         <li><span class="m">surface</span>Prompts, context, tools, training data, policy</li>
         <li><span class="m">proof</span>ASR across many trials + harm severity</li>
-        <li><span class="m">fix</span>Retrain, RLHF, classifiers, guardrails, scoping</li>
+        <li><span class="m">fix</span>Retrain, <span class="term" data-term="rlhf">RLHF</span>, classifiers, <span class="term" data-term="guardrail">guardrails</span>, scoping</li>
       </ul>
     </div>
   </div>
-  <div class="callout reveal">The new literacy you have to build: enough ML internals to reason about <em>why</em> a model breaks (<a class="lnk" href="foundations/scaling-laws.html">scaling laws</a>, tokenization, context windows, alignment training, refusal behavior), and fluency in a <strong>harm taxonomy</strong> — CBRN, cyber, CSAM boundaries, PII, persuasion. Unlike CVE work, half the job is policy judgment about what counts as a finding.</div>
+  <div class="callout reveal">The new literacy you have to build: enough ML internals to reason about <em>why</em> a model breaks (<a class="lnk" href="foundations/scaling-laws.html">scaling laws</a>, tokenization, <span class="term" data-term="model-context">context windows</span>, alignment training, refusal behavior), and fluency in a <strong>harm taxonomy</strong> — <span class="term" data-term="cbrn">CBRN</span>, cyber, CSAM boundaries, <span class="term" data-term="pii">PII</span>, persuasion. Unlike CVE work, half the job is policy judgment about what counts as a finding.</div>
 </section>
 
 <!-- 01 SURFACE -->
 <section id="surface">
   <div class="eyebrow reveal"><span class="idx">01</span> the attack surface</div>
   <h2 class="reveal">Learn the <a class="lnk" href="https://genai.owasp.org/" target="_blank" rel="noopener">OWASP Top 10 for LLMs (2025)</a> cold</h2>
-  <p class="reveal">This is the shared vocabulary every team, report, and tool maps to. The 2025 revision pulled in RAG, agents, and supply-chain risk. Memorize it the way you know the web Top 10 — it's how you scope an engagement. <span style="color:var(--ink-dim)">Each risk links to a one-page explainer.</span></p>
+  <p class="reveal">This is the shared vocabulary every team, report, and tool maps to. The 2025 revision pulled in <span class="term" data-term="rag">RAG</span>, <span class="term" data-term="ai-agent">agents</span>, and supply-chain risk. Memorize it the way you know the web Top 10 — it's how you scope an engagement. <span style="color:var(--ink-dim)">Each risk links to a one-page explainer.</span></p>
   <div class="grid g2 reveal">
     <div class="card off"><div class="num">LLM01</div><h3><a class="lnk" href="risks/llm01-prompt-injection.html">Prompt Injection</a></h3><p>Direct and indirect — untrusted content (a web page, a doc, a tool result) overrides instructions. The canonical, highest-frequency class.</p></div>
     <div class="card off"><div class="num">LLM02</div><h3><a class="lnk" href="risks/llm02-sensitive-information-disclosure.html">Sensitive Information Disclosure</a></h3><p>Leaking PII, secrets, proprietary data, or training data through model outputs.</p></div>
     <div class="card off"><div class="num">LLM03</div><h3><a class="lnk" href="risks/llm03-supply-chain.html">Supply Chain</a></h3><p>Compromised base models, poisoned datasets, malicious LoRA/PEFT adapters, untrusted weights.</p></div>
-    <div class="card off"><div class="num">LLM04</div><h3><a class="lnk" href="risks/llm04-data-and-model-poisoning.html">Data &amp; Model Poisoning</a></h3><p>Tampering with training/fine-tuning data to plant backdoors or skew behavior.</p></div>
+    <div class="card off"><div class="num">LLM04</div><h3><a class="lnk" href="risks/llm04-data-and-model-poisoning.html">Data &amp; Model Poisoning</a></h3><p>Tampering with training/<span class="term" data-term="fine-tuning">fine-tuning</span> data to plant <span class="term" data-term="backdoor">backdoors</span> or skew behavior.</p></div>
     <div class="card off"><div class="num">LLM05</div><h3><a class="lnk" href="risks/llm05-improper-output-handling.html">Improper Output Handling</a></h3><p>Treating model output as trusted — XSS, SSRF, SQLi, code-exec when output flows into downstream systems.</p></div>
     <div class="card off"><div class="num">LLM06</div><h3><a class="lnk" href="risks/llm06-excessive-agency.html">Excessive Agency</a></h3><p>An agent with too much permission, autonomy, or tool access does damage. The fastest-growing category in 2026.</p></div>
     <div class="card off"><div class="num">LLM07</div><h3><a class="lnk" href="risks/llm07-system-prompt-leakage.html">System Prompt Leakage</a></h3><p>Extracting the hidden system prompt — often exposing routing logic, keys, or guardrail design.</p></div>
@@ -304,13 +309,13 @@
 <section id="canon">
   <div class="eyebrow reveal"><span class="idx">02</span> the attack canon</div>
   <h2 class="reveal">Read the papers everyone cites</h2>
-  <p class="reveal">Jailbreak research has a small, knowable canon. Know these by name, what they exploit, and whether they need model internals (<span class="pill wb">white-box</span>) or only API access (<span class="pill bb">black-box</span>); AutoDAN sits between (<span class="pill">grey-box</span>: it reads the target's loss but takes no gradients). Practitioners increasingly chain them. <span style="color:var(--ink-dim)">Each name links to a one-page explainer.</span></p>
+  <p class="reveal"><span class="term" data-term="jailbreak">Jailbreak</span> research has a small, knowable canon. Know these by name, what they exploit, and whether they need model internals (<span class="pill wb">white-box</span>) or only API access (<span class="pill bb">black-box</span>); AutoDAN sits between (<span class="pill">grey-box</span>: it reads the target's loss but takes no gradients). Practitioners increasingly chain them. <span style="color:var(--ink-dim)">Each name links to a one-page explainer.</span></p>
 
   <div class="reveal">
     <div class="row"><div class="name">DAN / role-play<span class="yr">2023 · manual</span></div><div class="desc">Assign a persona ("Do Anything Now," AIM) that explicitly ignores safety rules. The origin of the genre — still a useful baseline.</div></div>
-    <div class="row"><div class="name"><a class="lnk" href="papers/gcg.html">GCG</a> <span class="pill wb">white-box</span><span class="yr">Zou et al. 2023</span></div><div class="desc">Greedy Coordinate Gradient. Optimizes an adversarial token suffix using gradients to force unsafe completions. The foundational automated, transferable attack.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/gcg.html">GCG</a> <span class="pill wb">white-box</span><span class="yr">Zou et al. 2023</span></div><div class="desc">Greedy Coordinate Gradient. Optimizes an <span class="term" data-term="adversarial-suffix">adversarial token suffix</span> using gradients to force unsafe completions. The foundational automated, <span class="term" data-term="transfer-attack">transferable</span> attack.</div></div>
     <div class="row"><div class="name"><a class="lnk" href="papers/autodan.html">AutoDAN</a> <span class="pill">grey-box</span><span class="yr">Liu et al. 2023 · ICLR 2024</span></div><div class="desc">Genetic-algorithm attack seeded from handcrafted DAN prompts — produces fluent, readable jailbreaks instead of gibberish suffixes.</div></div>
-    <div class="row"><div class="name"><a class="lnk" href="papers/pair.html">PAIR</a> <span class="pill bb">black-box</span><span class="yr">Chao et al. 2023</span></div><div class="desc">Prompt Automatic Iterative Refinement. An attacker LLM + judge LLM iteratively rewrite a prompt until the target complies. No model access needed — the template for automated red teaming.</div></div>
+    <div class="row"><div class="name"><a class="lnk" href="papers/pair.html">PAIR</a> <span class="pill bb">black-box</span><span class="yr">Chao et al. 2023</span></div><div class="desc">Prompt Automatic Iterative Refinement. An attacker LLM + <span class="term" data-term="llm-judge">judge LLM</span> iteratively rewrite a prompt until the target complies. No model access needed — the template for automated <span class="term" data-term="red-teaming">red teaming</span>.</div></div>
     <div class="row"><div class="name"><a class="lnk" href="papers/tap.html">TAP</a> <span class="pill bb">black-box</span><span class="yr">Mehrotra et al. 2024</span></div><div class="desc">Tree of Attacks with Pruning. PAIR with tree search and branch pruning — broader, more efficient exploration.</div></div>
     <div class="row"><div class="name"><a class="lnk" href="papers/crescendo.html">Crescendo</a> <span class="pill bb">black-box</span><span class="yr">Russinovich et al. 2024</span></div><div class="desc">Multi-turn escalation. Benign opening, then steer over 5–20 turns toward the target. Defeats per-message filters that judge turns in isolation — the must-know multi-turn method.</div></div>
     <div class="row"><div class="name"><a class="lnk" href="papers/many-shot.html">Many-shot</a> <span class="pill bb">black-box</span><span class="yr">Anil et al. 2024</span></div><div class="desc">Flood a long context with dozens of harmful Q&amp;A examples to progressively override safety training. A direct consequence of long context windows.</div></div>
@@ -435,6 +440,13 @@
   </div>
 </section>
 
+<!-- DEFINITIONS -->
+<section id="definitions">
+  <div class="eyebrow reveal"><span class="idx">08</span> words used on this page</div>
+  <h2 class="reveal">Definitions</h2>
+  <div data-terms-list></div>
+</section>
+
 <!-- SOURCES -->
 <section id="sources">
   <div class="eyebrow reveal">references · written June 2026</div>
@@ -522,6 +534,7 @@
   load();
 })();
 </script>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

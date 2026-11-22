@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -19,16 +20,16 @@
   <h1>HarmBench</h1>
   <div class="authors">Center for AI Safety (Mazeika et al.) · 2024</div>
   <div class="paperlink"><span class="lbl">Project</span><a href="https://www.harmbench.org/" target="_blank" rel="noopener">HarmBench ↗</a></div>
-  <p class="lead">A standardized evaluation framework for automated red teaming and robust refusal of LLMs. HarmBench pins down a fixed set of harmful behaviors and a fixed automated judge so that <strong>attacks and defenses can be compared on equal footing</strong> — replacing the bespoke, non-comparable setups that plagued earlier jailbreak research.</p>
+  <p class="lead">A standardized evaluation framework for automated <span class="term" data-term="red-teaming">red teaming</span> and robust refusal of LLMs. HarmBench pins down a fixed set of harmful behaviors and a fixed <span class="term" data-term="llm-judge">automated judge</span> so that <strong>attacks and defenses can be compared on equal footing</strong> — replacing the bespoke, non-comparable setups that plagued earlier <span class="term" data-term="jailbreak">jailbreak</span> research.</p>
   <h2 id="what-it-measures">What it measures</h2>
-  <p>The core metric is <strong>Attack Success Rate (ASR)</strong>: the fraction of harmful behaviors for which an attack elicits a compliant, on-target completion from the model.</p>
+  <p>The core metric is <strong><span class="term" data-term="attack-success-rate">Attack Success Rate (ASR)</span></strong>: the fraction of harmful behaviors for which an attack elicits a compliant, on-target completion from the model.</p>
   <ul>
     <li><strong>510 curated behaviors</strong> across 7 semantic categories (cybercrime, chem/bio, copyright, misinformation, harassment, illegal activity, general harm), split into 4 functional types: <em>standard</em> (200), <em>copyright</em> (100), <em>contextual</em> (100), and <em>multimodal</em> (110).</li>
-    <li>A <strong>fine-tuned classifier judge</strong> (HarmBench-Llama-2-13b-cls, plus contextual and multimodal variants) decides whether a completion actually exhibits the target behavior — not just whether the model refused.</li>
+    <li>A <strong><span class="term" data-term="fine-tuning">fine-tuned</span> classifier judge</strong> (HarmBench-Llama-2-13b-cls, plus contextual and multimodal variants) decides whether a completion actually exhibits the target behavior — not just whether the model refused.</li>
     <li>Both sides of the arms race: the original paper evaluated <strong>18 attack methods against 33 target LLMs and defenses</strong> in one matrix.</li>
   </ul>
   <h2 id="how-red-teamers-use-it">How red teamers use it</h2>
-  <p>HarmBench is the <strong>common yardstick for ASR</strong>. You run your attack (or defense) through its three-step pipeline — test-case generation, completion generation, evaluation — and report numbers that are directly comparable to published baselines. New attacks cite their HarmBench ASR; new defenses (e.g. adversarial training, refusal hardening) report the ASR they suppress. It ships a modular harness so you can drop in a custom model or red-teaming method without rewriting the eval.</p>
+  <p>HarmBench is the <strong>common yardstick for ASR</strong>. You run your attack (or defense) through its three-step pipeline — test-case generation, completion generation, evaluation — and report numbers that are directly comparable to published baselines. New attacks cite their HarmBench ASR; new defenses (e.g. adversarial training, refusal hardening) report the ASR they suppress. It ships a modular <span class="term" data-term="harness">harness</span> so you can drop in a custom model or red-teaming method without rewriting the eval.</p>
   <h2 id="strengths-limits">Strengths &amp; limits</h2>
   <ul>
     <li><strong>Rigor &amp; standardization:</strong> a frozen behavior set and shared judge make cross-paper claims meaningful and reproducible — a real improvement over per-paper ad hoc setups.</li>
@@ -36,8 +37,14 @@
     <li><strong>Scope:</strong> the behavior set, while broad, is fixed — novel harm modalities or task-specific risks in your own deployment won't appear here. Use it as a baseline, not the whole threat model.</li>
   </ul>
   <p>The <a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/index.html">HarmBench field map</a> takes the benchmark apart in depth: every behavior, each attack's configuration and the grader.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · written June 2026 · verify against the source.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

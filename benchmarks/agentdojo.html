@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -19,7 +20,7 @@
   <h1>AgentDojo</h1>
   <div class="authors">Debenedetti et al. (ETH Zurich SPY Lab) · NeurIPS 2024</div>
   <div class="paperlink"><span class="lbl">Project</span><a href="https://agentdojo.spylab.ai/" target="_blank" rel="noopener">AgentDojo ↗</a></div>
-  <p class="lead">A dynamic evaluation framework for the adversarial robustness of tool-using LLM agents. Instead of a static dataset, AgentDojo runs agents through realistic multi-step tool-calling environments where attacker-controlled data flows back through tool outputs — the exact channel a prompt injection exploits in production.</p>
+  <p class="lead">A dynamic evaluation framework for the adversarial robustness of tool-using LLM <span class="term" data-term="ai-agent">agents</span>. Instead of a static dataset, AgentDojo runs agents through realistic multi-step tool-calling environments where attacker-controlled data flows back through tool outputs — the exact channel a <span class="term" data-term="prompt-injection">prompt injection</span> exploits in production.</p>
   <h2 id="what-it-measures">What it measures</h2>
   <p>Two axes <strong>jointly</strong>, so you can't trade one for the other silently:</p>
   <ul>
@@ -30,14 +31,20 @@
   <h2 id="how-red-teamers-use-it">How red teamers use it</h2>
   <ul>
     <li><strong>Agent hijacking tests</strong> — measure whether your agent can be steered to send data to an attacker, move money, or take unauthorized tool actions via injected content.</li>
-    <li><strong>Plugin interfaces</strong> — implement a common interface to drop in new <strong>attacks</strong> (e.g. tool-knowledge / important-message injections), <strong>defenses</strong> (tool filtering, prompt sandwiching, data delimiting), <strong>models</strong>, and <strong>task suites</strong>. Run <code>agentdojo</code>'s benchmark harness across the matrix.</li>
-    <li>Extend it with your own domain tools to red-team a specific deployment rather than the stock suites.</li>
+    <li><strong>Plugin interfaces</strong> — implement a common interface to drop in new <strong>attacks</strong> (e.g. tool-knowledge / important-message injections), <strong>defenses</strong> (tool filtering, prompt sandwiching, data delimiting), <strong>models</strong>, and <strong>task suites</strong>. Run <code>agentdojo</code>'s benchmark <span class="term" data-term="harness">harness</span> across the matrix.</li>
+    <li>Extend it with your own domain tools to <span class="term" data-term="red-teaming">red-team</span> a specific deployment rather than the stock suites.</li>
   </ul>
   <h2 id="strengths-limits">Strengths &amp; limits</h2>
   <p><strong>Strengths:</strong> the first rigorous, reproducible security benchmark for tool-using agents — dynamic execution (not memorizable strings), utility and attack measured together, and a clean extension API for new attacks/defenses. Frontier agents still fail a meaningful share of injection cases, so headroom is real.</p>
   <p><strong>Limits:</strong> a fixed catalog of synthetic tasks and injection templates — strong on a benchmark suite ≠ secure against an adaptive human attacker. Coverage is evolving; forks (<a href="https://github.com/ethz-spylab/agentdojo-core" target="_blank" rel="noopener">agentdojo-core ↗</a>, NIST's AgentDojo-Inspect) extend domains and attacks. Treat results as a floor on robustness, not a ceiling.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · written June 2026 · verify against the source.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

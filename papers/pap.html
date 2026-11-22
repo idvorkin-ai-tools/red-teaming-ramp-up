@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -23,10 +24,12 @@
     <a href="https://arxiv.org/abs/2401.06373" target="_blank" rel="noopener">How Johnny Can Persuade LLMs to Jailbreak Them ↗</a>
   </div>
 
-  <p class="lead">PAP treats jailbreaking as a <strong>social-engineering</strong> problem rather than a syntactic one: it rewrites a harmful request using documented human persuasion techniques, exploiting the fact that a model trained on human dialogue responds to the same rhetorical pressure people do.</p>
+  <p class="lead plain-only">PAP treats jailbreaking as a <strong>social-engineering</strong> problem rather than a syntactic one: it rewrites a harmful request using documented human persuasion techniques, exploiting the fact that a model trained on human dialogue responds to the same rhetorical pressure people do.</p>
+  <p class="lead tech-only">PAP paraphrases a harmful request through techniques from a taxonomy of about 40 persuasion methods (authority, logical appeal, emotional appeal and others), using a fine-tuned paraphraser model. The prompts are fluent natural language, so they pass filters tuned for adversarial-looking text.</p>
+  <p class="lead eli5-only">Instead of tricking the robot with weird codes, you ask the way a sneaky person talks a friend into something: "a doctor said it's fine" or "please, it's an emergency". The robot learned from people, so it falls for the same talk.</p>
 
   <h2 id="what-it-exploits">What it exploits</h2>
-  <p>Most early jailbreaks were treated as a security puzzle — token-level suffixes, encodings, role-play scaffolds. PAP reframes the target as a <strong>"humanized" communicator</strong>: because LLMs are trained on vast human-written text, they have internalized the patterns by which humans get other humans to comply. The attack surface is therefore not a parser bug but the model's <strong>learned susceptibility to persuasion</strong>. Crucially, the persuasion lives in <em>natural, fluent prose</em> — no adversarial gibberish, no special tokens — so the request reads like an ordinary (if manipulative) human message and slips past filters tuned for obvious attack markers.</p>
+  <p>Most early <span class="term" data-term="jailbreak">jailbreaks</span> were treated as a security puzzle — <span class="term" data-term="token">token</span>-level suffixes, encodings, role-play scaffolds. PAP reframes the target as a <strong>"humanized" communicator</strong>: because LLMs are trained on vast human-written text, they have internalized the patterns by which humans get other humans to comply. The attack surface is therefore not a parser bug but the model's <strong>learned susceptibility to persuasion</strong>. Crucially, the persuasion lives in <em>natural, fluent prose</em> — no adversarial gibberish, no special tokens — so the request reads like an ordinary (if manipulative) human message and slips past filters tuned for obvious attack markers.</p>
 
   <h2 id="how-it-works">How it works</h2>
   <p>The authors build a <strong>persuasion taxonomy</strong> grounded in decades of social-science research — on the order of 40 techniques across several categories. A harmful instruction is paraphrased so the same ask is delivered through one or more of these techniques. Representative categories:</p>
@@ -47,13 +50,19 @@
   <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>The paper pairs the attack with mitigations and finds them only partially effective:</p>
   <ul>
-    <li><strong>Adaptive system prompts</strong> instructing the model to watch for persuasion reduce but do not eliminate success.</li>
-    <li><strong>Targeted "persuasion" fine-tuning / summarization defenses</strong> — restate the user request neutrally before answering — strip rhetorical pressure and were among the more effective countermeasures.</li>
+    <li><strong>Adaptive <span class="term" data-term="system-prompt">system prompts</span></strong> instructing the model to watch for persuasion reduce but do not eliminate success.</li>
+    <li><strong>Targeted "persuasion" <span class="term" data-term="fine-tuning">fine-tuning</span> / summarization defenses</strong> — restate the user request neutrally before answering — strip rhetorical pressure and were among the more effective countermeasures.</li>
     <li><strong>Intent-based classification</strong> on the underlying ask (rather than surface keywords) is the durable direction, since the harmful content is semantic, not lexical.</li>
   </ul>
   <p>Practically, defenders should test refusal robustness against rewritten, fluent requests — not just raw harmful strings — and treat persuasion-resistance as a distinct evaluation axis. See also <a class="lnk" href="https://github.com/CHATS-lab/persuasive_jailbreaker" target="_blank" rel="noopener">the authors' code &amp; taxonomy release ↗</a>.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer written June 2026 · always verify against the source paper.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

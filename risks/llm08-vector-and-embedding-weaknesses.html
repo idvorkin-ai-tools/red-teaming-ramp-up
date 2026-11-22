@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -22,12 +23,12 @@
     <span class="lbl">OWASP</span>
     <a href="https://genai.owasp.org/llmrisk/llm082025-vector-and-embedding-weaknesses/" target="_blank" rel="noopener">LLM08: Vector &amp; Embedding Weaknesses — OWASP GenAI ↗</a>
   </div>
-  <p class="lead">Weaknesses in how vectors and embeddings are generated, stored, or retrieved let attackers inject harmful content, manipulate outputs, or exfiltrate sensitive data — the attack surface that comes bundled with every Retrieval-Augmented Generation (RAG) deployment.</p>
+  <p class="lead">Weaknesses in how vectors and <span class="term" data-term="embedding">embeddings</span> are generated, stored, or retrieved let attackers inject harmful content, manipulate outputs, or <span class="term" data-term="exfiltration">exfiltrate</span> sensitive data — the attack surface that comes bundled with every Retrieval-Augmented Generation (<span class="term" data-term="rag">RAG</span>) deployment.</p>
   <h2 id="how-its-exploited">How it's exploited</h2>
   <p>RAG turns your knowledge base into part of the prompt, so the vector store becomes an injection and exfiltration channel:</p>
   <ul>
     <li><strong>Data poisoning</strong> — an attacker plants corrupted documents (or compromises an upstream feed) so retrieval surfaces malicious content that steers model output.</li>
-    <li><strong>Retrieval manipulation</strong> — indirect prompt injection hidden inside a retrieved doc executes when the LLM reads it as context.</li>
+    <li><strong>Retrieval manipulation</strong> — <span class="term" data-term="indirect-prompt-injection">indirect prompt injection</span> hidden inside a retrieved doc executes when the LLM reads it as context.</li>
     <li><strong>Embedding inversion</strong> — embeddings are not one-way; an attacker who can read vectors can reconstruct substantial portions of the original source text, breaking confidentiality.</li>
     <li><strong>Cross-context / cross-tenant leakage</strong> — in a shared store, embeddings ingested for one user or tenant get retrieved against another's query because partitioning and access control are weak or absent.</li>
   </ul>
@@ -42,8 +43,14 @@
     <li><strong>Provenance &amp; classification</strong> — tag and classify documents so access levels travel with the data and prevent mismatch errors.</li>
     <li><strong>Immutable retrieval logs</strong> — detailed, tamper-resistant logging of what was retrieved for whom, so poisoning and leakage are detectable.</li>
   </ul>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

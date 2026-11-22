@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -23,13 +24,15 @@
     <a href="https://arxiv.org/abs/2310.04451" target="_blank" rel="noopener">AutoDAN: Generating Stealthy Jailbreak Prompts on Aligned Large Language Models ↗</a>
   </div>
 
-  <p class="lead">AutoDAN automatically evolves <strong>fluent, human-readable jailbreak prompts</strong> using a genetic algorithm, combining the automation of optimization attacks with the natural-language stealth of handcrafted "DAN" prompts.</p>
+  <p class="lead plain-only">AutoDAN automatically evolves <strong>fluent, human-readable jailbreak prompts</strong> using a genetic algorithm, combining the automation of optimization attacks with the natural-language stealth of handcrafted "DAN" prompts.</p>
+  <p class="lead tech-only">AutoDAN runs a hierarchical genetic algorithm over prompt prefixes seeded from handcrafted DAN jailbreaks: sentence-level crossover, word-level mutation, and a fitness score equal to the target's loss on an affirmative reply. It needs the target's logits but no gradients, and because it edits real sentences its prompts stay low-perplexity.</p>
+  <p class="lead eli5-only">Take a pile of known trick messages, mix their sentences together like breeding plants, and keep the offspring that fool the robot best. The winners read like normal writing, so a "does this look weird?" check cannot catch them.</p>
 
   <h2 id="what-it-exploits">What it exploits</h2>
-  <p>Safety alignment is trained against the kinds of phrasings the model saw during RLHF, but the <strong>space of fluent natural-language wrappers that re-frame a harmful request is enormous</strong> and only thinly covered. Hand-built "Do Anything Now" (DAN) prompts exploit this by role-playing the model out of its guardrails — but they are static, get patched, and don't generalize. AutoDAN attacks the same weakness automatically: it searches that wrapper space for new phrasings that keep the request fluent and on-distribution while still bypassing refusal. Because the output reads like ordinary English, it also slips past the second line of defense — <strong>perplexity-based input filters</strong> that flag statistically unnatural text.</p>
+  <p>Safety alignment is trained against the kinds of phrasings the model saw during <span class="term" data-term="rlhf">RLHF</span>, but the <strong>space of fluent natural-language wrappers that re-frame a harmful request is enormous</strong> and only thinly covered. Hand-built "Do Anything Now" (DAN) prompts exploit this by role-playing the model out of its <span class="term" data-term="guardrail">guardrails</span> — but they are static, get patched, and don't generalize. AutoDAN attacks the same weakness automatically: it searches that wrapper space for new phrasings that keep the request fluent and on-distribution while still bypassing refusal. Because the output reads like ordinary English, it also slips past the second line of defense — <strong><span class="term" data-term="perplexity">perplexity</span>-based input filters</strong> that flag statistically unnatural text.</p>
 
   <h2 id="how-it-works">How it works</h2>
-  <p>AutoDAN treats jailbreak discovery as a search over text and solves it with a <strong>hierarchical genetic algorithm</strong>. It is grey-box: it needs the target's logits to score each candidate by its loss on an affirmative (non-refusing) response, but it takes no gradients and works entirely on readable sentences:</p>
+  <p>AutoDAN treats <span class="term" data-term="jailbreak">jailbreak</span> discovery as a search over text and solves it with a <strong>hierarchical genetic algorithm</strong>. It is grey-box: it needs the target's logits to score each candidate by its loss on an affirmative (non-refusing) response, but it takes no gradients and works entirely on readable sentences:</p>
   <ul>
     <li><strong>Seeding</strong> — the initial population is built from a handcrafted DAN-style jailbreak prompt, diversified by an LLM into many semantically-equivalent variants (rather than random noise).</li>
     <li><strong>Fitness</strong> — each candidate is scored by how strongly it pushes the target toward an affirmative completion (the attack objective), favoring prompts that suppress refusal.</li>
@@ -41,10 +44,10 @@
   <h2 id="why-it-matters">Why it matters</h2>
   <p>AutoDAN sits between two prior worlds and takes the best of each. The contrast with <strong>GCG</strong> (Zou et al., 2023) is the key insight:</p>
   <ul>
-    <li><strong>GCG</strong> produces adversarial suffixes that are gibberish — high-perplexity strings of garbled tokens. Effective, but trivially caught by a perplexity filter and obvious to a human reviewer.</li>
+    <li><strong>GCG</strong> produces <span class="term" data-term="adversarial-suffix">adversarial suffixes</span> that are gibberish — high-perplexity strings of garbled <span class="term" data-term="token">tokens</span>. Effective, but trivially caught by a perplexity filter and obvious to a human reviewer.</li>
     <li><strong>AutoDAN</strong> produces <strong>fluent, low-perplexity prompts</strong>. It demonstrated that <strong>perplexity-based defenses — the standard counter to GCG — do not work against it</strong>, because there is nothing statistically unnatural to detect.</li>
   </ul>
-  <p>It also reported <strong>better cross-model transfer and cross-sample universality</strong> than handcrafted baselines. The takeaway for defenders: stylometric and perplexity heuristics are not a durable defense, and automated attacks no longer have to look anomalous.</p>
+  <p>It also reported <strong>better cross-model <span class="term" data-term="transfer-attack">transfer</span> and cross-sample universality</strong> than handcrafted baselines. The takeaway for defenders: stylometric and perplexity heuristics are not a durable defense, and automated attacks no longer have to look anomalous.</p>
 
   <p>HarmBench runs AutoDAN on open models only, because its fitness reads the target's loss; its configuration and measured success rates are on the <a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/attacks/llm-optimizer.html#autodan">HarmBench field map</a>.</p>
 
@@ -57,8 +60,14 @@
     <li><strong>Robustness / adversarial training and refusal hardening</strong> against the role-play and persona-framing patterns these prompts exploit.</li>
     <li><strong>Cost & rate signals</strong> — the genetic search requires many queries per target; per-key query-rate and repeated-near-miss monitoring can surface the optimization loop itself.</li>
   </ul>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · explainer written June 2026 · always verify against the source paper.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

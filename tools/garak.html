@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -23,12 +24,12 @@
   <h2 id="what-its-good-at">What it's good at</h2>
   <p>A broad, batteries-included <strong>static probe library</strong> covering many vulnerability families out of the box, so you get wide coverage with near-zero setup. Good fit as a <strong>CI regression gate</strong> on every model release — run the same probe set, diff the scores, catch new weaknesses. Probe families include:</p>
   <ul>
-    <li><strong>dan</strong> — DAN-style jailbreaks; <strong>gcg</strong> — adversarial-suffix attacks; <strong>encoding</strong> &amp; <strong>promptinject</strong> — injection</li>
-    <li><strong>leakreplay</strong> — training-data exfiltration; <strong>glitch</strong> — glitch-token behavior</li>
+    <li><strong>dan</strong> — DAN-style <span class="term" data-term="jailbreak">jailbreaks</span>; <strong>gcg</strong> — adversarial-suffix attacks; <strong>encoding</strong> &amp; <strong>promptinject</strong> — injection</li>
+    <li><strong>leakreplay</strong> — training-data <span class="term" data-term="exfiltration">exfiltration</span>; <strong>glitch</strong> — glitch-<span class="term" data-term="token">token</span> behavior</li>
     <li><strong>malwaregen</strong>, <strong>xss</strong>, <strong>realtoxicityprompts</strong>, <strong>donotanswer</strong>, <strong>lmrc</strong> — toxicity, refusal &amp; risk-card coverage</li>
   </ul>
   <h2 id="where-it-falls-short">Where it falls short</h2>
-  <p>The probes are <strong>static and largely single-turn</strong> — canned payloads, not an adaptive attacker. It won't reason about <strong>multi-turn conversational</strong> escalation or your <strong>app-specific logic</strong> (RAG context, tool-calling, custom system prompts, business rules). Treat it as broad coverage of known weaknesses, not a substitute for an adaptive red-teamer or a scenario-driven harness against your actual application.</p>
+  <p>The probes are <strong>static and largely single-turn</strong> — canned payloads, not an adaptive attacker. It won't reason about <strong>multi-turn conversational</strong> escalation or your <strong>app-specific logic</strong> (<span class="term" data-term="rag">RAG</span> context, tool-calling, custom <span class="term" data-term="system-prompt">system prompts</span>, business rules). Treat it as broad coverage of known weaknesses, not a substitute for an adaptive <span class="term" data-term="red-teaming">red-teamer</span> or a scenario-driven <span class="term" data-term="harness">harness</span> against your actual application.</p>
   <h2 id="how-to-start">How to start</h2>
   <p>Install with pip (or pipx for an isolated CLI), then target a model and pick a probe set:</p>
   <ul>
@@ -37,8 +38,14 @@
     <li>Hosted model, one probe: <code>python -m garak --model_type openai --model_name gpt-3.5-turbo --probes promptinject</code></li>
   </ul>
   <p>Omit <code>--probes</code> for a full sweep; results land in an HTML report plus a JSONL hit-log you can wire into CI.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · written June 2026 · verify against the source.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

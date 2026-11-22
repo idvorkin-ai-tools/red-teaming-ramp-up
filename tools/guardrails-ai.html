@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -19,10 +20,10 @@
   <h1>Guardrails AI</h1>
   <div class="authors">Guardrails AI · open source</div>
   <div class="paperlink"><span class="lbl">Project</span><a href="https://github.com/guardrails-ai/guardrails" target="_blank" rel="noopener">guardrails-ai/guardrails — GitHub ↗</a></div>
-  <p class="lead">An open-source Python framework for wrapping LLM calls with <strong>composable validators ("guards")</strong> that detect, quantify, and mitigate specific risks on both the input and output side. Validators are sourced from the <strong>Guardrails Hub</strong>, a community registry of pre-built checks, and can run in-process or behind a standalone Flask REST server.</p>
+  <p class="lead">An open-source Python framework for wrapping LLM calls with <strong>composable validators ("<span class="term" data-term="guardrail">guards</span>")</strong> that detect, quantify, and mitigate specific risks on both the input and output side. Validators are sourced from the <strong>Guardrails Hub</strong>, a community registry of pre-built checks, and can run in-process or behind a standalone Flask REST server.</p>
   <h2 id="what-its-good-at">What it's good at</h2>
   <ul>
-    <li><strong>Composable I/O guards.</strong> Chain validators on prompts and completions — PII detection, toxicity, regex/format constraints, topic restriction, competitor mentions, jailbreak heuristics.</li>
+    <li><strong>Composable I/O guards.</strong> Chain validators on prompts and completions — <span class="term" data-term="pii">PII</span> detection, toxicity, regex/format constraints, topic restriction, competitor mentions, <span class="term" data-term="jailbreak">jailbreak</span> heuristics.</li>
     <li><strong>Guardrails Hub.</strong> <code>guardrails hub install hub://guardrails/&lt;validator&gt;</code> pulls ready-made checks instead of hand-rolling each one.</li>
     <li><strong>Structured output.</strong> Forces responses into Pydantic schemas, enforcing type and shape on top of safety checks.</li>
     <li><strong>Reask / fix on failure.</strong> <code>on_fail</code> actions (EXCEPTION, REASK, FIX, FILTER) let you re-prompt or repair rather than just block.</li>
@@ -31,7 +32,7 @@
   <ul>
     <li><strong>Validators are bypassable.</strong> Classifier- and regex-based guards are defeatable by obfuscation, encoding tricks, multilingual phrasing, and adversarial rewording — they raise cost-to-attack, not a hard boundary.</li>
     <li><strong>Coverage is only what you wire up.</strong> Risks with no installed validator pass through unchecked; the Hub is uneven across categories.</li>
-    <li><strong>Latency and dependency weight.</strong> Each guard adds a pass (and possibly a remote ML model or extra LLM call); reask multiplies token spend.</li>
+    <li><strong>Latency and dependency weight.</strong> Each guard adds a pass (and possibly a remote ML model or extra LLM call); reask multiplies <span class="term" data-term="token">token</span> spend.</li>
   </ul>
   <h2 id="how-to-start">How to start (as an attacker, learn what you must defeat)</h2>
   <ul>
@@ -40,8 +41,14 @@
     <li>Wrap a model with <code>Guard().use(Validator, on_fail=OnFailAction.EXCEPTION)</code> and call <code>guard.validate(...)</code>.</li>
     <li>Probe for bypasses: feed the guard encoded, paraphrased, and multilingual payloads, watch which slip past, and note where a single validator gives a false sense of coverage.</li>
   </ul>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · written June 2026 · verify against the source.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

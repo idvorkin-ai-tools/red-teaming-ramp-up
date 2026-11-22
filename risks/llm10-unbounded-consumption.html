@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -26,9 +27,9 @@
   <h2 id="how-its-exploited">How it's exploited</h2>
   <p>This risk spans three distinct attacker goals that all abuse the inference path:</p>
   <ul>
-    <li><strong>Resource exhaustion / DoS</strong> — oversized inputs, variable-length input floods, queries that exceed the context window, and high-volume repeated requests deplete memory, CPU, and GPU, degrading or denying service for everyone.</li>
-    <li><strong>Denial of wallet (DoW)</strong> — attackers weaponize the pay-per-token, pay-per-call economics of cloud LLMs. There's no crash; there's a four- or five-figure invoice. The system stays "up" while the budget burns down.</li>
-    <li><strong>Model extraction &amp; distillation</strong> — mass-querying the API with crafted inputs and prompt-injection harvests enough outputs to replicate a partial model, or to generate <strong>synthetic training data</strong> that fine-tunes a functional equivalent — stealing your IP one inference at a time. Side-channel probing can leak architectural details or weights.</li>
+    <li><strong>Resource exhaustion / DoS</strong> — oversized inputs, variable-length input floods, queries that exceed the <span class="term" data-term="model-context">context window</span>, and high-volume repeated requests deplete memory, CPU, and GPU, degrading or denying service for everyone.</li>
+    <li><strong>Denial of wallet (DoW)</strong> — attackers weaponize the pay-per-<span class="term" data-term="token">token</span>, pay-per-call economics of cloud LLMs. There's no crash; there's a four- or five-figure invoice. The system stays "up" while the budget burns down.</li>
+    <li><strong>Model extraction &amp; distillation</strong> — mass-querying the API with crafted inputs and <span class="term" data-term="prompt-injection">prompt-injection</span> harvests enough outputs to replicate a partial model, or to generate <strong>synthetic training data</strong> that fine-tunes a functional equivalent — stealing your IP one inference at a time. Side-channel probing can leak architectural details or weights.</li>
   </ul>
   <h2 id="what-it-looks-like">What it looks like</h2>
   <p>A SaaS feature exposes a chatbot backed by a metered frontier model with no per-user quota. An attacker scripts thousands of long, resource-intensive prompts (or systematic query batteries designed to map the model's outputs). Best case, latency spikes and legitimate users time out. Worst case, the monthly cloud bill jumps from hundreds to tens of thousands of dollars overnight — or a near-equivalent clone of the proprietary model surfaces, distilled entirely from your own API responses.</p>
@@ -42,8 +43,14 @@
     <li><strong>Monitoring &amp; anomaly detection</strong> — comprehensive logging to catch extraction patterns and consumption spikes early.</li>
     <li><strong>Access control &amp; sandboxing</strong> — apply RBAC and least privilege; restrict the model's reach to networks, internal services, and APIs.</li>
   </ul>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

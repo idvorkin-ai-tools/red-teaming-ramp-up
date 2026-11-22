@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -19,10 +20,10 @@
   <h1>Promptfoo</h1>
   <div class="authors">open source · (now OpenAI)</div>
   <div class="paperlink"><span class="lbl">Project</span><a href="https://www.promptfoo.dev/" target="_blank" rel="noopener">Promptfoo ↗</a></div>
-  <p class="lead">A config-driven CLI and library (MIT-licensed, now part of OpenAI) for evaluating and red-teaming LLM apps. You point it at a target — a prompt, model, RAG chain, or agent endpoint — and it generates adversarial probes, runs them as a graded test suite, and produces a vulnerability report. The same harness does both <strong>application-level eval</strong> (model/prompt comparison, accuracy regression) and <strong>attack simulation</strong>.</p>
+  <p class="lead">A config-driven CLI and library (MIT-licensed, now part of OpenAI) for evaluating and <span class="term" data-term="red-teaming">red-teaming</span> LLM apps. You point it at a target — a prompt, model, <span class="term" data-term="rag">RAG</span> chain, or <span class="term" data-term="ai-agent">agent</span> endpoint — and it generates adversarial probes, runs them as a graded test suite, and produces a vulnerability report. The same <span class="term" data-term="harness">harness</span> does both <strong>application-level eval</strong> (model/prompt comparison, accuracy regression) and <strong>attack simulation</strong>.</p>
   <h2 id="what-its-good-at">What it's good at</h2>
   <ul>
-    <li><strong>Breadth of probes:</strong> 50+ vulnerability plugins — direct/indirect prompt injection, jailbreaks, PII &amp; data leaks, BOLA/BFLA broken access control, SSRF, SQL injection, excessive agency, hallucination, and policy violations.</li>
+    <li><strong>Breadth of probes:</strong> 50+ vulnerability plugins — direct/<span class="term" data-term="indirect-prompt-injection">indirect prompt injection</span>, <span class="term" data-term="jailbreak">jailbreaks</span>, <span class="term" data-term="pii">PII</span> &amp; data leaks, BOLA/BFLA broken access control, SSRF, SQL injection, excessive agency, <span class="term" data-term="hallucination">hallucination</span>, and policy violations.</li>
     <li><strong>Framework mapping:</strong> first-class presets that map probes onto standards — <code>owasp:llm</code> (OWASP LLM Top 10), <code>mitre:atlas</code> (MITRE ATLAS), plus NIST AI RMF. Useful when findings have to map to a compliance narrative.</li>
     <li><strong>CI/CD regression:</strong> declarative YAML config, deterministic graded assertions, and a non-interactive run mode that drops cleanly into GitHub Actions / GitLab / Jenkins to gate merges and catch regressions.</li>
   </ul>
@@ -35,8 +36,14 @@
     <li><code>npx promptfoo@latest redteam run</code> — generate adversarial cases, execute, and grade.</li>
   </ul>
   <p>Then open the report with <code>promptfoo view</code>. See the <a href="https://www.promptfoo.dev/docs/red-team/quickstart/" target="_blank" rel="noopener">red-team quickstart ↗</a> and the <a href="https://www.promptfoo.dev/docs/red-team/plugins/" target="_blank" rel="noopener">plugin catalog ↗</a>.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · written June 2026 · verify against the source.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" data-branch="add-red-teaming-explainer" defer></script>
 </body>
