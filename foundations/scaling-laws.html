@@ -29,17 +29,17 @@
 
   <p class="lead">Model capability is not magic — it's a <strong>smooth, predictable power law</strong> in three inputs: parameters, data, and compute. Push any of them up and test loss falls along a straight line on a log-log plot. This is the single most important "why" behind everything you'll be red-teaming.</p>
 
-  <h2>The core finding (Kaplan 2020)</h2>
+  <h2 id="the-core-finding">The core finding (Kaplan 2020)</h2>
   <p>OpenAI showed that cross-entropy <strong>test loss scales as a power law</strong> with model size (N), dataset size (D), and training compute (C), across seven orders of magnitude — and that architecture details (depth vs width) matter far less than raw scale. Two consequences that still shape the field:</p>
   <ul>
     <li><strong>Bigger is more sample-efficient.</strong> Larger models reach a given loss with fewer tokens — the opposite of the old "small model + lots of data" intuition.</li>
     <li><strong>Loss is forecastable.</strong> You can predict a bigger model's performance before you train it. This is why labs commit hundreds of millions to a single run.</li>
   </ul>
 
-  <h2>The correction (Chinchilla 2022)</h2>
+  <h2 id="the-correction">The correction (Chinchilla 2022)</h2>
   <p>DeepMind found Kaplan's recipe <strong>over-weighted parameters and under-trained on data</strong>. For a fixed compute budget, params and tokens should grow <strong>roughly in equal proportion</strong> — about <strong>20 training tokens per parameter</strong>. The proof: <strong>Chinchilla (70B)</strong> beat <strong>Gopher (280B)</strong> — a model 4× smaller, trained on more data, won. The whole industry re-tuned its model/data ratios overnight, and "compute-optimal" became the default framing.</p>
 
-  <h2>Why a red teamer cares</h2>
+  <h2 id="why-a-red-teamer-cares">Why a red teamer cares</h2>
   <ul>
     <li><strong>Capability is a moving target.</strong> The model you harden today is a checkpoint on a curve. Threat models must assume next-gen scale, not just current behavior.</li>
     <li><strong>Emergence.</strong> Some capabilities — and some attack surfaces (tool use, multi-step reasoning, code-exec) — appear abruptly past a scale threshold rather than fading in. What's safe at 7B can be exploitable at 70B.</li>

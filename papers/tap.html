@@ -25,10 +25,10 @@
 
   <p class="lead">TAP is a fully automated black-box jailbreak that drives an attacker LLM to grow a <strong>tree</strong> of prompt rewrites, <strong>pruning</strong> weak branches before they ever hit the target — landing a working jailbreak in a handful of queries.</p>
 
-  <h2>What it exploits</h2>
+  <h2 id="what-it-exploits">What it exploits</h2>
   <p>The same gap every social-engineering attack leans on: a model's safety training is <strong>shallow and context-sensitive</strong>, not a hard filter. A goal the target refuses outright will be answered once it's reframed, role-played, or buried in a plausible pretext. TAP assumes nothing about weights, logits, or the system prompt — it only needs to send text and read the reply, exactly the access an external attacker has against a hosted API like GPT-4o or Claude.</p>
 
-  <h2>How it works</h2>
+  <h2 id="how-it-works">How it works</h2>
   <p>TAP is a direct descendant of <strong>PAIR</strong> (Prompt Automatic Iterative Refinement), which used one attacker LLM to refine a single adversarial prompt in a chat loop. TAP swaps that linear loop for <strong>tree-of-thought search</strong> over many candidate prompts at once, governed by three cooperating roles:</p>
   <ul>
     <li><strong>Attacker LLM</strong> — at each node, branches the current prompt into several refined variants (new framings, personas, obfuscations).</li>
@@ -37,10 +37,10 @@
   </ul>
   <p>The <strong>pruning</strong> is the whole trick, and it happens in two places. <strong>Off-topic pruning</strong> kills branches the attacker has drifted away from the goal <em>before</em> spending a target query on them. <strong>Width pruning</strong> keeps only the top-scoring nodes per depth, so the tree explores breadth without exploding. The loop repeats — branch, prune off-topic, query target, score, keep the best — until a response crosses the jailbreak threshold or the depth budget runs out.</p>
 
-  <h2>Why it matters</h2>
+  <h2 id="why-it-matters">Why it matters</h2>
   <p>Against PAIR's single thread of refinement, the tree explores <strong>many more strategies in parallel</strong>, while pruning keeps that breadth <strong>query-efficient</strong> — the paper reports jailbreaking GPT-4 / GPT-4 Turbo and GPT-4o on <strong>over 80%</strong> of prompts using fewer target queries than prior black-box methods, and it slips past deployed safety layers like <strong>Llama Guard</strong>. For a red teamer that means automated, scalable coverage with no model internals required: TAP is a strong baseline for measuring how a deployed assistant holds up against a realistic, API-only adversary.</p>
 
-  <h2>Defenses &amp; detection</h2>
+  <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>Because TAP is purely black-box and semantically fluent, suffix/perplexity filters that catch GCG-style gibberish do little here — the prompts read like ordinary (if manipulative) requests. More durable mitigations:</p>
   <ul>
     <li><strong>Iterative-probing detection</strong> — TAP must hammer the target with many escalating, semantically related queries. Per-session rate limits and anomaly detection on bursts of near-duplicate refinements raise the cost.</li>

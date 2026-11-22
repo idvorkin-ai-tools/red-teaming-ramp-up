@@ -20,16 +20,16 @@
   <div class="authors">NVIDIA · open source</div>
   <div class="paperlink"><span class="lbl">Project</span><a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener">NVIDIA/garak — GitHub ↗</a></div>
   <p class="lead">Garak is NVIDIA's open-source LLM vulnerability scanner — the <strong>"nmap for LLMs."</strong> You point it at a model, it fires a large library of pre-built probes (simulated attacks), and a matching set of detectors scores the outputs to flag where the model failed. It ships connectors for OpenAI, Hugging Face, AWS Bedrock, Replicate, local GGUF, and more.</p>
-  <h2>What it's good at</h2>
+  <h2 id="what-its-good-at">What it's good at</h2>
   <p>A broad, batteries-included <strong>static probe library</strong> covering many vulnerability families out of the box, so you get wide coverage with near-zero setup. Good fit as a <strong>CI regression gate</strong> on every model release — run the same probe set, diff the scores, catch new weaknesses. Probe families include:</p>
   <ul>
     <li><strong>dan</strong> — DAN-style jailbreaks; <strong>gcg</strong> — adversarial-suffix attacks; <strong>encoding</strong> &amp; <strong>promptinject</strong> — injection</li>
     <li><strong>leakreplay</strong> — training-data exfiltration; <strong>glitch</strong> — glitch-token behavior</li>
     <li><strong>malwaregen</strong>, <strong>xss</strong>, <strong>realtoxicityprompts</strong>, <strong>donotanswer</strong>, <strong>lmrc</strong> — toxicity, refusal &amp; risk-card coverage</li>
   </ul>
-  <h2>Where it falls short</h2>
+  <h2 id="where-it-falls-short">Where it falls short</h2>
   <p>The probes are <strong>static and largely single-turn</strong> — canned payloads, not an adaptive attacker. It won't reason about <strong>multi-turn conversational</strong> escalation or your <strong>app-specific logic</strong> (RAG context, tool-calling, custom system prompts, business rules). Treat it as broad coverage of known weaknesses, not a substitute for an adaptive red-teamer or a scenario-driven harness against your actual application.</p>
-  <h2>How to start</h2>
+  <h2 id="how-to-start">How to start</h2>
   <p>Install with pip (or pipx for an isolated CLI), then target a model and pick a probe set:</p>
   <ul>
     <li><code>python -m pip install -U garak</code> &nbsp;— or fresher: <code>pip install -U git+https://github.com/NVIDIA/garak.git@main</code></li>

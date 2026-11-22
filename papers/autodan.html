@@ -25,10 +25,10 @@
 
   <p class="lead">AutoDAN automatically evolves <strong>fluent, human-readable jailbreak prompts</strong> using a genetic algorithm, combining the automation of optimization attacks with the natural-language stealth of handcrafted "DAN" prompts.</p>
 
-  <h2>What it exploits</h2>
+  <h2 id="what-it-exploits">What it exploits</h2>
   <p>Safety alignment is trained against the kinds of phrasings the model saw during RLHF, but the <strong>space of fluent natural-language wrappers that re-frame a harmful request is enormous</strong> and only thinly covered. Hand-built "Do Anything Now" (DAN) prompts exploit this by role-playing the model out of its guardrails — but they are static, get patched, and don't generalize. AutoDAN attacks the same weakness automatically: it searches that wrapper space for new phrasings that keep the request fluent and on-distribution while still bypassing refusal. Because the output reads like ordinary English, it also slips past the second line of defense — <strong>perplexity-based input filters</strong> that flag statistically unnatural text.</p>
 
-  <h2>How it works</h2>
+  <h2 id="how-it-works">How it works</h2>
   <p>AutoDAN treats jailbreak discovery as a search over text and solves it with a <strong>hierarchical genetic algorithm</strong>. It is grey-box: it needs the target's logits to score each candidate by its loss on an affirmative (non-refusing) response, but it takes no gradients and works entirely on readable sentences:</p>
   <ul>
     <li><strong>Seeding</strong> — the initial population is built from a handcrafted DAN-style jailbreak prompt, diversified by an LLM into many semantically-equivalent variants (rather than random noise).</li>
@@ -38,7 +38,7 @@
   </ul>
   <p>The result is a prompt that is automatically optimized yet still <strong>reads as coherent, meaningful English</strong>.</p>
 
-  <h2>Why it matters</h2>
+  <h2 id="why-it-matters">Why it matters</h2>
   <p>AutoDAN sits between two prior worlds and takes the best of each. The contrast with <strong>GCG</strong> (Zou et al., 2023) is the key insight:</p>
   <ul>
     <li><strong>GCG</strong> produces adversarial suffixes that are gibberish — high-perplexity strings of garbled tokens. Effective, but trivially caught by a perplexity filter and obvious to a human reviewer.</li>
@@ -46,7 +46,7 @@
   </ul>
   <p>It also reported <strong>better cross-model transfer and cross-sample universality</strong> than handcrafted baselines. The takeaway for defenders: stylometric and perplexity heuristics are not a durable defense, and automated attacks no longer have to look anomalous.</p>
 
-  <h2>Defenses &amp; detection</h2>
+  <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>Because the attack is fluent, surface-level filtering is weak. More robust mitigations operate on intent and output rather than text statistics:</p>
   <ul>
     <li><strong>Don't rely on perplexity filters</strong> — AutoDAN was explicitly built to defeat them; treat them as defense-in-depth at best.</li>

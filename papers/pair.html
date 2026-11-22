@@ -25,10 +25,10 @@
 
   <p class="lead">PAIR automates jailbreak discovery by pitting one LLM against another: an <strong>attacker model</strong> rewrites a malicious prompt over a short feedback loop until a <strong>target model</strong> complies — typically in <strong>fewer than twenty queries</strong> and with no access to weights or gradients.</p>
 
-  <h2>What it exploits</h2>
+  <h2 id="what-it-exploits">What it exploits</h2>
   <p>The same instruction-following and conversational flexibility that makes a model useful also makes it steerable away from its safety training. PAIR treats the target as a pure <strong>black box</strong> — only prompts in, text out, no logits, no internals. It exploits the fact that a refusal is informative: the target's own response reveals <em>why</em> it declined, and that signal is enough to mechanically improve the next attempt. It also leans on a structural weakness in prior work — manual jailbreaks (DAN-style personas, role-play framings) are powerful but slow to craft; PAIR shows the crafting itself can be delegated to a model.</p>
 
-  <h2>How it works</h2>
+  <h2 id="how-it-works">How it works</h2>
   <p>PAIR runs a tight adversarial loop between two or three LLMs, seeded with a target behavior (e.g. "explain how to do X"):</p>
   <ul>
     <li><strong>Attacker LLM</strong> — generates a candidate jailbreak prompt and an explicit chain-of-thought on its strategy (role-play, obfuscation, hypothetical framing, etc.).</li>
@@ -38,10 +38,10 @@
   </ul>
   <p>Because each iteration is conditioned on the previous failure, the search is far more directed than random or brute-force prompting. Parallel conversation "streams" can be run to raise the odds within the same budget. Crucially, no model internals are needed — it works against any system you can send a prompt to and read a reply from.</p>
 
-  <h2>Why it matters</h2>
+  <h2 id="why-it-matters">Why it matters</h2>
   <p>PAIR is the reference template for <strong>automated black-box red teaming</strong>. Earlier semantic attacks needed human ingenuity; earlier automated attacks (like GCG) needed white-box gradient access and produced unreadable token-salad suffixes. PAIR is both <strong>automated and black-box</strong>, and its jailbreaks are human-readable, semantically coherent prompts that often <strong>transfer across models</strong>. The query efficiency is the headline — twenty queries is cheap enough to run against commercial API endpoints at scale, which reframes jailbreak discovery from artisanal effort into a repeatable pipeline. Its attacker/judge loop became a building block for later systems (e.g. TAP, which adds tree-of-thought search).</p>
 
-  <h2>Defenses &amp; detection</h2>
+  <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>No single fix neutralizes PAIR, but several layers raise its cost:</p>
   <ul>
     <li><strong>Input/output classifiers and guardrail models</strong> that screen for jailbreak intent and harmful completions independent of the main model.</li>

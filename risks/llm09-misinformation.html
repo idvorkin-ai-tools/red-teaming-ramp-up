@@ -24,7 +24,7 @@
   </div>
   <p class="lead">An LLM produces false or misleading output that <strong>looks credible</strong>, and a user or downstream system trusts it without verification — turning a plausible fabrication into a real-world security or safety failure.</p>
 
-  <h2>How it's exploited</h2>
+  <h2 id="how-its-exploited">How it's exploited</h2>
   <p>Two failure modes compound each other. <strong>Hallucination</strong> is the model filling gaps in its training data with statistically plausible — but fabricated — content, with no genuine comprehension. <strong>Overreliance</strong> is a human or an automated pipeline treating that output as ground truth. An adversary doesn't need to break the model; they exploit its predictable confident-wrong patterns:</p>
   <ul>
     <li><strong>Induce a confident falsehood</strong> the operator will act on (fake citations, invented APIs, bogus "facts").</li>
@@ -32,10 +32,10 @@
   </ul>
   <p>Crucially, the medical/legal-advice variant needs <strong>no active attacker at all</strong> — insufficient oversight alone is enough to cause harm and liability.</p>
 
-  <h2>What it looks like</h2>
+  <h2 id="what-it-looks-like">What it looks like</h2>
   <p><strong>Package-hallucination → dependency confusion:</strong> a coding assistant repeatedly recommends <code>import faiss-cpu-gpu</code> or some other library that doesn't exist. An attacker observes the hallucinated name, publishes a malicious package under it to PyPI/npm, and waits. Developers who paste the model's suggestion <code>pip install</code> the backdoor — granting code execution, exfil, or a persistent foothold. Other real cases: ChatGPT inventing nonexistent legal cases cited in a court filing, and Air Canada's chatbot stating a refund policy that didn't exist (the airline lost the resulting suit).</p>
 
-  <h2>How to test for it</h2>
+  <h2 id="how-to-test-for-it">How to test for it</h2>
   <p>Probe the boundary between "knows" and "confabulates," then check whether anything downstream blindly trusts the answer:</p>
   <ul>
     <li><strong>Bait for fabrication:</strong> ask for citations, CVE numbers, library/function names, statutes, or API signatures — then verify each against the real source. Track hallucination rate, not just one-off misses.</li>
@@ -44,7 +44,7 @@
     <li><strong>Test the human/automation layer:</strong> does the system surface uncertainty, or render fabrications as authoritative answers that get auto-executed?</li>
   </ul>
 
-  <h2>Defenses</h2>
+  <h2 id="defenses">Defenses</h2>
   <ul>
     <li><strong>Ground the output:</strong> RAG over trusted, verified sources with inline citations, so claims trace back to real documents.</li>
     <li><strong>Verify before trust:</strong> automatic validation of high-stakes outputs, plus human cross-checking for sensitive decisions — never fully autonomous action on unverified model claims.</li>

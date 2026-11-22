@@ -25,10 +25,10 @@
 
   <p class="lead">PAP treats jailbreaking as a <strong>social-engineering</strong> problem rather than a syntactic one: it rewrites a harmful request using documented human persuasion techniques, exploiting the fact that a model trained on human dialogue responds to the same rhetorical pressure people do.</p>
 
-  <h2>What it exploits</h2>
+  <h2 id="what-it-exploits">What it exploits</h2>
   <p>Most early jailbreaks were treated as a security puzzle — token-level suffixes, encodings, role-play scaffolds. PAP reframes the target as a <strong>"humanized" communicator</strong>: because LLMs are trained on vast human-written text, they have internalized the patterns by which humans get other humans to comply. The attack surface is therefore not a parser bug but the model's <strong>learned susceptibility to persuasion</strong>. Crucially, the persuasion lives in <em>natural, fluent prose</em> — no adversarial gibberish, no special tokens — so the request reads like an ordinary (if manipulative) human message and slips past filters tuned for obvious attack markers.</p>
 
-  <h2>How it works</h2>
+  <h2 id="how-it-works">How it works</h2>
   <p>The authors build a <strong>persuasion taxonomy</strong> grounded in decades of social-science research — on the order of 40 techniques across several categories. A harmful instruction is paraphrased so the same ask is delivered through one or more of these techniques. Representative categories:</p>
   <ul>
     <li><strong>Authority / expert endorsement</strong> — frame the request as sanctioned by a credible authority or cited source.</li>
@@ -39,10 +39,10 @@
   </ul>
   <p>To scale this beyond hand-written examples, the team fine-tunes a <strong>persuasion paraphraser</strong> — an LLM that takes a plain harmful request plus a chosen technique and emits a polished <strong>Persuasive Adversarial Prompt (PAP)</strong>. Because the paraphraser is itself a model, generating attacks is cheap and automatable. The reported result: iterating across techniques drove attack success above <strong>92%</strong> on aligned targets including GPT-4 and Llama-2, with no gradient access to the victim.</p>
 
-  <h2>Why it matters</h2>
+  <h2 id="why-it-matters">Why it matters</h2>
   <p>PAP shows that strong alignment does not neutralize <strong>ordinary human manipulation</strong>. The attacks are non-technical and require no ML expertise — a motivated layperson ("Johnny") can produce them, which is precisely the threat model the title invokes. For a security pro, the takeaway is that the dangerous inputs here are <em>indistinguishable in form from legitimate persuasive writing</em>: there is no malformed payload to signature, only intent expressed through rhetoric. It also predicts that more capable, more "human-like" models may be <em>more</em> vulnerable, since better language understanding means better comprehension of the persuasion.</p>
 
-  <h2>Defenses &amp; detection</h2>
+  <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>The paper pairs the attack with mitigations and finds them only partially effective:</p>
   <ul>
     <li><strong>Adaptive system prompts</strong> instructing the model to watch for persuasion reduce but do not eliminate success.</li>
