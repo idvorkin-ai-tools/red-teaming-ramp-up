@@ -25,7 +25,7 @@
   <ul>
     <li><strong>JBB-Behaviors dataset</strong> — 100 distinct misuse behaviors across ten categories mapped to OpenAI's usage policies (55% original; rest from AdvBench and TDC/HarmBench), plus <strong>100 matched benign behaviors</strong> to measure <span class="term" data-term="over-refusal">over-refusal</span>.</li>
     <li><strong><span class="term" data-term="llm-judge">Automated judges</span></strong> — default scoring uses a <strong>Llama-3 70B</strong> jailbreak classifier; a Llama-3 8B judge flags refusals. A separate judges dataset benchmarks these against GPT-4, HarmBench, Llama Guard 2, and 3 human annotators (majority vote).</li>
-    <li><strong>Standardized <span class="term" data-term="harness">harness</span></strong> — fixed threat model, <span class="term" data-term="system-prompt">system prompts</span>, chat templates, and scoring (<code>jbb.evaluate_prompts()</code>) so <span class="term" data-term="attack-success-rate">attack-success-rate</span> is computed identically across submissions.</li>
+    <li><strong>Standardized harness</strong> — fixed threat model, <span class="term" data-term="system-prompt">system prompts</span>, chat templates, and scoring (<code>jbb.evaluate_prompts()</code>) so <span class="term" data-term="attack-success-rate">attack-success-rate</span> is computed identically across submissions.</li>
     <li><strong>Leaderboards</strong> — separate attack and defense tracks for open- and closed-source models, filterable by paper, threat model, and metadata.</li>
   </ul>
   <h2 id="how-red-teamers-use-it">How red teamers use it</h2>

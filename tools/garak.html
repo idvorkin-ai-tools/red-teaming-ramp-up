@@ -29,7 +29,7 @@
     <li><strong>malwaregen</strong>, <strong>xss</strong>, <strong>realtoxicityprompts</strong>, <strong>donotanswer</strong>, <strong>lmrc</strong> — toxicity, refusal &amp; risk-card coverage</li>
   </ul>
   <h2 id="where-it-falls-short">Where it falls short</h2>
-  <p>The probes are <strong>static and largely single-turn</strong> — canned payloads, not an adaptive attacker. It won't reason about <strong>multi-turn conversational</strong> escalation or your <strong>app-specific logic</strong> (<span class="term" data-term="rag">RAG</span> context, tool-calling, custom <span class="term" data-term="system-prompt">system prompts</span>, business rules). Treat it as broad coverage of known weaknesses, not a substitute for an adaptive <span class="term" data-term="red-teaming">red-teamer</span> or a scenario-driven <span class="term" data-term="harness">harness</span> against your actual application.</p>
+  <p>The probes are <strong>static and largely single-turn</strong> — canned payloads, not an adaptive attacker. It won't reason about <strong>multi-turn conversational</strong> escalation or your <strong>app-specific logic</strong> (<span class="term" data-term="rag">RAG</span> context, tool-calling, custom <span class="term" data-term="system-prompt">system prompts</span>, business rules). Treat it as broad coverage of known weaknesses, not a substitute for an adaptive <span class="term" data-term="red-teaming">red-teamer</span> or a scenario-driven harness against your actual application.</p>
   <h2 id="how-to-start">How to start</h2>
   <p>Install with pip (or pipx for an isolated CLI), then target a model and pick a probe set:</p>
   <ul>

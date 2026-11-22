@@ -34,7 +34,7 @@
   <h2 id="how-it-works">How it works</h2>
   <p>The attacker constructs a single prompt containing many faux turns of a conversation. In each one, a simulated user asks something the model should refuse, and a simulated assistant complies in detail. The real target request is appended at the end. The model, having "observed" dozens to hundreds of compliant exchanges, continues the established pattern instead of refusing.</p>
   <ul>
-    <li><strong>Scales with shot count.</strong> A handful of examples does little; effectiveness climbs as the number of demonstrations grows, and the harmful-response rate follows a <strong><span class="term" data-term="scaling-law">power law</span></strong> in the number of shots — predictable enough to extrapolate.</li>
+    <li><strong>Scales with shot count.</strong> A handful of examples does little; effectiveness climbs as the number of demonstrations grows, and the harmful-response rate follows a <strong>power law</strong> in the number of shots — predictable enough to extrapolate.</li>
     <li><strong>Bigger models are <em>more</em> vulnerable.</strong> Stronger in-context learning is exactly what makes a capable model better at absorbing the malicious pattern, so capability and susceptibility move together.</li>
     <li><strong>Generalizes across tasks and providers.</strong> The same template works across many harm categories and was effective against models from Anthropic and several peers, including when combined with other jailbreak techniques.</li>
   </ul>

@@ -29,7 +29,7 @@
     <li>Both sides of the arms race: the original paper evaluated <strong>18 attack methods against 33 target LLMs and defenses</strong> in one matrix.</li>
   </ul>
   <h2 id="how-red-teamers-use-it">How red teamers use it</h2>
-  <p>HarmBench is the <strong>common yardstick for ASR</strong>. You run your attack (or defense) through its three-step pipeline — test-case generation, completion generation, evaluation — and report numbers that are directly comparable to published baselines. New attacks cite their HarmBench ASR; new defenses (e.g. adversarial training, refusal hardening) report the ASR they suppress. It ships a modular <span class="term" data-term="harness">harness</span> so you can drop in a custom model or red-teaming method without rewriting the eval.</p>
+  <p>HarmBench is the <strong>common yardstick for ASR</strong>. You run your attack (or defense) through its three-step pipeline — test-case generation, completion generation, evaluation — and report numbers that are directly comparable to published baselines. New attacks cite their HarmBench ASR; new defenses (e.g. adversarial training, refusal hardening) report the ASR they suppress. It ships a modular harness so you can drop in a custom model or red-teaming method without rewriting the eval.</p>
   <h2 id="strengths-limits">Strengths &amp; limits</h2>
   <ul>
     <li><strong>Rigor &amp; standardization:</strong> a frozen behavior set and shared judge make cross-paper claims meaningful and reproducible — a real improvement over per-paper ad hoc setups.</li>

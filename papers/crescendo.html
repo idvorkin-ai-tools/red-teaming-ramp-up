@@ -36,7 +36,7 @@
   <ul>
     <li><strong>Benign opening</strong> — ask a broad, legitimate question near the target topic (e.g., the history or general background of the subject).</li>
     <li><strong>Gradual steering</strong> — each turn nudges one notch closer, explicitly <strong>referencing the model's own previous answers</strong> ("expand on the third point you mentioned," "now write that as an article") to anchor the next escalation in already-accepted material.</li>
-    <li><strong>Backtrack on refusal</strong> — if a turn triggers a refusal, rephrase or retreat a step rather than confronting the <span class="term" data-term="guardrail">guardrail</span> head-on, then resume the climb.</li>
+    <li><strong>Backtrack on refusal</strong> — if a turn triggers a refusal, rephrase or retreat a step rather than confronting the guardrail head-on, then resume the climb.</li>
     <li><strong>Convergence</strong> — the final ask is a thin increment over content the model has already produced, so it completes the disallowed task without ever seeing a stark policy-violating prompt.</li>
   </ul>
   <p>The authors automate this loop as <strong>Crescendomation</strong>, where an attacker LLM plans each next turn and judges progress — turning a hand-crafted social-engineering technique into a repeatable, scalable pipeline.</p>
