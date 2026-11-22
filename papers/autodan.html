@@ -46,6 +46,8 @@
   </ul>
   <p>It also reported <strong>better cross-model transfer and cross-sample universality</strong> than handcrafted baselines. The takeaway for defenders: stylometric and perplexity heuristics are not a durable defense, and automated attacks no longer have to look anomalous.</p>
 
+  <p>HarmBench runs AutoDAN on open models only, because its fitness reads the target's loss; its configuration and measured success rates are on the <a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/attacks/llm-optimizer.html#autodan">HarmBench field map</a>.</p>
+
   <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>Because the attack is fluent, surface-level filtering is weak. More robust mitigations operate on intent and output rather than text statistics:</p>
   <ul>

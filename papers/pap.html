@@ -42,6 +42,8 @@
   <h2 id="why-it-matters">Why it matters</h2>
   <p>PAP shows that strong alignment does not neutralize <strong>ordinary human manipulation</strong>. The attacks are non-technical and require no ML expertise — a motivated layperson ("Johnny") can produce them, which is precisely the threat model the title invokes. For a security pro, the takeaway is that the dangerous inputs here are <em>indistinguishable in form from legitimate persuasive writing</em>: there is no malformed payload to signature, only intent expressed through rhetoric. It also predicts that more capable, more "human-like" models may be <em>more</em> vulnerable, since better language understanding means better comprehension of the persuasion.</p>
 
+  <p>HarmBench runs a five-technique version, PAP-top5, with no target queries at all; its configuration and measured success rates are on the <a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/attacks/llm-optimizer.html#pap-top5">HarmBench field map</a>.</p>
+
   <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>The paper pairs the attack with mitigations and finds them only partially effective:</p>
   <ul>

@@ -32,9 +32,10 @@
   <h2 id="strengths-limits">Strengths &amp; limits</h2>
   <ul>
     <li><strong>Rigor &amp; standardization:</strong> a frozen behavior set and shared judge make cross-paper claims meaningful and reproducible — a real improvement over per-paper ad hoc setups.</li>
-    <li><strong>Classifier-judge caveats:</strong> the automated judge is a model and inherits model error — it can mislabel borderline or obfuscated completions, and an attack can in principle be tuned to fool the judge rather than the target. Treat ASR as a calibrated proxy, not ground truth.</li>
+    <li><strong>Classifier-judge caveats:</strong> the automated judge is a model and inherits model error — it can mislabel borderline or obfuscated completions, and an attack can in principle be tuned to fool the judge rather than the target. Treat ASR as a calibrated proxy, not ground truth. HarmBench's grader matched human labels about 93% of the time (<a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/measure/classifier.html#agreement">how that was checked</a>); the <a class="lnk" href="https://idvorkin-ai-tools.github.io/llm-judges-field-map/parts/p08.html">LLM Judges map</a> covers how to validate any judge.</li>
     <li><strong>Scope:</strong> the behavior set, while broad, is fixed — novel harm modalities or task-specific risks in your own deployment won't appear here. Use it as a baseline, not the whole threat model.</li>
   </ul>
+  <p>The <a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/index.html">HarmBench field map</a> takes the benchmark apart in depth: every behavior, each attack's configuration and the grader.</p>
 </main>
 <footer>Part of the <a href="../index.html">Red Teaming ramp-up map</a> · written June 2026 · verify against the source.</footer>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->

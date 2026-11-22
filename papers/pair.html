@@ -41,6 +41,8 @@
   <h2 id="why-it-matters">Why it matters</h2>
   <p>PAIR is the reference template for <strong>automated black-box red teaming</strong>. Earlier semantic attacks needed human ingenuity; earlier automated attacks (like GCG) needed white-box gradient access and produced unreadable token-salad suffixes. PAIR is both <strong>automated and black-box</strong>, and its jailbreaks are human-readable, semantically coherent prompts that often <strong>transfer across models</strong>. The query efficiency is the headline — twenty queries is cheap enough to run against commercial API endpoints at scale, which reframes jailbreak discovery from artisanal effort into a repeatable pipeline. Its attacker/judge loop became a building block for later systems (e.g. TAP, which adds tree-of-thought search).</p>
 
+  <p>HarmBench's configuration for PAIR and its measured success rates are on the <a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/attacks/llm-optimizer.html#pair">HarmBench field map</a>.</p>
+
   <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>No single fix neutralizes PAIR, but several layers raise its cost:</p>
   <ul>

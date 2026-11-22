@@ -40,6 +40,8 @@
   <h2 id="why-it-matters">Why it matters</h2>
   <p>GCG was the first attack to show that jailbreaks could be <strong>automated and optimized</strong> rather than hand-crafted, turning red-teaming into a search problem. Its headline result was <strong>transfer</strong>: suffixes optimized against open-weight models (Vicuna, Llama-2) jailbroke black-box commercial systems including ChatGPT, Bard, and Claude — demonstrating that a single attacker with local model access can attack systems they cannot see inside. It established the optimization-based jailbreak paradigm that later, more stealthy attacks build on.</p>
 
+  <p>HarmBench runs GCG under one fixed budget against every open model; its configuration and measured success rates are on the <a class="lnk" href="https://idvorkin-ai-tools.github.io/harmbench-field-map/attacks/gradient.html#gcg">HarmBench field map</a>.</p>
+
   <h2 id="defenses-detection">Defenses &amp; detection</h2>
   <p>Because GCG suffixes are gibberish to a human reader, they have a detectable signature:</p>
   <ul>
